@@ -14,11 +14,11 @@ using System.Runtime.CompilerServices;
 
 namespace Netdx.ConversationTracker
 {
-    [DebuggerDisplay("[FlowKey: {IpProtocol} {SourceEndpoint} -> {DestinationEndpoint}]")]
+    [DebuggerDisplay("[FlowKey: {Protocol} {SourceEndpoint} -> {DestinationEndpoint}]")]
     public partial class FlowKey : IEquatable<FlowKey>
     {
 
-        private static readonly FlowKey m_none = new FlowKey() { Protocol = IpProtocolType.NONE, SourceEndpoint = new IPEndPoint(IPAddress.None, 0), DestinationEndpoint = new IPEndPoint(IPAddress.None, 0) };
+        private static readonly FlowKey m_none = new FlowKey() { Protocol = ProtocolType.NONE, SourceEndpoint = new IPEndPoint(IPAddress.None, 0), DestinationEndpoint = new IPEndPoint(IPAddress.None, 0) };
         public static FlowKey None => m_none;
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace Netdx.ConversationTracker
                     {
                         case 8:
                             var ipv4 = new Span<byte>(_DestinationPoint, 0, 4);
-                            return new IPEndPoint(new IPAddress(ipv4.ToArray()), BitConverter.ToInt32(_SourcePoint, 4));
+                            return new IPEndPoint(new IPAddress(ipv4.ToArray()), BitConverter.ToInt32(_DestinationPoint, 4));
                         case 20:
                             var ipv6 = new Span<byte>(_DestinationPoint, 0, 16);
-                            return new IPEndPoint(new IPAddress(ipv6.ToArray()), BitConverter.ToInt32(_SourcePoint, 16));
+                            return new IPEndPoint(new IPAddress(ipv6.ToArray()), BitConverter.ToInt32(_DestinationPoint, 16));
                         default:
                             throw new InvalidOperationException("SourcePoint does not represent valid IPEndPoint.");
                     }
@@ -97,29 +97,29 @@ namespace Netdx.ConversationTracker
             };
         }
 
-        public bool Equals(FlowKey other)
+        public bool Equals(FlowKey that)
         {
-            if (other == null)
+            if (that == null)
             {
                 return false;
             }
 
-            if (Object.ReferenceEquals(this, other))
+            if (Object.ReferenceEquals(this, that))
             {
                 return true;
             }
 
-            if (this._Protocol != other._Protocol)
+            if (this._Protocol != that._Protocol)
             {
                 return false;
             }
 
-            if (Utils.Equals(this._SourcePoint, other._SourcePoint))
+            if (!Utils.Equals(this._SourcePoint, that._SourcePoint))
             {
                 return false;
             }
 
-            return Utils.Equals(this._DestinationPoint, other._DestinationPoint);
+            return Utils.Equals(this._DestinationPoint, that._DestinationPoint);
         }
 
         public override int GetHashCode()
@@ -152,6 +152,5 @@ namespace Netdx.ConversationTracker
                 return obj?.GetHashCode() ?? 0;
             }
         }
-        public string IpFlowKeyString => $"{Protocol}!{SourceEndpoint}->{DestinationEndpoint}";
     }
 }

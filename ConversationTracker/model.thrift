@@ -7,9 +7,9 @@ namespace csharp Netdx.ConversationTracker
 /// </summary>
 enum FlowOrientation { Undefined = 0; Upflow = 1; Downflow = 2;  }
 
-enum IpProtocolType {
+enum ProtocolType {
         /// <summary> IPv6 Hop-by-Hop options. </summary>
-        HOPOPTS = 0;
+        IP = 0;
         /// <summary> Internet Control Message Protocol. </summary>
         ICMP = 1;
         /// <summary> Internet Group Management Protocol.</summary>
@@ -56,12 +56,21 @@ enum IpProtocolType {
         PIM = 103;
         /// <summary> Compression Header Protocol. </summary>
         COMP = 108;
+        
+        RAW = 255;
 }	
 
 struct FlowKey {
-    1: IpProtocolType Protocol;
+    1: ProtocolType Protocol;
     2: binary SourcePoint;  
     3: binary DestinationPoint;
+}
+
+struct FlowRecord {    
+    1: i64 FirstSeen;
+    2: i64 LastSeen;
+    3: i64 Octets;
+    4: i32 Packets;
 }
 
 // Conversation object. 
@@ -69,6 +78,23 @@ struct Conversation {
     1: FlowKey ConversationKey;
     2: i32 ConversationId;
     3: i32 ParentId;
-    4: i64 FirstSeen = 1;
-    5: i64 LastSeen = 2;
+    4: i64 FirstSeen;
+    5: i64 LastSeen;
 } 
+
+struct PacketMetrics {
+    1: i64 Timeval;
+    2: i32 SegmentSize;
+}
+
+// The structure stores features as proposed in http://www.cl.cam.ac.uk/~awm22/publications/li2007machine.pdf
+struct TcpFlowFeaturesRecord : FlowRecord {
+    // Count of all packets with push bit set in TCP header
+    1: i32 PushTcp;  
+    // The total number of bytes sent in initial window
+    2: i32 InitWindowsBytes;    
+    // Total numbers of RTT samples found.
+    3: i32 RttSamples;  
+    // Collection of packet metrics to be used for compute other values.
+    4: list<PacketMetrics> Packets;
+}

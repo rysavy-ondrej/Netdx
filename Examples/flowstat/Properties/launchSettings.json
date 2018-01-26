@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "flowstat": {
+      "commandName": "Project",
+      "commandLineArgs": "snmp.pcap",
+      "workingDirectory": "C:\\Users\\rysavy\\Documents\\Network Monitor 3\\Captures"
+    }
+  }
+}

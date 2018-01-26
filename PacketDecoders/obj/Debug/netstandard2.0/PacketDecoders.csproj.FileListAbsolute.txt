@@ -6,3 +6,4 @@ C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\bin\Debug\netstandard2.0\N
 C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\bin\Debug\netstandard2.0\Netdx.PacketDecoders.pdb
 C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.dll
 C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.pdb
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\PacketDecoders.csprojResolveAssemblyReference.cache

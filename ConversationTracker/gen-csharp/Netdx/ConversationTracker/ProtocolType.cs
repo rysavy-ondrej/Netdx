@@ -7,9 +7,9 @@
 
 namespace Netdx.ConversationTracker
 {
-  public enum IpProtocolType
+  public enum ProtocolType
   {
-    HOPOPTS = 0,
+    IP = 0,
     ICMP = 1,
     IGMP = 2,
     IPIP = 4,
@@ -33,5 +33,6 @@ namespace Netdx.ConversationTracker
     ENCAP = 98,
     PIM = 103,
     COMP = 108,
+    RAW = 255,
   }
 }

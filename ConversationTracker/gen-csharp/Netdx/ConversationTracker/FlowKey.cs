@@ -23,15 +23,15 @@ namespace Netdx.ConversationTracker
   #endif
   public partial class FlowKey : TBase
   {
-    private IpProtocolType _Protocol;
+    private ProtocolType _Protocol;
     private byte[] _SourcePoint;
     private byte[] _DestinationPoint;
 
     /// <summary>
     /// 
-    /// <seealso cref="IpProtocolType"/>
+    /// <seealso cref="ProtocolType"/>
     /// </summary>
-    public IpProtocolType Protocol
+    public ProtocolType Protocol
     {
       get
       {
@@ -101,7 +101,7 @@ namespace Netdx.ConversationTracker
           {
             case 1:
               if (field.Type == TType.I32) {
-                Protocol = (IpProtocolType)iprot.ReadI32();
+                Protocol = (ProtocolType)iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }

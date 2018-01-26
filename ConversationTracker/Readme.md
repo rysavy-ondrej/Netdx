@@ -1,6 +1,19 @@
 ﻿# Conversation Tracker
 
 
+Conversation tracker enables:
+
+* Identifying bidirectional flows
+
+* Grouping packets in flows
+
+* 
+
+To identify bi-directional flows, each packet is analyzed. FlowKey is extracted and it is used as a key 
+in conversation table. Conversation table contains conversation items. 
+
+
+
 ## Building 
 
 
