@@ -1,10 +1,10 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using Kaitai;
 using System;
 using System.Collections.Generic;
-using Kaitai;
 
-namespace Ndx.Packets.IoT
+namespace Netdx.Packets.IoT
 {
     public partial class Coap : KaitaiStruct
     {
@@ -118,38 +118,25 @@ namespace Ndx.Packets.IoT
 
             private void _parse()
             {
-                f_length = false;
                 f_delta = false;
+                f_length = false;
                 f_isPayloadMarker = false;
                 _optDelta = m_io.ReadBitsInt(4);
                 _optLen = m_io.ReadBitsInt(4);
                 m_io.AlignToByte();
                 if (OptDelta == 13) {
-                    _optDelta1 = m_io.ReadU1();
+                    _optDeltaExtraU1 = m_io.ReadU1();
                 }
                 if (OptDelta == 14) {
-                    _optDelta2 = m_io.ReadU2be();
+                    _optDeltaExtraU2 = m_io.ReadU2be();
                 }
                 if (OptLen == 13) {
-                    _optLen1 = m_io.ReadU1();
+                    _optLenExtraU1 = m_io.ReadU1();
                 }
                 if (OptLen == 14) {
-                    _optLen2 = m_io.ReadU2be();
+                    _optLenExtraU2 = m_io.ReadU2be();
                 }
                 _value = m_io.ReadBytes(Length);
-            }
-            private bool f_length;
-            private int _length;
-            public int Length
-            {
-                get
-                {
-                    if (f_length)
-                        return _length;
-                    _length = (int) ((OptLen == 13 ? OptLen1 : (OptLen == 14 ? OptLen2 : (OptLen == 15 ? 0 : OptLen))));
-                    f_length = true;
-                    return _length;
-                }
             }
             private bool f_delta;
             private int _delta;
@@ -159,9 +146,22 @@ namespace Ndx.Packets.IoT
                 {
                     if (f_delta)
                         return _delta;
-                    _delta = (int) ((OptDelta == 13 ? OptDelta1 : (OptDelta == 14 ? OptDelta2 : (OptDelta == 15 ? 0 : OptDelta))));
+                    _delta = (int) ((OptDelta == 13 ? (OptDeltaExtraU1 + 13) : (OptDelta == 14 ? (OptDeltaExtraU2 + 269) : (int)(OptDelta == 15 ? 0 : OptDelta))));
                     f_delta = true;
                     return _delta;
+                }
+            }
+            private bool f_length;
+            private int _length;
+            public int Length
+            {
+                get
+                {
+                    if (f_length)
+                        return _length;
+                    _length = (int) ((OptLen == 13 ? (OptLenExtraU1 + 13) : (OptLen == 14 ? (OptLenExtraU2 + 269) : (int)(OptLen == 15 ? 0 : OptLen))));
+                    f_length = true;
+                    return _length;
                 }
             }
             private bool f_isPayloadMarker;
@@ -179,19 +179,19 @@ namespace Ndx.Packets.IoT
             }
             private ulong _optDelta;
             private ulong _optLen;
-            private byte _optDelta1;
-            private ushort _optDelta2;
-            private byte _optLen1;
-            private ushort _optLen2;
+            private byte _optDeltaExtraU1;
+            private ushort _optDeltaExtraU2;
+            private byte _optLenExtraU1;
+            private ushort _optLenExtraU2;
             private byte[] _value;
             private Coap m_root;
             private Coap m_parent;
             public ulong OptDelta { get { return _optDelta; } }
             public ulong OptLen { get { return _optLen; } }
-            public byte OptDelta1 { get { return _optDelta1; } }
-            public ushort OptDelta2 { get { return _optDelta2; } }
-            public byte OptLen1 { get { return _optLen1; } }
-            public ushort OptLen2 { get { return _optLen2; } }
+            public byte OptDeltaExtraU1 { get { return _optDeltaExtraU1; } }
+            public ushort OptDeltaExtraU2 { get { return _optDeltaExtraU2; } }
+            public byte OptLenExtraU1 { get { return _optLenExtraU1; } }
+            public ushort OptLenExtraU2 { get { return _optLenExtraU2; } }
             public byte[] Value { get { return _value; } }
             public Coap M_Root { get { return m_root; } }
             public Coap M_Parent { get { return m_parent; } }

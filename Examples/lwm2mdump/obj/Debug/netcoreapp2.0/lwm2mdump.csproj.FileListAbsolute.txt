@@ -9,3 +9,5 @@ C:\Users\rysavy\Documents\GitHub\Netdx\Examples\lwm2mdump\obj\Debug\netcoreapp2.
 C:\Users\rysavy\Documents\GitHub\Netdx\Examples\lwm2mdump\bin\Debug\netcoreapp2.0\lwm2mdump.pdb
 C:\Users\rysavy\Documents\GitHub\Netdx\Examples\lwm2mdump\obj\Debug\netcoreapp2.0\lwm2mdump.dll
 C:\Users\rysavy\Documents\GitHub\Netdx\Examples\lwm2mdump\obj\Debug\netcoreapp2.0\lwm2mdump.pdb
+C:\Users\rysavy\Documents\GitHub\Netdx\Examples\lwm2mdump\bin\Debug\netcoreapp2.0\Netdx.PacketDecoders.dll
+C:\Users\rysavy\Documents\GitHub\Netdx\Examples\lwm2mdump\bin\Debug\netcoreapp2.0\Netdx.PacketDecoders.pdb

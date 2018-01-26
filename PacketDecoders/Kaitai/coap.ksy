@@ -44,29 +44,29 @@ types:
       - id: opt_len
         type: b4
       
-      - id: opt_delta_1
+      - id: opt_delta_extra_u1
         type: u1
         if: opt_delta == 13
         
-      - id: opt_delta_2
+      - id: opt_delta_extra_u2
         type: u2
         if: opt_delta == 14
       
-      - id: opt_len_1
+      - id: opt_len_extra_u1
         type: u1
         if: opt_len == 13
         
-      - id: opt_len_2
+      - id: opt_len_extra_u2
         type: u2
         if: opt_len == 14
         
       - id: value
         size: length
     instances:
-      length: 
-        value: 'opt_len  == 13 ? opt_len_1 : (opt_len == 14 ? opt_len_2 : (opt_len == 15 ? 0 : opt_len))'
       delta:
-        value: 'opt_delta == 13 ? opt_delta_1 : (opt_delta == 14 ? opt_delta_2 : (opt_delta == 15 ? 0 : opt_delta))'
+        value: 'opt_delta == 13 ? (opt_delta_extra_u1 + 13) : (opt_delta == 14 ? (opt_delta_extra_u2 + 269) : (opt_delta == 15 ? 0 : opt_delta))'
+      length: 
+        value: 'opt_len  == 13 ? (opt_len_extra_u1 + 13) : (opt_len == 14 ? (opt_len_extra_u2 + 269) : (opt_len == 15 ? 0 : opt_len))'
       is_payload_marker:
         value: 'opt_len == 15 and opt_delta == 15'
 

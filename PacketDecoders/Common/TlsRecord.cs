@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Kaitai;
 
-namespace Ndx.Packets.Common
+namespace Netdx.Packets.Common
 {
     public partial class TlsRecord : KaitaiStruct
     {

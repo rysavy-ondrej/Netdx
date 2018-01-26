@@ -5,6 +5,8 @@ using Microsoft.Extensions.CommandLineUtils;
 using SharpPcap;
 using System.IO;
 using PacketDotNet;
+using Netdx.Packets.IoT;
+using Kaitai;
 
 namespace lwm2mdump
 {
@@ -74,14 +76,32 @@ namespace lwm2mdump
         {
             device.OnPacketArrival += Device_OnPacketArrival;
             device.Open();
+            // enable processing only udp packets as CoAP is carried in UDP.
+            device.Filter = "ip and udp";
             device.Capture();
             device.Close();
         }
 
+
         private static void Device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
-            var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
-            Console.WriteLine($"{e.Packet.Timeval}: {packet}");
+            try
+            {
+                var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
+                var ip = packet.Extract(typeof(IpPacket)) as IpPacket;
+                var udp = packet.Extract(typeof(UdpPacket)) as UdpPacket;
+                if (Coap.IsCoap(udp.PayloadData))
+                {
+                    File.WriteAllBytes($"{e.Device.Statistics.ReceivedPackets:0000}.raw", udp.PayloadData);
+
+                    var coap = new Coap(new KaitaiStream(udp.PayloadData));
+                    Console.WriteLine($"{e.Packet.Timeval.Date}: {packet}[CoAPPacket: Code={coap.Code}, Type={coap.Type}, MID={coap.MessageId}, Uri={coap.GetUri(ip.DestinationAddress.ToString())}]");
+                }
+            }
+            catch(Exception)
+            {
+                Console.Error.WriteLine($"{e.Packet.Timeval.Date}: Unable to parse packet.");
+            }
         }
     }
 }
