@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Kaitai;
 using Microsoft.Extensions.CommandLineUtils;
-using SharpPcap;
-using System.IO;
-using PacketDotNet;
 using Netdx.Packets.IoT;
-using Kaitai;
+using PacketDotNet;
+using SharpPcap;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace lwm2mdump
 {
@@ -95,7 +94,14 @@ namespace lwm2mdump
                     File.WriteAllBytes($"{e.Device.Statistics.ReceivedPackets:0000}.raw", udp.PayloadData);
 
                     var coap = new Coap(new KaitaiStream(udp.PayloadData));
-                    Console.WriteLine($"{e.Packet.Timeval.Date}: {packet}[CoAPPacket: Code={coap.Code}, Type={coap.Type}, MID={coap.MessageId}, Uri={coap.GetUri(ip.DestinationAddress.ToString(), udp.DestinationPort)}]");
+                    var uri = coap.GetUri(ip.DestinationAddress.ToString(), udp.DestinationPort);
+                    var parameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                    Console.WriteLine($"{e.Packet.Timeval.Date}: {packet}[CoAPPacket: Code={coap.Code}, Type={coap.Type}, MID={coap.MessageId}, Uri={uri}]");
+                    // analyze CoAP message to generate LwM2M event:
+                    if (coap.IsRequest && coap.RequestMethod == RequestMethod.Post && uri.LocalPath.Equals("/rd"))
+                    {
+                        Console.WriteLine($"EVENT: [LwM2M.Register: endpoint={parameters["ep"]}, lifetime={parameters["lt"]}, version={parameters["lwm2m"]}, binding={parameters["b"]}]");   
+                    }
                 }
             }
             catch(Exception)

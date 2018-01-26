@@ -25,7 +25,8 @@ namespace Netdx.Packets.IoT
     {
 
         /// <summary>
-        /// Tests if the given array of bytes represents a valid CoAP message. 
+        /// Tests if the given array of bytes represents a CoAP message. 
+        /// The test is not complete, thus Non Coap messages may pass it
         /// </summary>
         /// <remarks>
         /// This is simple pattern-based matching procedure. The pattern 
@@ -57,29 +58,33 @@ namespace Netdx.Packets.IoT
                     return false;
             }
         }
-
-        public bool IsRequest => (int)Code < 0x40 && Code != CoapCode.Empty;
-
-
-        public RequestMethod RequestMethod => (RequestMethod)((int)Code & 0b00011111);
-
-        public ResponseCode ResponseCode => (ResponseCode)(((int)Code) >> 5);
-
-        public string Info
-        {
-            get
-            {
-                var token = BitConverter.ToString(Token).Replace("-", "");
-                var str = $"{this.Type.ToString().ToUpperInvariant()}, MID:{this.MessageId}, TOKEN: {token}, {this.Code.ToString().ToUpperInvariant()}";
-                return str;
-            }
-        }
+        /// <summary>
+        /// Tests if the current packet represent an Empty message (Code = 0.00). 
+        /// </summary>
+        public bool IsEmpty => Code == 0;
+        /// <summary>
+        /// Tests if the current packet represent a Request message.
+        /// </summary>
+        public bool IsRequest => ((int)Code >> 5) == 0 && ((int)Code & 0b00011111) != 0;
+        /// <summary>
+        /// Tests if the current packet represent a Response message.
+        /// </summary>
+        public bool IsResponse => ((int)Code >> 5) == 2 || ((int)Code >> 5) == 4 || ((int)Code >> 5) == 5;
 
         /// <summary>
-        /// Gets the URI from options. 
+        /// Gets the request method. If the packet is not a Request message the returned value does not make sense.
+        /// </summary>
+        public RequestMethod RequestMethod => (RequestMethod)((int)Code & 0b00011111);
+        /// <summary>
+        /// Gets the response code. If the packet is not a Response message the returned value does not make sense.
+        /// </summary>
+        public ResponseCode ResponseCode => (ResponseCode)(((int)Code) >> 5);
+
+        /// <summary>
+        /// Gets the collection of the specified Option. 
         /// </summary>
         /// <returns></returns>
-        IEnumerable<byte[]> GetOptionValues(CoapOptions option)
+        public IEnumerable<byte[]> GetOptionValues(CoapOptions option)
         {
             if (Options == null) yield break;
             var currentOption = 0;
