@@ -110,7 +110,7 @@ namespace Netdx.Packets.IoT
                 Host = host != null ? Encoding.ASCII.GetString(host) : defaultHost,
                 Port = port != null ? BitConverter.ToUInt16(port, 0) : defaultPort,
                 Path = String.Join("/", (path.ToArray().Select(Encoding.ASCII.GetString))),
-                Query = String.Join("/", (query.ToArray().Select(Encoding.ASCII.GetString)))
+                Query = String.Join("&", (query.ToArray().Select(Encoding.ASCII.GetString)))
             };
             return urb.Uri;
         }

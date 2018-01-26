@@ -6,3 +6,13 @@
 *.dll
 *.ide
 .vs/Netdx/v15/.suo
+*.pdb
+PacketDecoders/obj/Debug/netstandard2.0/Netdx.PacketDecoders.dll
+*.pdb
+PacketDecoders/bin/Debug/netstandard2.0/Netdx.PacketDecoders.dll
+Examples/lwm2mdump/obj/Debug/netcoreapp2.0/lwm2mdump.pdb
+Examples/lwm2mdump/obj/Debug/netcoreapp2.0/lwm2mdump.dll
+*.cache
+*.pdb
+*.dll
+.vs/Netdx/v15/sqlite3/storage.ide

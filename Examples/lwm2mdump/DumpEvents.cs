@@ -95,7 +95,7 @@ namespace lwm2mdump
                     File.WriteAllBytes($"{e.Device.Statistics.ReceivedPackets:0000}.raw", udp.PayloadData);
 
                     var coap = new Coap(new KaitaiStream(udp.PayloadData));
-                    Console.WriteLine($"{e.Packet.Timeval.Date}: {packet}[CoAPPacket: Code={coap.Code}, Type={coap.Type}, MID={coap.MessageId}, Uri={coap.GetUri(ip.DestinationAddress.ToString())}]");
+                    Console.WriteLine($"{e.Packet.Timeval.Date}: {packet}[CoAPPacket: Code={coap.Code}, Type={coap.Type}, MID={coap.MessageId}, Uri={coap.GetUri(ip.DestinationAddress.ToString(), udp.DestinationPort)}]");
                 }
             }
             catch(Exception)
