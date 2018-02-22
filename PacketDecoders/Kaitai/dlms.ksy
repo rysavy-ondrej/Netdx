@@ -63,6 +63,13 @@ types:
       - id: get_request_type # this identifies the structure, 1 = sequence
         type: u1
         enum: get_request_type
+      - id: request
+        type:
+          switch-on: get_request_type
+          cases: 
+            'get_request_type::get_request_normal': dlms_get_request_normal
+  dlms_get_request_normal:
+    seq:
       - id: invoke
         type: invoke_priority
       - id: class_id
@@ -70,7 +77,9 @@ types:
       - id: instance_id  # OBIS code ?
         size: 6
       - id: attribute_id
-        size: 2
+        type: u1
+      - id: access_selection
+        type: selective_access_description_optional
   invoke_priority:
     seq:
       - id: priority
@@ -79,7 +88,17 @@ types:
         type: b1
       - id: invoke_id
         type: b6
-
+  selective_access_description_optional:
+    seq:
+      - id: present
+        type: u1
+      - id: value
+        type: selective_access_description
+        if: present != 0
+  selective_access_description:
+    seq:
+      - id: none
+        size: 0
   axdr_octet_string_optional:
     seq:
       - id: present
