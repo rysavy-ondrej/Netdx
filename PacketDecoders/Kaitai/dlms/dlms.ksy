@@ -1,6 +1,8 @@
 meta:
   id: dlms
   file-extension: dlms
+  imports: 
+    - dlms_pdu
   endian: be
 seq:
   - id: hdlc_header
@@ -10,7 +12,7 @@ seq:
     if: hdlc_header.control.frame_type.to_i == 0 or hdlc_header.control.frame_type.to_i == 2
   - id: dlms_pdu
     size: (hdlc_header.format.frame_length - hdlc_header.size) - 4
-    type: dlms_type
+    type: dlms_pdu
   - id: hdlc_trailer
     type: hdlc_trailer
 instances:
@@ -46,87 +48,6 @@ types:
     instances:
       size:
         value: 3        
-  dlms_type:
-    seq:
-      - id: pdu_type
-        type: u1
-        enum: dlms_pdu_type
-      - id: pdu 
-        size-eos: true
-        type:
-          switch-on: pdu_type
-          cases:
-            'dlms_pdu_type::get_request': dlms_get_request
-  # http://www.dlms.com/faqanswers/questionsonthedlmscosemspecification/areexamplesforinformationexchangeavailable.php
-  dlms_get_request:
-    seq:
-      - id: get_request_type # this identifies the structure, 1 = sequence
-        type: u1
-        enum: get_request_type
-      - id: request
-        type:
-          switch-on: get_request_type
-          cases: 
-            'get_request_type::get_request_normal': dlms_get_request_normal
-  dlms_get_request_normal:
-    seq:
-      - id: invoke
-        type: invoke_priority
-      - id: class_id
-        size: 2
-      - id: instance_id  # OBIS code ?
-        size: 6
-      - id: attribute_id
-        type: u1
-      - id: access_selection
-        type: selective_access_description_optional
-  invoke_priority:
-    seq:
-      - id: priority
-        type: b1
-      - id: service_class
-        type: b1
-      - id: invoke_id
-        type: b6
-  selective_access_description_optional:
-    seq:
-      - id: present
-        type: u1
-      - id: value
-        type: selective_access_description
-        if: present != 0
-  selective_access_description:
-    seq:
-      - id: none
-        size: 0
-  axdr_octet_string_optional:
-    seq:
-      - id: present
-        type: u1
-      - id: value
-        type: axdr_octet_string
-        if: present != 0
-  axdr_octet_string:
-    seq:
-      - id: length
-        type: u1
-      - id: value
-        type: str
-        encoding: ascii
-        size: length
-  axdr_boolean_optional:
-    seq:
-      - id: present
-        type: u1
-      - id: value
-        type: axdr_boolean
-        if: present != 0
-  axdr_boolean:
-    seq:
-      - id: value
-        type: u1
-        enum: boolean_type
-        
   llc_header:
     seq:
       - id: sig
@@ -156,6 +77,7 @@ types:
     instances:
       size:
         value: 1
+      # use vlq_base128_be instead!
       # TODO: ensure that the length is at most 4 bytes
       # value - hodnota adresy 
   addr_byte_type:
@@ -233,28 +155,5 @@ enums:
   hdlc_pf_bit:
     0: hdlc_poll
     1: hdlc_final
-  dlms_pdu_type:
-    1: initiate_request
-    5: read_request 
-    6: write_request
-    8: initiate_response
-    12: read_response
-    13: write_response
-    14: confirmed_service_error
-    22: unconfirmed_write_request
-    24: information_report_request
-    192: get_request 
-    193: set_request
-    194: even_notification_request
-    195: action_request
-    196: get_response
-    197: set_response
-    199: action_response
-  get_request_type:
-    1: get_request_normal
-    2: get_request_next
-    3: get_request_with_list
-  boolean_type:
-    0: false
-    1: true
+
     
