@@ -45,3 +45,6 @@ enums:
     26: date
     27: time
     255: do_not_care
+  boolean:
+    0: false
+    1: true

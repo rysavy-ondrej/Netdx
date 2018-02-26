@@ -22,7 +22,7 @@ types:
     seq:
       - id: invoke_id_and_priority
         type: dlms_types::invoke_id_and_priority
-     - id: cosem_attribute_descriptor 
+      - id: cosem_attribute_descriptor 
         type: dlms_types::cosem_attribute_descriptor
       - id: access_selection
         type: dlms_types::selective_access_description_optional

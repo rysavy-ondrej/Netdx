@@ -1,9 +1,10 @@
 meta:
   id: dlms
   file-extension: dlms
+  endian: be
   imports: 
     - dlms_pdu
-  endian: be
+    - types/vlq_base128_be
 seq:
   - id: hdlc_header
     type: hdlc_header
@@ -38,7 +39,7 @@ types:
         if: control.frame_type.to_i == 0 or control.frame_type.to_i == 2
     instances:
       size:
-        value: 1 + 2 + dst_address.size + src_address.size + 1 + 2
+        value: 1 + 2 + 1 + 2 + dst_address.size + src_address.size
   hdlc_trailer:
     seq:
       - id: fsc
@@ -70,25 +71,11 @@ types:
         type: b11
   hdlc_address:
     seq:
-      - id: addr_byte
-        type: addr_byte_type
-        repeat: until
-        repeat-until: _.stop_bit == true 
+      - id: address
+        type: vlq_base128_be
     instances:
       size:
-        value: 1
-      # use vlq_base128_be instead!
-      # TODO: ensure that the length is at most 4 bytes
-      # value - hodnota adresy 
-  addr_byte_type:
-    seq:
-      - id: sap
-        type: b6
-      - id: cr
-        type: b1
-        enum: hdlc_cr
-      - id: stop_bit
-        type: b1
+        value: address.groups.size
   control_type:
     seq:
       - id: i_frame

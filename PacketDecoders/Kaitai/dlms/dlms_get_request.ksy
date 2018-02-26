@@ -3,7 +3,7 @@ meta:
   file-extension: dlms_get_request
   endian: be
   imports:
-    - dlms_types
+    - types/invoke_id_and_priority
 seq:
   - id: get_request_type # this identifies the structure, 1 = sequence
     type: u1
@@ -19,23 +19,23 @@ types:
   dlms_get_request_normal:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority
+        type: invoke_id_and_priority
       - id: cosem_attribute_descriptor
-        type: dlms_types::cosem_attribute_descriptor
+        type: cosem_attribute_descriptor
       - id: access_selection
-        type: dlms_types::selective_access_description_optional
+        type: selective_access_description_optional
   dlms_get_request_next:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority
+        type: invoke_id_and_priority
       - id: block_number
         type: u4
   dlms_get_request_with_list:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority
+        type: invoke_id_and_priority
       - id: attribute_descriptor_list
-        type: dlms_types::cosem_attribute_descriptor_with_selection
+        type: cosem_attribute_descriptor_with_selection
 enums:
   get_request_type:
     1: get_request_normal
