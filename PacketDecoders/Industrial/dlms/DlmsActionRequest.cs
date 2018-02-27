@@ -29,8 +29,8 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _actionRequestType = ((ActionRequestType) m_io.ReadU1());
-            switch (ActionRequestType) {
+            _requestType = ((ActionRequestType) m_io.ReadU1());
+            switch (RequestType) {
             case ActionRequestType.ActionRequestWithList: {
                 _request = new ActionRequestWithList(m_io, this, m_root);
                 break;
@@ -114,9 +114,18 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
+                _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
+                _cosemMethodDescriptor = new DlmsStruct.CosemMethodDescriptor(m_io);
+                _methodInvocationParameters = new DlmsStruct.DataOptional(m_io);
             }
+            private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
+            private DlmsStruct.CosemMethodDescriptor _cosemMethodDescriptor;
+            private DlmsStruct.DataOptional _methodInvocationParameters;
             private DlmsActionRequest m_root;
             private DlmsActionRequest m_parent;
+            public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
+            public DlmsStruct.CosemMethodDescriptor CosemMethodDescriptor { get { return _cosemMethodDescriptor; } }
+            public DlmsStruct.DataOptional MethodInvocationParameters { get { return _methodInvocationParameters; } }
             public DlmsActionRequest M_Root { get { return m_root; } }
             public DlmsActionRequest M_Parent { get { return m_parent; } }
         }
@@ -135,9 +144,15 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
+                _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
+                _blockNumber = m_io.ReadU4be();
             }
+            private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
+            private uint _blockNumber;
             private DlmsActionRequest m_root;
             private DlmsActionRequest m_parent;
+            public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
+            public uint BlockNumber { get { return _blockNumber; } }
             public DlmsActionRequest M_Root { get { return m_root; } }
             public DlmsActionRequest M_Parent { get { return m_parent; } }
         }
@@ -183,11 +198,11 @@ namespace Netdx.Packets.Industrial
             public DlmsActionRequest M_Root { get { return m_root; } }
             public DlmsActionRequest M_Parent { get { return m_parent; } }
         }
-        private ActionRequestType _actionRequestType;
+        private ActionRequestType _requestType;
         private KaitaiStruct _request;
         private DlmsActionRequest m_root;
         private KaitaiStruct m_parent;
-        public ActionRequestType ActionRequestType { get { return _actionRequestType; } }
+        public ActionRequestType RequestType { get { return _requestType; } }
         public KaitaiStruct Request { get { return _request; } }
         public DlmsActionRequest M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

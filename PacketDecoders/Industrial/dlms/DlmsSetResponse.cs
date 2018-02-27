@@ -28,8 +28,8 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _setResponseType = ((SetResponseType) m_io.ReadU1());
-            switch (SetResponseType) {
+            _responseType = ((SetResponseType) m_io.ReadU1());
+            switch (ResponseType) {
             case SetResponseType.SetResponseWithList: {
                 _response = new SetResponseWithList(m_io, this, m_root);
                 break;
@@ -67,9 +67,18 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
+                _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
+                _result = new DlmsStruct.DataAccessResult(m_io);
+                _blockNumber = m_io.ReadU4be();
             }
+            private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
+            private DlmsStruct.DataAccessResult _result;
+            private uint _blockNumber;
             private DlmsSetResponse m_root;
             private DlmsSetResponse m_parent;
+            public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
+            public DlmsStruct.DataAccessResult Result { get { return _result; } }
+            public uint BlockNumber { get { return _blockNumber; } }
             public DlmsSetResponse M_Root { get { return m_root; } }
             public DlmsSetResponse M_Parent { get { return m_parent; } }
         }
@@ -88,12 +97,15 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
-                _foo = new DlmsTypes.Boolean(m_io);
+                _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
+                _blockNumber = m_io.ReadU4be();
             }
-            private DlmsTypes.Boolean _foo;
+            private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
+            private uint _blockNumber;
             private DlmsSetResponse m_root;
             private DlmsSetResponse m_parent;
-            public DlmsTypes.Boolean Foo { get { return _foo; } }
+            public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
+            public uint BlockNumber { get { return _blockNumber; } }
             public DlmsSetResponse M_Root { get { return m_root; } }
             public DlmsSetResponse M_Parent { get { return m_parent; } }
         }
@@ -112,9 +124,18 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
+                _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
+                _result = new DlmsStruct.SequenceOfDataAccessResult(m_io);
+                _blockNumber = m_io.ReadU4be();
             }
+            private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
+            private DlmsStruct.SequenceOfDataAccessResult _result;
+            private uint _blockNumber;
             private DlmsSetResponse m_root;
             private DlmsSetResponse m_parent;
+            public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
+            public DlmsStruct.SequenceOfDataAccessResult Result { get { return _result; } }
+            public uint BlockNumber { get { return _blockNumber; } }
             public DlmsSetResponse M_Root { get { return m_root; } }
             public DlmsSetResponse M_Parent { get { return m_parent; } }
         }
@@ -133,9 +154,15 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
+                _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
+                _result = new DlmsStruct.SequenceOfDataAccessResult(m_io);
             }
+            private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
+            private DlmsStruct.SequenceOfDataAccessResult _result;
             private DlmsSetResponse m_root;
             private DlmsSetResponse m_parent;
+            public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
+            public DlmsStruct.SequenceOfDataAccessResult Result { get { return _result; } }
             public DlmsSetResponse M_Root { get { return m_root; } }
             public DlmsSetResponse M_Parent { get { return m_parent; } }
         }
@@ -166,11 +193,11 @@ namespace Netdx.Packets.Industrial
             public DlmsSetResponse M_Root { get { return m_root; } }
             public DlmsSetResponse M_Parent { get { return m_parent; } }
         }
-        private SetResponseType _setResponseType;
+        private SetResponseType _responseType;
         private KaitaiStruct _response;
         private DlmsSetResponse m_root;
         private KaitaiStruct m_parent;
-        public SetResponseType SetResponseType { get { return _setResponseType; } }
+        public SetResponseType ResponseType { get { return _responseType; } }
         public KaitaiStruct Response { get { return _response; } }
         public DlmsSetResponse M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

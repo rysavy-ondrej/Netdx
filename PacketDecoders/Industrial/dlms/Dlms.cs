@@ -26,7 +26,6 @@ namespace Netdx.Packets.Industrial
 
         public enum FrameTypeEnum
         {
-            IFrame = 0,
             SFrame = 1,
             IFrame = 2,
             UFrame = 3,
@@ -54,56 +53,14 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _hdlcHeader = new HdlcHeader(m_io, this, m_root);
-            if ( ((HdlcHeader.Control.FrameType == 0) || (HdlcHeader.Control.FrameType == 2)) ) {
-                _llcHeader = new LlcHeader(m_io, this, m_root);
+            _hdlcHeader = new HdlcHeaderFields(m_io, this, m_root);
+            if ((HdlcHeader.Control.FrameType & 1) == 0) {
+                _llcHeader = new LlcHeaderFields(m_io, this, m_root);
             }
-            _dlmsPdu = m_io.ReadBytes(((HdlcHeader.Format.FrameLength - HdlcHeader.Size) - 4));
-            _hdlcTrailer = new HdlcTrailer(m_io, this, m_root);
-        }
-        public partial class LlcHeader : KaitaiStruct
-        {
-            public static LlcHeader FromFile(string fileName)
-            {
-                return new LlcHeader(new KaitaiStream(fileName));
-            }
-
-            public LlcHeader(KaitaiStream p__io, Dlms p__parent = null, Dlms p__root = null) : base(p__io)
-            {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_size = false;
-                _read();
-            }
-            private void _read()
-            {
-                _sig = m_io.EnsureFixedContents(new byte[] { 230 });
-                _packetType = ((Dlms.LlcPacketType) m_io.ReadU1());
-                _zero = m_io.EnsureFixedContents(new byte[] { 0 });
-            }
-            private bool f_size;
-            private sbyte _size;
-            public sbyte Size
-            {
-                get
-                {
-                    if (f_size)
-                        return _size;
-                    _size = (sbyte) (3);
-                    f_size = true;
-                    return _size;
-                }
-            }
-            private byte[] _sig;
-            private LlcPacketType _packetType;
-            private byte[] _zero;
-            private Dlms m_root;
-            private Dlms m_parent;
-            public byte[] Sig { get { return _sig; } }
-            public LlcPacketType PacketType { get { return _packetType; } }
-            public byte[] Zero { get { return _zero; } }
-            public Dlms M_Root { get { return m_root; } }
-            public Dlms M_Parent { get { return m_parent; } }
+            __raw_dlmsPdu = m_io.ReadBytes(((HdlcHeader.Format.FrameLength - HdlcHeader.Size) - 4));
+            var io___raw_dlmsPdu = new KaitaiStream(__raw_dlmsPdu);
+            _dlmsPdu = new DlmsPdu(io___raw_dlmsPdu);
+            _hdlcTrailer = new HdlcTrailerFields(m_io, this, m_root);
         }
         public partial class UFrameControlByte : KaitaiStruct
         {
@@ -135,52 +92,14 @@ namespace Netdx.Packets.Industrial
             public Dlms M_Root { get { return m_root; } }
             public Dlms.ControlType M_Parent { get { return m_parent; } }
         }
-        public partial class HdlcAddress : KaitaiStruct
+        public partial class HdlcHeaderFields : KaitaiStruct
         {
-            public static HdlcAddress FromFile(string fileName)
+            public static HdlcHeaderFields FromFile(string fileName)
             {
-                return new HdlcAddress(new KaitaiStream(fileName));
+                return new HdlcHeaderFields(new KaitaiStream(fileName));
             }
 
-            public HdlcAddress(KaitaiStream p__io, Dlms.HdlcHeader p__parent = null, Dlms p__root = null) : base(p__io)
-            {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_size = false;
-                _read();
-            }
-            private void _read()
-            {
-                _address = new VlqBase128Be(m_io);
-            }
-            private bool f_size;
-            private int _size;
-            public int Size
-            {
-                get
-                {
-                    if (f_size)
-                        return _size;
-                    _size = (int) (Address.Groups.Count);
-                    f_size = true;
-                    return _size;
-                }
-            }
-            private VlqBase128Be _address;
-            private Dlms m_root;
-            private Dlms.HdlcHeader m_parent;
-            public VlqBase128Be Address { get { return _address; } }
-            public Dlms M_Root { get { return m_root; } }
-            public Dlms.HdlcHeader M_Parent { get { return m_parent; } }
-        }
-        public partial class HdlcHeader : KaitaiStruct
-        {
-            public static HdlcHeader FromFile(string fileName)
-            {
-                return new HdlcHeader(new KaitaiStream(fileName));
-            }
-
-            public HdlcHeader(KaitaiStream p__io, Dlms p__parent = null, Dlms p__root = null) : base(p__io)
+            public HdlcHeaderFields(KaitaiStream p__io, Dlms p__parent = null, Dlms p__root = null) : base(p__io)
             {
                 m_parent = p__parent;
                 m_root = p__root;
@@ -198,7 +117,7 @@ namespace Netdx.Packets.Industrial
                 __raw_control = m_io.ReadBytes(1);
                 var io___raw_control = new KaitaiStream(__raw_control);
                 _control = new ControlType(io___raw_control, this, m_root);
-                if ( ((Control.FrameType == 0) || (Control.FrameType == 2)) ) {
+                if ((Control.FrameType & 1) == 0) {
                     _hcs = m_io.ReadU2be();
                 }
             }
@@ -236,6 +155,44 @@ namespace Netdx.Packets.Industrial
             public byte[] M_RawFormat { get { return __raw_format; } }
             public byte[] M_RawControl { get { return __raw_control; } }
         }
+        public partial class HdlcAddress : KaitaiStruct
+        {
+            public static HdlcAddress FromFile(string fileName)
+            {
+                return new HdlcAddress(new KaitaiStream(fileName));
+            }
+
+            public HdlcAddress(KaitaiStream p__io, Dlms.HdlcHeaderFields p__parent = null, Dlms p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                f_size = false;
+                _read();
+            }
+            private void _read()
+            {
+                _address = new VlqBase128Be(m_io);
+            }
+            private bool f_size;
+            private int _size;
+            public int Size
+            {
+                get
+                {
+                    if (f_size)
+                        return _size;
+                    _size = (int) (Address.Groups.Count);
+                    f_size = true;
+                    return _size;
+                }
+            }
+            private VlqBase128Be _address;
+            private Dlms m_root;
+            private Dlms.HdlcHeaderFields m_parent;
+            public VlqBase128Be Address { get { return _address; } }
+            public Dlms M_Root { get { return m_root; } }
+            public Dlms.HdlcHeaderFields M_Parent { get { return m_parent; } }
+        }
         public partial class ControlType : KaitaiStruct
         {
             public static ControlType FromFile(string fileName)
@@ -243,7 +200,7 @@ namespace Netdx.Packets.Industrial
                 return new ControlType(new KaitaiStream(fileName));
             }
 
-            public ControlType(KaitaiStream p__io, Dlms.HdlcHeader p__parent = null, Dlms p__root = null) : base(p__io)
+            public ControlType(KaitaiStream p__io, Dlms.HdlcHeaderFields p__parent = null, Dlms p__root = null) : base(p__io)
             {
                 m_parent = p__parent;
                 m_root = p__root;
@@ -253,7 +210,7 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
-                if ( ((FrameType == 0) || (FrameType == 2)) ) {
+                if ((FrameType & 1) == 0) {
                     _iFrame = new IFrameControlByte(m_io, this, m_root);
                 }
                 if (FrameType == 1) {
@@ -280,14 +237,14 @@ namespace Netdx.Packets.Industrial
                 }
             }
             private bool f_frameType;
-            private FrameTypeEnum _frameType;
-            public FrameTypeEnum FrameType
+            private int _frameType;
+            public int FrameType
             {
                 get
                 {
                     if (f_frameType)
                         return _frameType;
-                    _frameType = (FrameTypeEnum) (((Dlms.FrameTypeEnum) (ControlByte & 3)));
+                    _frameType = (int) ((ControlByte & 3));
                     f_frameType = true;
                     return _frameType;
                 }
@@ -296,21 +253,65 @@ namespace Netdx.Packets.Industrial
             private SFrameControlByte _sFrame;
             private UFrameControlByte _uFrame;
             private Dlms m_root;
-            private Dlms.HdlcHeader m_parent;
+            private Dlms.HdlcHeaderFields m_parent;
             public IFrameControlByte IFrame { get { return _iFrame; } }
             public SFrameControlByte SFrame { get { return _sFrame; } }
             public UFrameControlByte UFrame { get { return _uFrame; } }
             public Dlms M_Root { get { return m_root; } }
-            public Dlms.HdlcHeader M_Parent { get { return m_parent; } }
+            public Dlms.HdlcHeaderFields M_Parent { get { return m_parent; } }
         }
-        public partial class HdlcTrailer : KaitaiStruct
+        public partial class LlcHeaderFields : KaitaiStruct
         {
-            public static HdlcTrailer FromFile(string fileName)
+            public static LlcHeaderFields FromFile(string fileName)
             {
-                return new HdlcTrailer(new KaitaiStream(fileName));
+                return new LlcHeaderFields(new KaitaiStream(fileName));
             }
 
-            public HdlcTrailer(KaitaiStream p__io, Dlms p__parent = null, Dlms p__root = null) : base(p__io)
+            public LlcHeaderFields(KaitaiStream p__io, Dlms p__parent = null, Dlms p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                f_size = false;
+                _read();
+            }
+            private void _read()
+            {
+                _sig = m_io.EnsureFixedContents(new byte[] { 230 });
+                _packetType = ((Dlms.LlcPacketType) m_io.ReadU1());
+                _zero = m_io.EnsureFixedContents(new byte[] { 0 });
+            }
+            private bool f_size;
+            private sbyte _size;
+            public sbyte Size
+            {
+                get
+                {
+                    if (f_size)
+                        return _size;
+                    _size = (sbyte) (3);
+                    f_size = true;
+                    return _size;
+                }
+            }
+            private byte[] _sig;
+            private LlcPacketType _packetType;
+            private byte[] _zero;
+            private Dlms m_root;
+            private Dlms m_parent;
+            public byte[] Sig { get { return _sig; } }
+            public LlcPacketType PacketType { get { return _packetType; } }
+            public byte[] Zero { get { return _zero; } }
+            public Dlms M_Root { get { return m_root; } }
+            public Dlms M_Parent { get { return m_parent; } }
+        }
+        public partial class HdlcTrailerFields : KaitaiStruct
+        {
+            public static HdlcTrailerFields FromFile(string fileName)
+            {
+                return new HdlcTrailerFields(new KaitaiStream(fileName));
+            }
+
+            public HdlcTrailerFields(KaitaiStream p__io, Dlms p__parent = null, Dlms p__root = null) : base(p__io)
             {
                 m_parent = p__parent;
                 m_root = p__root;
@@ -411,28 +412,42 @@ namespace Netdx.Packets.Industrial
                 return new FormatType(new KaitaiStream(fileName));
             }
 
-            public FormatType(KaitaiStream p__io, Dlms.HdlcHeader p__parent = null, Dlms p__root = null) : base(p__io)
+            public FormatType(KaitaiStream p__io, Dlms.HdlcHeaderFields p__parent = null, Dlms p__root = null) : base(p__io)
             {
                 m_parent = p__parent;
                 m_root = p__root;
+                f_frameLength = false;
                 _read();
             }
             private void _read()
             {
                 _frameFormatType = m_io.ReadBitsInt(4);
                 _segmentationFlag = m_io.ReadBitsInt(1) != 0;
-                _frameLength = m_io.ReadBitsInt(11);
+                _length = m_io.ReadBitsInt(11);
+            }
+            private bool f_frameLength;
+            private int _frameLength;
+            public int FrameLength
+            {
+                get
+                {
+                    if (f_frameLength)
+                        return _frameLength;
+                    _frameLength = (int) ((Length + 0));
+                    f_frameLength = true;
+                    return _frameLength;
+                }
             }
             private ulong _frameFormatType;
             private bool _segmentationFlag;
-            private ulong _frameLength;
+            private ulong _length;
             private Dlms m_root;
-            private Dlms.HdlcHeader m_parent;
+            private Dlms.HdlcHeaderFields m_parent;
             public ulong FrameFormatType { get { return _frameFormatType; } }
             public bool SegmentationFlag { get { return _segmentationFlag; } }
-            public ulong FrameLength { get { return _frameLength; } }
+            public ulong Length { get { return _length; } }
             public Dlms M_Root { get { return m_root; } }
-            public Dlms.HdlcHeader M_Parent { get { return m_parent; } }
+            public Dlms.HdlcHeaderFields M_Parent { get { return m_parent; } }
         }
         private bool f_size;
         private int _size;
@@ -447,17 +462,19 @@ namespace Netdx.Packets.Industrial
                 return _size;
             }
         }
-        private HdlcHeader _hdlcHeader;
-        private LlcHeader _llcHeader;
-        private byte[] _dlmsPdu;
-        private HdlcTrailer _hdlcTrailer;
+        private HdlcHeaderFields _hdlcHeader;
+        private LlcHeaderFields _llcHeader;
+        private DlmsPdu _dlmsPdu;
+        private HdlcTrailerFields _hdlcTrailer;
         private Dlms m_root;
         private KaitaiStruct m_parent;
-        public HdlcHeader HdlcHeader { get { return _hdlcHeader; } }
-        public LlcHeader LlcHeader { get { return _llcHeader; } }
-        public byte[] DlmsPdu { get { return _dlmsPdu; } }
-        public HdlcTrailer HdlcTrailer { get { return _hdlcTrailer; } }
+        private byte[] __raw_dlmsPdu;
+        public HdlcHeaderFields HdlcHeader { get { return _hdlcHeader; } }
+        public LlcHeaderFields LlcHeader { get { return _llcHeader; } }
+        public DlmsPdu DlmsPdu { get { return _dlmsPdu; } }
+        public HdlcTrailerFields HdlcTrailer { get { return _hdlcTrailer; } }
         public Dlms M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }
+        public byte[] M_RawDlmsPdu { get { return __raw_dlmsPdu; } }
     }
 }

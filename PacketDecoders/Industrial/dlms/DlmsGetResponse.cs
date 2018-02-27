@@ -26,8 +26,8 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _getResponseType = ((GetResponseType) m_io.ReadU1());
-            switch (GetResponseType) {
+            _responseType = ((GetResponseType) m_io.ReadU1());
+            switch (ResponseType) {
             case GetResponseType.GetResponseNormal: {
                 _response = new GetResponseNormal(m_io, this, m_root);
                 break;
@@ -123,11 +123,11 @@ namespace Netdx.Packets.Industrial
             public DlmsGetResponse M_Root { get { return m_root; } }
             public DlmsGetResponse M_Parent { get { return m_parent; } }
         }
-        private GetResponseType _getResponseType;
+        private GetResponseType _responseType;
         private KaitaiStruct _response;
         private DlmsGetResponse m_root;
         private KaitaiStruct m_parent;
-        public GetResponseType GetResponseType { get { return _getResponseType; } }
+        public GetResponseType ResponseType { get { return _responseType; } }
         public KaitaiStruct Response { get { return _response; } }
         public DlmsGetResponse M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

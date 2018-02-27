@@ -22,7 +22,7 @@ seq:
         'dlms_pdu_type::get_response': dlms_get_response
         'dlms_pdu_type::set_request': dlms_set_request
         'dlms_pdu_type::set_response': dlms_set_response   
-        'dlms_pdu_type::event_notification_request': dlms_event_notification_request
+        'dlms_pdu_type::even_notification_request': dlms_event_notification_request
         'dlms_pdu_type::action_request': dlms_action_request
         'dlms_pdu_type::action_response': dlms_action_response
 enums:

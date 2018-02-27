@@ -61,15 +61,15 @@
   },
   "libraries": {
     "Microsoft.NETCore.Platforms/1.1.0": {
-      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
+      "sha512": "ftGM6cK5kAPldnkDDxzDcHTxL3bhIjOs5ehb3wKpbAHoewfTjDe+UMEKCCQ7AFMbBsAV8iDwr7Jr//cI5roaHA==",
       "type": "package",
       "path": "microsoft.netcore.platforms/1.1.0",
       "files": [
+        "Microsoft.NETCore.Platforms.1.1.0.nupkg.sha512",
+        "Microsoft.NETCore.Platforms.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
-        "microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-        "microsoft.netcore.platforms.nuspec",
         "runtime.json"
       ]
     },
@@ -295,33 +295,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rysavy\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/rysavy/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
-    "restoreSettings": {
-      "hideWarningsAndErrors": true
-    },
     "restore": {
-      "projectUniqueName": "C:\\Users\\rysavy\\Documents\\GitHub\\Netdx\\PacketDecoders\\PacketDecoders.csproj",
+      "projectUniqueName": "/Users/rysavy/Projects/Netdx/PacketDecoders/PacketDecoders.csproj",
       "projectName": "PacketDecoders",
-      "projectPath": "C:\\Users\\rysavy\\Documents\\GitHub\\Netdx\\PacketDecoders\\PacketDecoders.csproj",
-      "packagesPath": "C:\\Users\\rysavy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rysavy\\Documents\\GitHub\\Netdx\\PacketDecoders\\obj\\",
+      "projectPath": "/Users/rysavy/Projects/Netdx/PacketDecoders/PacketDecoders.csproj",
+      "packagesPath": "/Users/rysavy/.nuget/packages/",
+      "outputPath": "/Users/rysavy/Projects/Netdx/PacketDecoders/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\rysavy\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/rysavy/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -338,15 +333,15 @@
     "frameworks": {
       "netstandard2.0": {
         "dependencies": {
-          "System.Memory": {
-            "target": "Package",
-            "version": "4.4.0-preview1-25305-02"
-          },
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",
             "version": "2.0.1",
             "autoReferenced": true
+          },
+          "System.Memory": {
+            "target": "Package",
+            "version": "4.4.0-preview1-25305-02"
           }
         },
         "imports": [

@@ -13,7 +13,7 @@ namespace Netdx.Packets.Industrial
         }
 
 
-        public enum DataAccessResult
+        public enum AccessResult
         {
             Success = 0,
             HardwareFault = 1,
@@ -126,6 +126,35 @@ namespace Netdx.Packets.Industrial
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
+        public partial class DataOptional : KaitaiStruct
+        {
+            public static DataOptional FromFile(string fileName)
+            {
+                return new DataOptional(new KaitaiStream(fileName));
+            }
+
+            public DataOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
+            }
+            private void _read()
+            {
+                _present = m_io.ReadU1();
+                if (Present != 0) {
+                    _value = new DlmsData(m_io);
+                }
+            }
+            private byte _present;
+            private DlmsData _value;
+            private DlmsStruct m_root;
+            private KaitaiStruct m_parent;
+            public byte Present { get { return _present; } }
+            public DlmsData Value { get { return _value; } }
+            public DlmsStruct M_Root { get { return m_root; } }
+            public KaitaiStruct M_Parent { get { return m_parent; } }
+        }
         public partial class GetDataResult : KaitaiStruct
         {
             public static GetDataResult FromFile(string fileName)
@@ -168,23 +197,23 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
-                _value = m_io.ReadBytes(6);
+                _oid = m_io.ReadBytes(6);
             }
-            private byte[] _value;
+            private byte[] _oid;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
-            public byte[] Value { get { return _value; } }
+            public byte[] Oid { get { return _oid; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
-        public partial class CosemClassId : KaitaiStruct
+        public partial class CosemMethodDescriptor : KaitaiStruct
         {
-            public static CosemClassId FromFile(string fileName)
+            public static CosemMethodDescriptor FromFile(string fileName)
             {
-                return new CosemClassId(new KaitaiStream(fileName));
+                return new CosemMethodDescriptor(new KaitaiStream(fileName));
             }
 
-            public CosemClassId(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemMethodDescriptor(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
             {
                 m_parent = p__parent;
                 m_root = p__root;
@@ -192,12 +221,18 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
-                _value = m_io.ReadU2be();
+                _classId = m_io.ReadU2be();
+                _instanceId = new CosemObjectInstanceId(m_io, this, m_root);
+                _methodId = m_io.ReadU1();
             }
-            private ushort _value;
+            private ushort _classId;
+            private CosemObjectInstanceId _instanceId;
+            private byte _methodId;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
-            public ushort Value { get { return _value; } }
+            public ushort ClassId { get { return _classId; } }
+            public CosemObjectInstanceId InstanceId { get { return _instanceId; } }
+            public byte MethodId { get { return _methodId; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -398,6 +433,37 @@ namespace Netdx.Packets.Industrial
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
+        public partial class SequenceOfDataAccessResult : KaitaiStruct
+        {
+            public static SequenceOfDataAccessResult FromFile(string fileName)
+            {
+                return new SequenceOfDataAccessResult(new KaitaiStream(fileName));
+            }
+
+            public SequenceOfDataAccessResult(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
+            }
+            private void _read()
+            {
+                _itemCount = new LengthEncoded(m_io, this, m_root);
+                _items = new List<DataAccessResult>((int) (ItemCount.Value));
+                for (var i = 0; i < ItemCount.Value; i++)
+                {
+                    _items.Add(new DataAccessResult(m_io, this, m_root));
+                }
+            }
+            private LengthEncoded _itemCount;
+            private List<DataAccessResult> _items;
+            private DlmsStruct m_root;
+            private KaitaiStruct m_parent;
+            public LengthEncoded ItemCount { get { return _itemCount; } }
+            public List<DataAccessResult> Items { get { return _items; } }
+            public DlmsStruct M_Root { get { return m_root; } }
+            public KaitaiStruct M_Parent { get { return m_parent; } }
+        }
         public partial class SelectiveAccessDescriptor : KaitaiStruct
         {
             public static SelectiveAccessDescriptor FromFile(string fileName)
@@ -454,30 +520,6 @@ namespace Netdx.Packets.Industrial
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
-        public partial class CosemObjectAttributeId : KaitaiStruct
-        {
-            public static CosemObjectAttributeId FromFile(string fileName)
-            {
-                return new CosemObjectAttributeId(new KaitaiStream(fileName));
-            }
-
-            public CosemObjectAttributeId(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
-            {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
-            }
-            private void _read()
-            {
-                _value = m_io.ReadU1();
-            }
-            private byte _value;
-            private DlmsStruct m_root;
-            private KaitaiStruct m_parent;
-            public byte Value { get { return _value; } }
-            public DlmsStruct M_Root { get { return m_root; } }
-            public KaitaiStruct M_Parent { get { return m_parent; } }
-        }
         public partial class DataAccessResult : KaitaiStruct
         {
             public static DataAccessResult FromFile(string fileName)
@@ -493,12 +535,12 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
-                _value = (() m_io.ReadU1());
+                _value = ((DlmsStruct.AccessResult) m_io.ReadU1());
             }
-            private DataAccessResult _value;
+            private AccessResult _value;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
-            public DataAccessResult Value { get { return _value; } }
+            public AccessResult Value { get { return _value; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -531,6 +573,35 @@ namespace Netdx.Packets.Industrial
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
+        public partial class GetDataResultOptional : KaitaiStruct
+        {
+            public static GetDataResultOptional FromFile(string fileName)
+            {
+                return new GetDataResultOptional(new KaitaiStream(fileName));
+            }
+
+            public GetDataResultOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
+            }
+            private void _read()
+            {
+                _present = m_io.ReadU1();
+                if (Present != 0) {
+                    _value = new GetDataResult(m_io, this, m_root);
+                }
+            }
+            private byte _present;
+            private GetDataResult _value;
+            private DlmsStruct m_root;
+            private KaitaiStruct m_parent;
+            public byte Present { get { return _present; } }
+            public GetDataResult Value { get { return _value; } }
+            public DlmsStruct M_Root { get { return m_root; } }
+            public KaitaiStruct M_Parent { get { return m_parent; } }
+        }
         public partial class CosemAttributeDescriptor : KaitaiStruct
         {
             public static CosemAttributeDescriptor FromFile(string fileName)
@@ -546,18 +617,18 @@ namespace Netdx.Packets.Industrial
             }
             private void _read()
             {
-                _classId = new CosemClassId(m_io, this, m_root);
+                _classId = m_io.ReadU2be();
                 _instanceId = new CosemObjectInstanceId(m_io, this, m_root);
-                _attributeId = new CosemObjectAttributeId(m_io, this, m_root);
+                _attributeId = m_io.ReadU1();
             }
-            private CosemClassId _classId;
+            private ushort _classId;
             private CosemObjectInstanceId _instanceId;
-            private CosemObjectAttributeId _attributeId;
+            private byte _attributeId;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
-            public CosemClassId ClassId { get { return _classId; } }
+            public ushort ClassId { get { return _classId; } }
             public CosemObjectInstanceId InstanceId { get { return _instanceId; } }
-            public CosemObjectAttributeId AttributeId { get { return _attributeId; } }
+            public byte AttributeId { get { return _attributeId; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }

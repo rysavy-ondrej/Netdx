@@ -5,12 +5,12 @@ meta:
     - dlms_data
     - dlms_struct
 seq:
-  - id: get_response_type
+  - id: response_type
     type: u1
     enum: get_response_type
   - id: response
     type:
-      switch-on: get_response_type
+      switch-on: response_type
       cases:
         'get_response_type::get_response_normal': get_response_normal
         'get_response_type::get_response_next': get_response_with_datablock

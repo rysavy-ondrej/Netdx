@@ -6,20 +6,22 @@ meta:
     - vlq_base128_be
 seq:
   - id: hdlc_header
-    type: hdlc_header
+    type: hdlc_header_fields
   - id: llc_header
-    type: llc_header
-    if: hdlc_header.control.frame_type.to_i == 0 or hdlc_header.control.frame_type.to_i == 2
+    type: llc_header_fields
+    if: hdlc_header.control.frame_type & 0x1 == 0 
+
   - id: dlms_pdu
     size: (hdlc_header.format.frame_length - hdlc_header.size) - 4
-    #type: dlms_pdu
+    type: dlms_pdu
+
   - id: hdlc_trailer
-    type: hdlc_trailer
+    type: hdlc_trailer_fields
 instances:
   size:
     value: _io.size
 types:
-  hdlc_header:
+  hdlc_header_fields:
     seq:
       - id: opening_flag 
         type: u1
@@ -35,11 +37,11 @@ types:
         size: 1
       - id: hcs
         type: u2
-        if: control.frame_type.to_i == 0 or control.frame_type.to_i == 2
+        if: control.frame_type & 0x1 == 0 
     instances:
       size:
         value: 1 + 2 + 1 + 2 + dst_address.size + src_address.size
-  hdlc_trailer:
+  hdlc_trailer_fields:
     seq:
       - id: fsc
         size: 2
@@ -48,7 +50,7 @@ types:
     instances:
       size:
         value: 3        
-  llc_header:
+  llc_header_fields:
     seq:
       - id: sig
         contents: [ 0xe6 ]
@@ -66,8 +68,11 @@ types:
         type: b4
       - id: segmentation_flag
         type: b1
-      - id: frame_length
+      - id: length
         type: b11
+    instances:
+      frame_length:
+        value: length + 0 # this should convert length from ulong to int
   hdlc_address:
     seq:
       - id: address
@@ -79,20 +84,19 @@ types:
     seq:
       - id: i_frame
         type: i_frame_control_byte
-        if: frame_type.to_i == 0 or frame_type.to_i == 2
+        if: frame_type & 0x1 == 0 
       - id: s_frame
         type: s_frame_control_byte
-        if: frame_type.to_i == 1
+        if: frame_type == 1
       - id: u_frame
         type: u_frame_control_byte
-        if: frame_type.to_i == 3
+        if: frame_type == 3
     instances:
       control_byte:
         pos: 0
         type: u1
       frame_type:
         value: control_byte & 0x3
-        enum: frame_type_enum
   i_frame_control_byte:
     seq:
       - id: recv_sequence_number
@@ -123,7 +127,6 @@ types:
         type: b3
 enums:
   frame_type_enum:  
-    0: i_frame
     1: s_frame
     2: i_frame
     3: u_frame

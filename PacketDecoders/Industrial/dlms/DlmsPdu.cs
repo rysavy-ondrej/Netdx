@@ -47,6 +47,12 @@ namespace Netdx.Packets.Industrial
                 _pdu = new DlmsGetResponse(io___raw_pdu);
                 break;
             }
+            case DlmsPduType.EvenNotificationRequest: {
+                __raw_pdu = m_io.ReadBytesFull();
+                var io___raw_pdu = new KaitaiStream(__raw_pdu);
+                _pdu = new DlmsEventNotificationRequest(io___raw_pdu);
+                break;
+            }
             case DlmsPduType.GetRequest: {
                 __raw_pdu = m_io.ReadBytesFull();
                 var io___raw_pdu = new KaitaiStream(__raw_pdu);
@@ -75,12 +81,6 @@ namespace Netdx.Packets.Industrial
                 __raw_pdu = m_io.ReadBytesFull();
                 var io___raw_pdu = new KaitaiStream(__raw_pdu);
                 _pdu = new DlmsActionRequest(io___raw_pdu);
-                break;
-            }
-            case DlmsPduType.EventNotificationRequest: {
-                __raw_pdu = m_io.ReadBytesFull();
-                var io___raw_pdu = new KaitaiStream(__raw_pdu);
-                _pdu = new DlmsEventNotificationRequest(io___raw_pdu);
                 break;
             }
             default: {

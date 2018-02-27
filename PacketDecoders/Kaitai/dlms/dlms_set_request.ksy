@@ -5,12 +5,12 @@ meta:
     - dlms_struct
     - dlms_data
 seq:
-  - id: set_request_type # this identifies the structure, 1 = sequence
+  - id: request_type
     type: u1
     enum: set_request_type
   - id: request
     type:
-      switch-on: set_request_type
+      switch-on: request_type
       cases: 
         'set_request_type::set_request_normal': set_request_normal
         'set_request_type::set_request_with_first_datablock': set_request_with_first_datablock

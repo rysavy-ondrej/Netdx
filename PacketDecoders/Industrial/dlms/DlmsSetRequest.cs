@@ -28,8 +28,8 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _setRequestType = ((SetRequestType) m_io.ReadU1());
-            switch (SetRequestType) {
+            _requestType = ((SetRequestType) m_io.ReadU1());
+            switch (RequestType) {
             case SetRequestType.SetRequestWithListAndFirstDatablock: {
                 _request = new SetRequestWithListAndFirstDatablock(m_io, this, m_root);
                 break;
@@ -205,11 +205,11 @@ namespace Netdx.Packets.Industrial
             public DlmsSetRequest M_Root { get { return m_root; } }
             public DlmsSetRequest M_Parent { get { return m_parent; } }
         }
-        private SetRequestType _setRequestType;
+        private SetRequestType _requestType;
         private KaitaiStruct _request;
         private DlmsSetRequest m_root;
         private KaitaiStruct m_parent;
-        public SetRequestType SetRequestType { get { return _setRequestType; } }
+        public SetRequestType RequestType { get { return _requestType; } }
         public KaitaiStruct Request { get { return _request; } }
         public DlmsSetRequest M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

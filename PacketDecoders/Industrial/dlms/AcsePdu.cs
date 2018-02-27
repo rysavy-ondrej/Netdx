@@ -18,7 +18,7 @@ namespace Netdx.Packets.Industrial
         }
 
 
-        public enum PduType
+        public enum AcsePduType
         {
             Aarq = 96,
             Aare = 97,
@@ -35,30 +35,30 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _pduType = ((PduType) m_io.ReadU1());
+            _pduType = ((AcsePduType) m_io.ReadU1());
             switch (PduType) {
-            case PduType.Adt: {
-                _pdu = new AdtPdu(m_io, this, m_root);
-                break;
-            }
-            case PduType.Rlrq: {
-                _pdu = new RlrqPdu(m_io, this, m_root);
-                break;
-            }
-            case PduType.Aarq: {
-                _pdu = new AarqPdu(m_io, this, m_root);
-                break;
-            }
-            case PduType.Abrt: {
+            case AcsePduType.Abrt: {
                 _pdu = new AbrtPdu(m_io, this, m_root);
                 break;
             }
-            case PduType.Rlre: {
-                _pdu = new RlrePdu(m_io, this, m_root);
+            case AcsePduType.Aarq: {
+                _pdu = new AarqPdu(m_io, this, m_root);
                 break;
             }
-            case PduType.Aare: {
+            case AcsePduType.Rlrq: {
+                _pdu = new RlrqPdu(m_io, this, m_root);
+                break;
+            }
+            case AcsePduType.Aare: {
                 _pdu = new AarePdu(m_io, this, m_root);
+                break;
+            }
+            case AcsePduType.Adt: {
+                _pdu = new AdtPdu(m_io, this, m_root);
+                break;
+            }
+            case AcsePduType.Rlre: {
+                _pdu = new RlrePdu(m_io, this, m_root);
                 break;
             }
             }
@@ -189,11 +189,11 @@ namespace Netdx.Packets.Industrial
             public AcsePdu M_Root { get { return m_root; } }
             public AcsePdu M_Parent { get { return m_parent; } }
         }
-        private PduType _pduType;
+        private AcsePduType _pduType;
         private KaitaiStruct _pdu;
         private AcsePdu m_root;
         private KaitaiStruct m_parent;
-        public PduType PduType { get { return _pduType; } }
+        public AcsePduType PduType { get { return _pduType; } }
         public KaitaiStruct Pdu { get { return _pdu; } }
         public AcsePdu M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

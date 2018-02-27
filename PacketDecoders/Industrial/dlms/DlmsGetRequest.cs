@@ -26,8 +26,8 @@ namespace Netdx.Packets.Industrial
         }
         private void _read()
         {
-            _getRequestType = ((GetRequestType) m_io.ReadU1());
-            switch (GetRequestType) {
+            _requestType = ((GetRequestType) m_io.ReadU1());
+            switch (RequestType) {
             case GetRequestType.GetRequestNormal: {
                 _request = new GetRequestNormal(m_io, this, m_root);
                 break;
@@ -126,11 +126,11 @@ namespace Netdx.Packets.Industrial
             public DlmsGetRequest M_Root { get { return m_root; } }
             public DlmsGetRequest M_Parent { get { return m_parent; } }
         }
-        private GetRequestType _getRequestType;
+        private GetRequestType _requestType;
         private KaitaiStruct _request;
         private DlmsGetRequest m_root;
         private KaitaiStruct m_parent;
-        public GetRequestType GetRequestType { get { return _getRequestType; } }
+        public GetRequestType RequestType { get { return _requestType; } }
         public KaitaiStruct Request { get { return _request; } }
         public DlmsGetRequest M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

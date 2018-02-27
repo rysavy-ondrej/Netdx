@@ -14,4 +14,7 @@
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.4.0-preview1-25305-02" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Industrial\dlms\DlmsTypes.cs" />
+  </ItemGroup>
 </Project>

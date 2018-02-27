@@ -21,23 +21,23 @@ types:
   cosem_attribute_descriptor:
     seq:
       - id: class_id
-        type: cosem_class_id
+        type: u2
       - id: instance_id
         type: cosem_object_instance_id
       - id: attribute_id
-        type: cosem_object_attribute_id
-  cosem_class_id:
+        type: u1
+  cosem_method_descriptor:
     seq:
-      - id: value
+      - id: class_id
         type: u2
+      - id: instance_id
+        type: cosem_object_instance_id
+      - id: method_id
+        type: u1
   cosem_object_instance_id:
     seq:
-      - id: value
+      - id: oid
         size: 6
-  cosem_object_attribute_id:
-    seq:
-      - id: value
-        type: u1
   cosem_date_time_optional:
     seq:
       - id: present
@@ -53,7 +53,7 @@ types:
     seq:
       - id: value
         type: u1
-        enum: data_access_result
+        enum: access_result
   datablock_g:
     seq:
       - id: last_block
@@ -72,6 +72,13 @@ types:
     seq:
       - id: data
         size-eos: true
+  get_data_result_optional:
+    seq: 
+      - id: present
+        type: u1
+      - id: value
+        type: get_data_result
+        if: present != 0          
   get_data_result:
     seq: 
       - id: data
@@ -99,6 +106,13 @@ types:
         type: cosem_attribute_descriptor_with_selection
         repeat: expr
         repeat-expr: item_count.value
+  data_optional:
+    seq: 
+      - id: present
+        type: u1
+      - id: value
+        type: dlms_data
+        if: present != 0
   sequence_of_data:
     seq:
       - id: item_count
@@ -115,6 +129,14 @@ types:
         type: get_data_result
         repeat: expr
         repeat-expr: item_count.value
+  sequence_of_data_access_result:
+    seq:
+      - id: item_count
+        type: length_encoded
+      - id: items
+        type: data_access_result
+        repeat: expr
+        repeat-expr: item_count.value    
   length_encoded:
     seq:
       - id: b1
@@ -126,7 +148,7 @@ types:
       value:
         value: '(b1 & 0x80 == 0) ? b1 : int2'
 enums:
-  data_access_result:
+  access_result:
     0: success
     1: hardware_fault
     2: temporary_failure

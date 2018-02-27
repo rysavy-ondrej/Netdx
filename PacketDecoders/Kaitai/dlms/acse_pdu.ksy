@@ -14,17 +14,17 @@ doc: >
 seq:
   - id: pdu_type
     type: u1
-    enum: pdu_type
+    enum: acse_pdu_type
   - id: pdu
     type:
       switch-on: pdu_type
       cases:
-        'pdu_type::aarq': aarq_pdu
-        'pdu_type::aare': aare_pdu
-        'pdu_type::rlrq': rlrq_pdu
-        'pdu_type::rlre': rlre_pdu
-        'pdu_type::abrt': abrt_pdu
-        'pdu_type::adt': adt_pdu
+        'acse_pdu_type::aarq': aarq_pdu
+        'acse_pdu_type::aare': aare_pdu
+        'acse_pdu_type::rlrq': rlrq_pdu
+        'acse_pdu_type::rlre': rlre_pdu
+        'acse_pdu_type::abrt': abrt_pdu
+        'acse_pdu_type::adt': adt_pdu
         
 types:
   aarq_pdu: 
@@ -41,7 +41,7 @@ types:
     {}
   
 enums:
-  pdu_type:
+  acse_pdu_type:
     96: aarq
     97: aare
     98: rlrq
