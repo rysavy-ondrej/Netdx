@@ -1,11 +1,12 @@
 meta:
   id: dlms_get_response
-  file-extension: dlms_get_response
   endian: be
   imports:
-    - dlms_types
+    - types/invoke_id_and_priority
+    - types/get_data_result
+    - types/datablock_g
+    - types/sequence_of_get_data_result
 seq:
-
   - id: get_response_type
     type: u1
     enum: get_response_type
@@ -13,29 +14,28 @@ seq:
     type:
       switch-on: get_response_type
       cases:
-        'get_response_type::get_response_normal': dlms_get_response_normal
-        'get_response_type::get_response_next': dlms_get_response_with_datablock
-        'get_response_type::get_response_with_list': dlms_get_response_with_list
+        'get_response_type::get_response_normal': get_response_normal
+        'get_response_type::get_response_next': get_response_with_datablock
+        'get_response_type::get_response_with_list': get_response_with_list
 types:
-  dlms_get_response_normal:
+  get_response_normal:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority    
+        type: invoke_id_and_priority    
       - id: result
-        type: dlms_types::get_data_result
-  dlms_get_response_with_datablock:
+        type: get_data_result
+  get_response_with_datablock:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority  
+        type: invoke_id_and_priority  
       - id: result
-        type: dlms_types::datablock_g
-  dlms_get_response_with_list:
+        type: datablock_g
+  get_response_with_list:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority  
+        type: invoke_id_and_priority  
       - id: result
-        type: dlms_types::sequence_of_get_data_result
-        
+        type: sequence_of_get_data_result
 enums:
   get_response_type:
     1: get_response_normal

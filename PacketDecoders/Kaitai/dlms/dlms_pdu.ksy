@@ -1,12 +1,10 @@
 meta:
   id: dlms_pdu
-  file-extension: dlms_pdu
   endian: be
   imports: 
-    - types/dlms_data
     - dlms_set_request
     - dlms_get_request
-    - dlms_get_response
+  #  - dlms_get_response
 seq:
   - id: pdu_type
     type: u1
@@ -58,7 +56,3 @@ enums:
     196: get_response
     197: set_response
     199: action_response
-  
-  boolean:
-    0: false
-    1: true

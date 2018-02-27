@@ -1,9 +1,11 @@
 meta:
   id: dlms_set_request
-  file-extension: dlms_set_request
+  endian: be
   imports:
-    - dlms_data
-    - dlms_types
+    - types/invoke_id_and_priority
+    - types/cosem_attribute_descriptor
+    - types/dlms_data
+    - types/selective_access_description_optional
 seq:
   - id: set_request_type # this identifies the structure, 1 = sequence
     type: u1
@@ -21,11 +23,11 @@ types:
   set_request_normal:
     seq:
       - id: invoke_id_and_priority
-        type: dlms_types::invoke_id_and_priority
+        type: invoke_id_and_priority
       - id: cosem_attribute_descriptor 
-        type: dlms_types::cosem_attribute_descriptor
+        type: cosem_attribute_descriptor
       - id: access_selection
-        type: dlms_types::selective_access_description_optional
+        type: selective_access_description_optional
       - id: value
         type: dlms_data
   set_request_with_first_datablock: 

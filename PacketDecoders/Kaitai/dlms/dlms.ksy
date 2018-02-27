@@ -1,6 +1,5 @@
 meta:
   id: dlms
-  file-extension: dlms
   endian: be
   imports: 
     - dlms_pdu
@@ -13,7 +12,7 @@ seq:
     if: hdlc_header.control.frame_type.to_i == 0 or hdlc_header.control.frame_type.to_i == 2
   - id: dlms_pdu
     size: (hdlc_header.format.frame_length - hdlc_header.size) - 4
-    type: dlms_pdu
+    #type: dlms_pdu
   - id: hdlc_trailer
     type: hdlc_trailer
 instances:

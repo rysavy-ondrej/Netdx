@@ -1,6 +1,5 @@
 meta:
   id: dlms_data
-  file-extension: dlms_data
 seq: 
   - id: data_type
     type: u1

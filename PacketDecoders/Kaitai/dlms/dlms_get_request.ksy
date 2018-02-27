@@ -1,9 +1,11 @@
 meta:
   id: dlms_get_request
-  file-extension: dlms_get_request
   endian: be
   imports:
     - types/invoke_id_and_priority
+    - types/cosem_attribute_descriptor
+    - types/selective_access_descriptor_optional
+    - types/cosem_attribute_descriptor_with_selection
 seq:
   - id: get_request_type # this identifies the structure, 1 = sequence
     type: u1
@@ -12,25 +14,25 @@ seq:
     type:
       switch-on: get_request_type
       cases: 
-        'get_request_type::get_request_normal': dlms_get_request_normal
-        'get_request_type::get_request_next': dlms_get_request_next
-        'get_request_type::get_request_with_list': dlms_get_request_with_list
+        'get_request_type::get_request_normal': get_request_normal
+        'get_request_type::get_request_next': get_request_next
+        'get_request_type::get_request_with_list': get_request_with_list
 types:
-  dlms_get_request_normal:
+  get_request_normal:
     seq:
       - id: invoke_id_and_priority
         type: invoke_id_and_priority
       - id: cosem_attribute_descriptor
         type: cosem_attribute_descriptor
       - id: access_selection
-        type: selective_access_description_optional
-  dlms_get_request_next:
+        type: selective_access_descriptor_optional
+  get_request_next:
     seq:
       - id: invoke_id_and_priority
         type: invoke_id_and_priority
       - id: block_number
         type: u4
-  dlms_get_request_with_list:
+  get_request_with_list:
     seq:
       - id: invoke_id_and_priority
         type: invoke_id_and_priority
