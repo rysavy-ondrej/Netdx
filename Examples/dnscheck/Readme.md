@@ -72,14 +72,31 @@ enum ResponseCode {
     case NameDoesNotExist
 }
 
-enum DnsPacketType {
+enum DnsPacketQR {
+    case None,
     case Query,
     case Response(ResponseCode)
 }
 
 enum DnsPacket {
-    case DnsPacket(Int, Int, DnsPacketType)
+    case DnsPacket(Int, Int, DnsPacketQR)
 }
+
+def dnsPacketId(p:DnsPacket) : Int = 
+    match (p) with {
+        case DnsPacket(_,id,_) => id    
+        case _ => 0
+    }
+def dnsPacketTs(p:DnsPacket) : Int = 
+    match (p) with {
+        case DnsPacket(ts,_,_) => ts    
+        case _ => 0
+    }
+def dnsPacketQr(p:DnsPacket) : DnsPacketQR = 
+    match (p) with {
+        case DnsPacket(_,_,qr) => qr    
+        case _ => DnsPacketQr.None
+    }
 
 rel DNS_Packet(p: DnsPacket)
 rel DNS_QueryResponse(q: DnsPacket, r: DnsPacket)
@@ -87,8 +104,8 @@ rel DNS_QueryResponse(q: DnsPacket, r: DnsPacket)
 DNS_Packet(DnsPacket(1, 1, Query)).
 DNS_Packet(DnsPacket(3, 1, Response(NoError))).
 
-// TODO: define the following relation!
-DNS_QueryResponse(q,r) :- DNS_Packet(q), DNS_Packet(r).
+DNS_QueryResponse(q,r) :- DNS_Packet(q), DNS_Packet(r), dnsPacketId(q) = dnsPacketId(r).
+
 
 def f(): Int = 0
 

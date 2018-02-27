@@ -1,5 +1,7 @@
 meta:
   id: dlms_data
+  imports: 
+  - dlms_types
 seq: 
   - id: data_type
     type: u1

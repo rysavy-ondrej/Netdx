@@ -2,10 +2,8 @@ meta:
   id: dlms_set_request
   endian: be
   imports:
-    - types/invoke_id_and_priority
-    - types/cosem_attribute_descriptor
-    - types/dlms_data
-    - types/selective_access_description_optional
+    - dlms_struct
+    - dlms_data
 seq:
   - id: set_request_type # this identifies the structure, 1 = sequence
     type: u1
@@ -23,21 +21,45 @@ types:
   set_request_normal:
     seq:
       - id: invoke_id_and_priority
-        type: invoke_id_and_priority
+        type: dlms_struct::invoke_id_and_priority
       - id: cosem_attribute_descriptor 
-        type: cosem_attribute_descriptor
+        type: dlms_struct::cosem_attribute_descriptor
       - id: access_selection
-        type: selective_access_description_optional
+        type: dlms_struct::selective_access_descriptor_optional
       - id: value
         type: dlms_data
   set_request_with_first_datablock: 
-    {}
+    seq:
+      - id: invoke_id_and_priority
+        type: dlms_struct::invoke_id_and_priority
+      - id: datablock
+        type: dlms_struct::datablock_sa
   set_request_with_datablock:
-    {}
+    seq:
+      - id: invoke_id_and_priority
+        type: dlms_struct::invoke_id_and_priority
+      - id: cosem_attribute_descriptor 
+        type: dlms_struct::cosem_attribute_descriptor
+      - id: access_selection
+        type: dlms_struct::selective_access_descriptor_optional
+      - id: datablock
+        type: dlms_struct::datablock_sa
   set_request_with_list: 
-    {}
+    seq:
+      - id: invoke_id_and_priority
+        type: dlms_struct::invoke_id_and_priority
+      - id: attribute_descriptor_list
+        type: dlms_struct::sequence_of_cosem_attribute_descriptor_with_selection
+      - id: value_list
+        type: dlms_struct::sequence_of_data
   set_request_with_list_and_first_datablock:
-    {}
+    seq:
+      - id: invoke_id_and_priority
+        type: dlms_struct::invoke_id_and_priority
+      - id: attribute_descriptor_list
+        type: dlms_struct::sequence_of_cosem_attribute_descriptor_with_selection
+      - id: datablock
+        type: dlms_struct::datablock_sa
 enums:
   set_request_type:
     1: set_request_normal

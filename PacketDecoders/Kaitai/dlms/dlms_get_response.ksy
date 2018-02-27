@@ -2,10 +2,8 @@ meta:
   id: dlms_get_response
   endian: be
   imports:
-    - types/invoke_id_and_priority
-    - types/get_data_result
-    - types/datablock_g
-    - types/sequence_of_get_data_result
+    - dlms_data
+    - dlms_struct
 seq:
   - id: get_response_type
     type: u1
@@ -21,21 +19,21 @@ types:
   get_response_normal:
     seq:
       - id: invoke_id_and_priority
-        type: invoke_id_and_priority    
+        type: dlms_struct::invoke_id_and_priority    
       - id: result
-        type: get_data_result
+        type: dlms_struct::get_data_result
   get_response_with_datablock:
     seq:
       - id: invoke_id_and_priority
-        type: invoke_id_and_priority  
+        type: dlms_struct::invoke_id_and_priority  
       - id: result
-        type: datablock_g
+        type: dlms_struct::datablock_g
   get_response_with_list:
     seq:
       - id: invoke_id_and_priority
-        type: invoke_id_and_priority  
+        type: dlms_struct::invoke_id_and_priority  
       - id: result
-        type: sequence_of_get_data_result
+        type: dlms_struct::sequence_of_get_data_result
 enums:
   get_response_type:
     1: get_response_normal

@@ -1,6 +1,14 @@
 meta:
   id: coap
   endian: be
+doc: |
+  The Constrained Application Protocol (CoAP) is a specialized web transfer protocol for use with constrained 
+  nodes and constrained networks in the Internet of Things. 
+  The protocol is designed for machine-to-machine (M2M) applications such as smart energy and building automation.
+
+  More information can be found at: http://coap.technology/
+  and https://tools.ietf.org/html/rfc7252
+
 seq:
   - id: version
     type: b2  
@@ -30,7 +38,7 @@ seq:
     
 types:
   option:
-    doc: >
+    doc: |
       Each option instance in a message specifies the Option Number of the
       defined CoAP option, the length of the Option Value, and the Option
       Value itself. Option nunber is expressed as delta.

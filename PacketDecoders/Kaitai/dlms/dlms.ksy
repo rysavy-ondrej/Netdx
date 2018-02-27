@@ -3,7 +3,7 @@ meta:
   endian: be
   imports: 
     - dlms_pdu
-    - types/vlq_base128_be
+    - vlq_base128_be
 seq:
   - id: hdlc_header
     type: hdlc_header
