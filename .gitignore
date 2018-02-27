@@ -16,3 +16,5 @@ Examples/lwm2mdump/obj/Debug/netcoreapp2.0/lwm2mdump.dll
 *.pdb
 *.dll
 .vs/Netdx/v15/sqlite3/storage.ide
+
+*.class
