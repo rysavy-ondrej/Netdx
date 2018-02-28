@@ -4,28 +4,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ndx.Packets.IoT
+namespace Netdx.Packets.IoT
 {
+    public enum RequestMethod
+    {
+        Get = 1,
+        Post = 2,
+        Put = 3,
+        Delete = 4
+    }
+    public enum ResponseCode
+    {
+        Success = 2,
+        Reserved = 3,
+        ClientError = 4,
+        ServerError = 5
+    }
     
     public partial class Coap
     {
 
-        public bool IsRequest => (int)Code < 0x40 && Code != CoapCode.Empty;
-        public string Info
+        /// <summary>
+        /// Tests if the given array of bytes represents a CoAP message. 
+        /// The test is not complete, thus Non Coap messages may pass it
+        /// </summary>
+        /// <remarks>
+        /// This is simple pattern-based matching procedure. The pattern 
+        /// is developed based on the header format as specififed 
+        /// in https://tools.ietf.org/html/rfc7252#section-3. </remarks>
+        /// <param name="array"></param>
+        /// <returns>true if the byte array represents CoAP packet and false otherwise.</returns>
+        public static bool IsCoap(Span<byte> array)
         {
-            get
+            if (array.Length < 4) return false;
+            var first = array[0];
+            var second = array[1];
+            // Version must be 01
+            if ((first & 0b11000000) != 0b01000000) return false;
+            // Token length must be 0-8:
+            if ((first & 0b00001111) > 8) return false;
+            // Code is 
+            var code = (second >> 5);
+            var details = (second & 0b00011111);
+            switch(code)
             {
-                var token = BitConverter.ToString(Token).Replace("-", "");
-                var str = $"{this.Type.ToString().ToUpperInvariant()}, MID:{this.MessageId}, TOKEN: {token}, {this.Code.ToString().ToUpperInvariant()}";
-                return str;
+                case 0:
+                    return details < 5;
+                case 2:
+                case 4:
+                case 5:
+                    return true;
+                default:
+                    return false;
             }
         }
+        /// <summary>
+        /// Tests if the current packet represent an Empty message (Code = 0.00). 
+        /// </summary>
+        public bool IsEmpty => Code == 0;
+        /// <summary>
+        /// Tests if the current packet represent a Request message.
+        /// </summary>
+        public bool IsRequest => ((int)Code >> 5) == 0 && ((int)Code & 0b00011111) != 0;
+        /// <summary>
+        /// Tests if the current packet represent a Response message.
+        /// </summary>
+        public bool IsResponse => ((int)Code >> 5) == 2 || ((int)Code >> 5) == 4 || ((int)Code >> 5) == 5;
 
         /// <summary>
-        /// Gets the URI from options. 
+        /// Gets the request method. If the packet is not a Request message the returned value does not make sense.
+        /// </summary>
+        public RequestMethod RequestMethod => (RequestMethod)((int)Code & 0b00011111);
+        /// <summary>
+        /// Gets the response code. If the packet is not a Response message the returned value does not make sense.
+        /// </summary>
+        public ResponseCode ResponseCode => (ResponseCode)(((int)Code) >> 5);
+
+        /// <summary>
+        /// Gets the collection of the specified Option. 
         /// </summary>
         /// <returns></returns>
-        IEnumerable<byte[]> GetOptionValues(CoapOptions option)
+        public IEnumerable<byte[]> GetOptionValues(CoapOptions option)
         {
             if (Options == null) yield break;
             var currentOption = 0;
@@ -56,7 +115,7 @@ namespace Ndx.Packets.IoT
                 Host = host != null ? Encoding.ASCII.GetString(host) : defaultHost,
                 Port = port != null ? BitConverter.ToUInt16(port, 0) : defaultPort,
                 Path = String.Join("/", (path.ToArray().Select(Encoding.ASCII.GetString))),
-                Query = String.Join("/", (query.ToArray().Select(Encoding.ASCII.GetString)))
+                Query = String.Join("&", (query.ToArray().Select(Encoding.ASCII.GetString)))
             };
             return urb.Uri;
         }

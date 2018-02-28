@@ -1,40 +1,20 @@
-# Autosave files
-*~
 
-# build
-[Oo]bj/
-[Bb]in/
-packages/
-TestResults/
-
-# globs
-Makefile.in
-*.DS_Store
-*.sln.cache
-*.suo
+*.raw
+*.pdb
+*.dll
+*.pdb
+*.dll
+*.ide
+.vs/Netdx/v15/.suo
+*.pdb
+PacketDecoders/obj/Debug/netstandard2.0/Netdx.PacketDecoders.dll
+*.pdb
+PacketDecoders/bin/Debug/netstandard2.0/Netdx.PacketDecoders.dll
+Examples/lwm2mdump/obj/Debug/netcoreapp2.0/lwm2mdump.pdb
+Examples/lwm2mdump/obj/Debug/netcoreapp2.0/lwm2mdump.dll
 *.cache
-*.pidb
-*.userprefs
-*.usertasks
-config.log
-config.make
-config.status
-aclocal.m4
-install-sh
-autom4te.cache/
-*.user
-*.tar.gz
-tarballs/
-test-results/
-Thumbs.db
+*.pdb
+*.dll
+.vs/Netdx/v15/sqlite3/storage.ide
 
-# Mac bundle stuff
-*.dmg
-*.app
-
-# resharper
-*_Resharper.*
-*.Resharper
-
-# dotCover
-*.dotCover
+*.class

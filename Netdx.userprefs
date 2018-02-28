@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="PacketDecoders/Kaitai/coap.ksy">
+    <Files>
+      <File FileName="PacketDecoders/Readme.md" Line="14" Column="4" />
+      <File FileName="PacketDecoders/Kaitai/lwm2m-tlv.ksy" Line="2" Column="1" />
+      <File FileName="PacketDecoders/Kaitai/coap.ksy" Line="3" Column="49" />
+      <File FileName="PacketDecoders/Class1.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

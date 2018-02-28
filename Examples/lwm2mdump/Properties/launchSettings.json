@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "lwm2mdump": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-events -i 0 -T json",
+      "workingDirectory": "C:\\Users\\rysavy\\Documents\\GitHub\\Netdx\\Examples\\lwm2mdump\\Data"
+    }
+  }
+}

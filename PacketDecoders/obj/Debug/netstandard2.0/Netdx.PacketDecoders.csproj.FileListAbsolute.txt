@@ -1,0 +1,8 @@
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\bin\Debug\netstandard2.0\Netdx.PacketDecoders.deps.json
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\bin\Debug\netstandard2.0\Netdx.PacketDecoders.dll
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\bin\Debug\netstandard2.0\Netdx.PacketDecoders.pdb
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.csproj.CoreCompileInputs.cache
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.AssemblyInfoInputs.cache
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.AssemblyInfo.cs
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.dll
+C:\Users\rysavy\Documents\GitHub\Netdx\PacketDecoders\obj\Debug\netstandard2.0\Netdx.PacketDecoders.pdb

@@ -6,8 +6,8 @@ namespace Netdx.ConversationTracker
     /// Defines interface for key providers. The key provider returns 
     /// <see cref="FlowKey"/> for the packet.  
     /// </summary>
-    public interface IKeyProvider<TPacket>
+    public interface IKeyProvider<TFlowKey, TPacket>
     {
-        FlowKey GetKey(TPacket packet);        
+        TFlowKey GetKey(TPacket packet);        
     }
 }

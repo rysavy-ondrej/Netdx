@@ -1,0 +1,88 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": "474fe5d32ccc6d46a08d347e09c96cdccdf73c65"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "Netdx.PacketDecoders/1.0.0": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.1",
+          "System.Memory": "4.4.0-preview1-25305-02"
+        },
+        "runtime": {
+          "Netdx.PacketDecoders.dll": {}
+        }
+      },
+      "Microsoft.NETCore.Platforms/1.1.0": {},
+      "NETStandard.Library/2.0.1": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "System.Memory/4.4.0-preview1-25305-02": {
+        "dependencies": {
+          "System.Numerics.Vectors": "4.4.0-preview1-25305-02",
+          "System.Runtime.CompilerServices.Unsafe": "4.4.0-preview1-25305-02"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Memory.dll": {}
+        }
+      },
+      "System.Numerics.Vectors/4.4.0-preview1-25305-02": {
+        "runtime": {
+          "lib/netstandard2.0/System.Numerics.Vectors.dll": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.4.0-preview1-25305-02": {
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Netdx.PacketDecoders/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ftGM6cK5kAPldnkDDxzDcHTxL3bhIjOs5ehb3wKpbAHoewfTjDe+UMEKCCQ7AFMbBsAV8iDwr7Jr//cI5roaHA==",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
+      "path": "netstandard.library/2.0.1",
+      "hashPath": "netstandard.library.2.0.1.nupkg.sha512"
+    },
+    "System.Memory/4.4.0-preview1-25305-02": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fpticQQnqSE6mOjajuAqypTuWRJ/6fDLozurzt2gXoFFWyl7CsrcrR6f5WBN9e+GCGQDyeeSs3yC7pncvZLgdA==",
+      "path": "system.memory/4.4.0-preview1-25305-02",
+      "hashPath": "system.memory.4.4.0-preview1-25305-02.nupkg.sha512"
+    },
+    "System.Numerics.Vectors/4.4.0-preview1-25305-02": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-n7KwQr0LLedrLGDtZPsahWeaPkgiFGe4qiHb/E5F4mwFKCvOHuJ1HRhzPyW593veGBPTZs39datQ3YjX0NErRw==",
+      "path": "system.numerics.vectors/4.4.0-preview1-25305-02",
+      "hashPath": "system.numerics.vectors.4.4.0-preview1-25305-02.nupkg.sha512"
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.4.0-preview1-25305-02": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-keqowXVd5U8XgkRrZwiA4YCCW4TiuRyjl3Yld+12MW4tBXenjVEAiEyMxI/OnrHKUwvF7IKVE9DjHG+rBg5abg==",
+      "path": "system.runtime.compilerservices.unsafe/4.4.0-preview1-25305-02",
+      "hashPath": "system.runtime.compilerservices.unsafe.4.4.0-preview1-25305-02.nupkg.sha512"
+    }
+  }
+}
