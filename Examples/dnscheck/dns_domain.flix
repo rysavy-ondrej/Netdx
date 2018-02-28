@@ -75,9 +75,4 @@ DnsQueryResponsePair(q,r) :-
     dnsIdEq(q,r),
     within(q,r,2.0).
 
-/*
- * MODEL
- */
-Frame(DnsPacket(0.1, 1234, Query)).
-Frame(DnsPacket(0.6, 1234, Response(NoError))).
 
