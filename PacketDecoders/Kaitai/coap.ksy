@@ -1,6 +1,9 @@
 meta:
   id: coap
+  title: Constrainted Application Protocol (CoAP)
   endian: be
+  file-extension: coap
+
 seq:
   - id: version
     type: b2  

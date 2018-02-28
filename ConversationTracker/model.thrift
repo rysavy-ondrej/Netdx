@@ -1,5 +1,5 @@
-﻿namespace netcore ConversationTracker
-namespace csharp ConversationTracker
+﻿namespace netcore Netdx.ConversationTracker
+namespace csharp Netdx.ConversationTracker
 
 struct FlowKey {
     1: i32 Protocol;

@@ -13,4 +13,7 @@
     <Folder Include="IoT\" />
     <Folder Include="Common\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
 </Project>
