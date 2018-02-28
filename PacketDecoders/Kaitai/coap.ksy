@@ -2,9 +2,6 @@ meta:
   id: coap
   title: Constrainted Application Protocol (CoAP)
   endian: be
-<<<<<<< HEAD
-  file-extension: coap
-=======
 doc: |
   The Constrained Application Protocol (CoAP) is a specialized web transfer protocol for use with constrained 
   nodes and constrained networks in the Internet of Things. 
@@ -12,7 +9,6 @@ doc: |
 
   More information can be found at: http://coap.technology/
   and https://tools.ietf.org/html/rfc7252
->>>>>>> origin/master
 
 seq:
   - id: version
