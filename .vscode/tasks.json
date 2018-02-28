@@ -12,6 +12,16 @@
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "restore",
+            "command" : "dotnet restore",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },            
+            "problemMatcher": "$msCompile"
+        },
     ]
 }
