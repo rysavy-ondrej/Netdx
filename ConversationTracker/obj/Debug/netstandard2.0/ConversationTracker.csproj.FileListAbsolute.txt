@@ -1,9 +1,0 @@
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\bin\Debug\netstandard2.0\Netdx.ConversationTracker.deps.json
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\bin\Debug\netstandard2.0\Netdx.ConversationTracker.dll
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\bin\Debug\netstandard2.0\Netdx.ConversationTracker.pdb
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\obj\Debug\netstandard2.0\ConversationTracker.csproj.CoreCompileInputs.cache
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\obj\Debug\netstandard2.0\ConversationTracker.AssemblyInfoInputs.cache
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\obj\Debug\netstandard2.0\ConversationTracker.AssemblyInfo.cs
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\obj\Debug\netstandard2.0\Netdx.ConversationTracker.dll
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\obj\Debug\netstandard2.0\Netdx.ConversationTracker.pdb
-C:\Users\rysavy\Documents\GitHub\Netdx\ConversationTracker\obj\Debug\netstandard2.0\ConversationTracker.csprojResolveAssemblyReference.cache
