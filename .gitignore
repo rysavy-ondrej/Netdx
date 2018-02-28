@@ -18,3 +18,25 @@ Examples/lwm2mdump/obj/Debug/netcoreapp2.0/lwm2mdump.dll
 .vs/Netdx/v15/sqlite3/storage.ide
 
 *.class
+
+ConversationTracker/bin/Debug/netstandard2.0/Netdx.ConversationTracker.dll
+
+ConversationTracker/bin/Debug/netstandard2.0/Netdx.ConversationTracker.dll
+
+ConversationTracker/bin/Debug/netstandard2.0/Netdx.ConversationTracker.pdb
+
+ConversationTracker/obj/ConversationTracker.csproj.nuget.cache
+
+ConversationTracker/obj/ConversationTracker.csproj.nuget.g.props
+
+*.cache
+
+ConversationTracker/obj/Debug/netstandard2.0/ConversationTracker.csproj.FileListAbsolute.txt
+
+ConversationTracker/obj/Debug/netstandard2.0/Netdx.ConversationTracker.dll
+
+*.pdb
+
+ConversationTracker/obj/project.assets.json
+
+*.pdb
