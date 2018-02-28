@@ -53,5 +53,11 @@ The source packet capture can generate many events, but we only need to select t
 relevant to our diagnostic problem. It means that we have to limit the scope for the events by providing a context. 
 In case of Local DNS Server Problem subtree, the DNS query packet will provide the necessary context information. 
 
+# Tool
+The tool performs the following stages:
+1. Analyze the input packet capture and extracts DNS and ICMP packets.
+2. Export the information about DNS and ICMP packets in `<guid>_data.flix` data file. 
+3. Execute `flix --print Error dns_domain.flix <guid>_data.flix` to get the information about DNS related issues
+
 # Logical Representation
 This section presents a logical representation of the DNS diagnostic problem.
