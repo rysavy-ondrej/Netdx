@@ -1,8 +1,6 @@
 meta:
   id: dns_packet
   title: DNS (Domain Name Service) packet
-  xref:
-    rfc: 1035
   license: CC0-1.0
   endian: be
 doc: |

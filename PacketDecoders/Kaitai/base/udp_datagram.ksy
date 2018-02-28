@@ -1,9 +1,6 @@
 meta:
   id: udp_datagram
   title: UDP (User Datagram Protocol) datagram
-  xref:
-    rfc: 768
-    wikidata: Q11163
   license: CC0-1.0
   endian: be
 doc: |

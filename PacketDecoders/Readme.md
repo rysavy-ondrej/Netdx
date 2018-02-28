@@ -22,3 +22,9 @@ The Kaitai Struct compiler needs to be installed on the system in order to recom
 ```
 Kaitai/dlms# kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Industrial -d ../../Industrial/dlms *.ksy
 ```
+
+
+* To recompile common interne protocols
+```
+Kaitai/common# kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Common -d ../../Common *.ksy
+```

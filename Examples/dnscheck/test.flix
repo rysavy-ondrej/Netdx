@@ -3,16 +3,16 @@
  */ 
 enum Packet {
     case Undefined,
-    case DnsPacket(Int, Int, DnsPacketQR)
+    case DnsPacket(Float64, Int, DnsPacketQR)
 }
 
-def getPacketTs(f:Packet) : Int = 
+def getPacketTs(f:Packet) : Float64 = 
     match (f) with {
         case DnsPacket(ts,_,_) => ts    
-        case _ => 0
+        case _ => 0.0
     }
 // tests if the timestamp of q is within (p.ts + delta) interval
-def within(p:Packet, q:Packet, delta:Int) : Bool =
+def within(p:Packet, q:Packet, delta:Float64) : Bool =
     let p_ts = getPacketTs(p);
     let q_ts = getPacketTs(q);
     q_ts > p_ts && q_ts <= p_ts + delta 
@@ -32,7 +32,7 @@ enum DnsPacketQR {
 
 def getDnsPacketId(p:Packet) : Int = 
     match (p) with {
-        case DnsPacket(id,_,_) => id    
+        case DnsPacket(_,id,_) => id    
         case _ => 0
     }
 
@@ -68,17 +68,16 @@ rel Frame(f: Packet)
 
 
 rel DnsQueryResponsePair(q: Packet, r: Packet)
-
 DnsQueryResponsePair(q,r) :- 
     Frame(q), Frame(r), 
     isDnsQuery(q),
     isDnsResponse(r),
     dnsIdEq(q,r),
-    within(q,r,2).
+    within(q,r,2.0).
 
 /*
  * MODEL
  */
-Frame(DnsPacket(1, 1234, Query)).
-Frame(DnsPacket(2, 1234, Response(NoError))).
+Frame(DnsPacket(0.1, 1234, Query)).
+Frame(DnsPacket(0.6, 1234, Response(NoError))).
 
