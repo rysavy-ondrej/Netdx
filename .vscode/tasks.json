@@ -1,0 +1,36 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet build",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "restore",
+            "command" : "dotnet restore",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },            
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "kaitai",
+            "command": "kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Base -d ./PacketDecoders/Base ./PacketDecoders/Kaitai/base/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Core -d ./PacketDecoders/Core ./PacketDecoders/Kaitai/core/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Common -d ./PacketDecoders/Common ./PacketDecoders/Kaitai/common/*.ksy",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            }
+        }
+    ]
+}

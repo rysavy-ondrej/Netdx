@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Netdx.ConversationTracker
-{
+namespace Netdx.ConversationTracker {
     /// <summary>
     /// This is a generic class that provides basic functionality of tracking flows in a sequence of input packets.
     /// </summary>
     /// <typeparam name="TPacket"></typeparam>
     /// <typeparam name="TFlowKey"></typeparam>
     /// <typeparam name="TFlowRecord"></typeparam>
-    public class Tracker<TPacket, TFlowKey, TFlowRecord>
-    {
+    public class Tracker<TPacket, TFlowKey, TFlowRecord> {
         private IFlowTable<TFlowKey, TFlowRecord> m_flowTable;
         private IKeyProvider<TFlowKey, TPacket> m_keyProvider;
         private IRecordProvider<TPacket, TFlowRecord> m_recordProvider;
-        public Tracker(IFlowTable<TFlowKey,TFlowRecord> table, IKeyProvider<TFlowKey,TPacket> keyProvider, IRecordProvider<TPacket, TFlowRecord> recordProvider)
-        {
+        public Tracker (IFlowTable<TFlowKey, TFlowRecord> table, IKeyProvider<TFlowKey, TPacket> keyProvider, IRecordProvider<TPacket, TFlowRecord> recordProvider) {
             m_flowTable = table;
             m_keyProvider = keyProvider;
             m_recordProvider = recordProvider;
@@ -27,10 +24,9 @@ namespace Netdx.ConversationTracker
         /// </summary>
         /// <param name="packet">The packet.</param>
         /// <returns>The flow record or null if such record does not exist.</returns>
-        public TFlowRecord PeekFlow(TPacket packet)
-        {
-            var flowKey = m_keyProvider.GetKey(packet);
-            return m_flowTable.Get(flowKey);
+        public TFlowRecord PeekFlow (TPacket packet) {
+            var flowKey = m_keyProvider.GetKey (packet);
+            return m_flowTable.Get (flowKey);
         }
 
         /// <summary>
@@ -38,19 +34,15 @@ namespace Netdx.ConversationTracker
         /// </summary>
         /// <param name="packet">The packet.</param>
         /// <returns>The flow record created for the given packet.</returns>
-        public TFlowRecord UpdateFlow(TPacket packet)
-        {
-            var flowKey = m_keyProvider.GetKey(packet);
-            var record = m_flowTable.Get(flowKey);
-            var updateRecord = m_recordProvider.GetRecord(packet);
-            if (record == null)
-            {
-                m_flowTable.Put(flowKey, updateRecord);
+        public TFlowRecord UpdateFlow (TPacket packet) {
+            var flowKey = m_keyProvider.GetKey (packet);
+            var record = m_flowTable.Get (flowKey);
+            var updateRecord = m_recordProvider.GetRecord (packet);
+            if (record == null) {
+                m_flowTable.Put (flowKey, updateRecord);
                 return updateRecord;
-            }
-            else
-            {
-                return m_flowTable.Merge(flowKey, updateRecord);
+            } else {
+                return m_flowTable.Merge (flowKey, updateRecord);
             }
         }
     }

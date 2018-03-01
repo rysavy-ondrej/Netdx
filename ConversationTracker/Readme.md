@@ -37,5 +37,5 @@ To regenerate model files, use thrift tool:
 ```
 thrift --gen csharp model.thrift 
 ```
-It produces files in ```gen-csharp\Netdx\COnversationTracker```.
+It produces files in ```gen-csharp\Netdx\ConversationTracker```.
 

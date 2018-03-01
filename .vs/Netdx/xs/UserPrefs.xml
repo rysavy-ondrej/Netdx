@@ -1,0 +1,18 @@
+﻿<Properties StartupConfiguration="{59CC80E0-5A49-4F29-BB57-00B60505307B}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PacketDecoders/Industrial/dlms/DlmsStruct.cs">
+    <Files>
+      <File FileName="PacketDecoders/Industrial/dlms/DlmsTypes.cs" Line="18" Column="38" />
+      <File FileName="PacketDecoders/Industrial/dlms/DlmsData.cs" Line="821" Column="30" />
+      <File FileName="PacketDecoders/Industrial/dlms/DlmsStruct.cs" Line="310" Column="35" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/rysavy/Projects/Netdx/PacketDecoders/Industrial/dlms/DlmsTypes.cs" relfile="PacketDecoders/Industrial/dlms/DlmsTypes.cs" line="143" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Examples.flowstat PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
