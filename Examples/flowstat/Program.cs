@@ -11,13 +11,14 @@ using System.Threading;
 namespace flowstat
 {
     /// <summary>
-    /// Computes the flow statististics for the given input pcap file. 
+    /// Computes the flow statististics for the given input pcap file.
+    /// It also creates a hierarchy of bloom filters to improve the access to individual packets. 
     /// </summary>
     class Program
     {
         private static Tracker<(Packet, PosixTimeval), FlowKey, FlowRecord> m_tracker;
-        private static int parserError;
-        private static int packets;
+        private static int m_parserError;
+        private static int m_packets;
 
         static void Main(string[] args)
         {
@@ -35,20 +36,20 @@ namespace flowstat
             var sw = new Stopwatch();
             sw.Start();
 
-            var table = new FlowTable();
-            m_tracker = new Tracker<(Packet,PosixTimeval), FlowKey, FlowRecord>(table, table, table);
-
             var device = new CaptureFileReaderDevice(inputFile);
             device.Open();
 
+            var table = new FlowTable();
+            var index = new FlowIndex(1000, 100, (int)device.LinkType);
+            m_tracker = new Tracker<(Packet,PosixTimeval), FlowKey, FlowRecord>(table, table, table);
 
             void PrintTable()
             {
                 Console.Clear();
                 Console.WriteLine($"Time:    {sw.Elapsed}");
-                Console.WriteLine($"Packets: {packets}   ");
+                Console.WriteLine($"Packets: {m_packets}   ");
                 Console.WriteLine($"Flows:   {table.Count} ");
-                Console.WriteLine($"Errors:  {parserError}");
+                Console.WriteLine($"Errors:  {m_parserError}");
                 Console.WriteLine();
                 // print top 10 flows
                 try
@@ -69,25 +70,34 @@ namespace flowstat
 
             PeriodicTask.Run(PrintTable, new TimeSpan(0, 0, 1));
             PrintTable();
-            var rawCapture = device.GetNextPacket(); 
+            var rawCapture = device.GetNextPacket();
+            var packetOffset = 6 * sizeof(uint);
             while (rawCapture != null)
             {
                 try
                 {
-                    packets++;
+                    
+                    m_packets++;
                     var packet = Packet.ParsePacket(rawCapture.LinkLayerType, rawCapture.Data);
                     m_tracker.UpdateFlow((packet, rawCapture.Timeval));
+                    var packetFlowKey = table.GetKey((packet, rawCapture.Timeval));
+                    index.Add(m_packets, packetOffset, packetFlowKey);
+                    packetOffset += rawCapture.Data.Length + 4 * sizeof(uint);
                 }
                 catch (Exception)
                 {
-                    parserError++;
+                    m_parserError++;
                 }
+                
                 rawCapture = device.GetNextPacket();
+                
             }
 
             device.Close();
             sw.Stop();
             PrintTable();
+
+            FlowTable
         }
     }
 }

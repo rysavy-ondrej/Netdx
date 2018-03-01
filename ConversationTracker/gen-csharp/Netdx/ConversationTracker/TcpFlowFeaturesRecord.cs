@@ -21,76 +21,62 @@ namespace Netdx.ConversationTracker
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class Conversation : TBase
+  public partial class TcpFlowFeaturesRecord : TBase
   {
-    private FlowKey _ConversationKey;
-    private int _ConversationId;
-    private int _ParentId;
-    private long _FirstSeen;
-    private long _LastSeen;
+    private int _PushTcp;
+    private int _InitWindowsBytes;
+    private int _RttSamples;
+    private List<PacketMetrics> _Packets;
 
-    public FlowKey ConversationKey
+    public int PushTcp
     {
       get
       {
-        return _ConversationKey;
+        return _PushTcp;
       }
       set
       {
-        __isset.ConversationKey = true;
-        this._ConversationKey = value;
+        __isset.PushTcp = true;
+        this._PushTcp = value;
       }
     }
 
-    public int ConversationId
+    public int InitWindowsBytes
     {
       get
       {
-        return _ConversationId;
+        return _InitWindowsBytes;
       }
       set
       {
-        __isset.ConversationId = true;
-        this._ConversationId = value;
+        __isset.InitWindowsBytes = true;
+        this._InitWindowsBytes = value;
       }
     }
 
-    public int ParentId
+    public int RttSamples
     {
       get
       {
-        return _ParentId;
+        return _RttSamples;
       }
       set
       {
-        __isset.ParentId = true;
-        this._ParentId = value;
+        __isset.RttSamples = true;
+        this._RttSamples = value;
       }
     }
 
-    public long FirstSeen
+    public List<PacketMetrics> Packets
     {
       get
       {
-        return _FirstSeen;
+        return _Packets;
       }
       set
       {
-        __isset.FirstSeen = true;
-        this._FirstSeen = value;
-      }
-    }
-
-    public long LastSeen
-    {
-      get
-      {
-        return _LastSeen;
-      }
-      set
-      {
-        __isset.LastSeen = true;
-        this._LastSeen = value;
+        __isset.Packets = true;
+        this._Packets = value;
       }
     }
 
@@ -100,14 +86,13 @@ namespace Netdx.ConversationTracker
     [Serializable]
     #endif
     public struct Isset {
-      public bool ConversationKey;
-      public bool ConversationId;
-      public bool ParentId;
-      public bool FirstSeen;
-      public bool LastSeen;
+      public bool PushTcp;
+      public bool InitWindowsBytes;
+      public bool RttSamples;
+      public bool Packets;
     }
 
-    public Conversation() {
+    public TcpFlowFeaturesRecord() {
     }
 
     public void Read (TProtocol iprot)
@@ -126,37 +111,40 @@ namespace Netdx.ConversationTracker
           switch (field.ID)
           {
             case 1:
-              if (field.Type == TType.Struct) {
-                ConversationKey = new FlowKey();
-                ConversationKey.Read(iprot);
+              if (field.Type == TType.I32) {
+                PushTcp = iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
             case 2:
               if (field.Type == TType.I32) {
-                ConversationId = iprot.ReadI32();
+                InitWindowsBytes = iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
             case 3:
               if (field.Type == TType.I32) {
-                ParentId = iprot.ReadI32();
+                RttSamples = iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
             case 4:
-              if (field.Type == TType.I64) {
-                FirstSeen = iprot.ReadI64();
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            case 5:
-              if (field.Type == TType.I64) {
-                LastSeen = iprot.ReadI64();
+              if (field.Type == TType.List) {
+                {
+                  Packets = new List<PacketMetrics>();
+                  TList _list0 = iprot.ReadListBegin();
+                  for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                  {
+                    PacketMetrics _elem2;
+                    _elem2 = new PacketMetrics();
+                    _elem2.Read(iprot);
+                    Packets.Add(_elem2);
+                  }
+                  iprot.ReadListEnd();
+                }
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -179,47 +167,46 @@ namespace Netdx.ConversationTracker
       oprot.IncrementRecursionDepth();
       try
       {
-        TStruct struc = new TStruct("Conversation");
+        TStruct struc = new TStruct("TcpFlowFeaturesRecord");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
-        if (ConversationKey != null && __isset.ConversationKey) {
-          field.Name = "ConversationKey";
-          field.Type = TType.Struct;
+        if (__isset.PushTcp) {
+          field.Name = "PushTcp";
+          field.Type = TType.I32;
           field.ID = 1;
           oprot.WriteFieldBegin(field);
-          ConversationKey.Write(oprot);
+          oprot.WriteI32(PushTcp);
           oprot.WriteFieldEnd();
         }
-        if (__isset.ConversationId) {
-          field.Name = "ConversationId";
+        if (__isset.InitWindowsBytes) {
+          field.Name = "InitWindowsBytes";
           field.Type = TType.I32;
           field.ID = 2;
           oprot.WriteFieldBegin(field);
-          oprot.WriteI32(ConversationId);
+          oprot.WriteI32(InitWindowsBytes);
           oprot.WriteFieldEnd();
         }
-        if (__isset.ParentId) {
-          field.Name = "ParentId";
+        if (__isset.RttSamples) {
+          field.Name = "RttSamples";
           field.Type = TType.I32;
           field.ID = 3;
           oprot.WriteFieldBegin(field);
-          oprot.WriteI32(ParentId);
+          oprot.WriteI32(RttSamples);
           oprot.WriteFieldEnd();
         }
-        if (__isset.FirstSeen) {
-          field.Name = "FirstSeen";
-          field.Type = TType.I64;
+        if (Packets != null && __isset.Packets) {
+          field.Name = "Packets";
+          field.Type = TType.List;
           field.ID = 4;
           oprot.WriteFieldBegin(field);
-          oprot.WriteI64(FirstSeen);
-          oprot.WriteFieldEnd();
-        }
-        if (__isset.LastSeen) {
-          field.Name = "LastSeen";
-          field.Type = TType.I64;
-          field.ID = 5;
-          oprot.WriteFieldBegin(field);
-          oprot.WriteI64(LastSeen);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Packets.Count));
+            foreach (PacketMetrics _iter3 in Packets)
+            {
+              _iter3.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -232,37 +219,31 @@ namespace Netdx.ConversationTracker
     }
 
     public override string ToString() {
-      StringBuilder __sb = new StringBuilder("Conversation(");
+      StringBuilder __sb = new StringBuilder("TcpFlowFeaturesRecord(");
       bool __first = true;
-      if (ConversationKey != null && __isset.ConversationKey) {
+      if (__isset.PushTcp) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("ConversationKey: ");
-        __sb.Append(ConversationKey== null ? "<null>" : ConversationKey.ToString());
+        __sb.Append("PushTcp: ");
+        __sb.Append(PushTcp);
       }
-      if (__isset.ConversationId) {
+      if (__isset.InitWindowsBytes) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("ConversationId: ");
-        __sb.Append(ConversationId);
+        __sb.Append("InitWindowsBytes: ");
+        __sb.Append(InitWindowsBytes);
       }
-      if (__isset.ParentId) {
+      if (__isset.RttSamples) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("ParentId: ");
-        __sb.Append(ParentId);
+        __sb.Append("RttSamples: ");
+        __sb.Append(RttSamples);
       }
-      if (__isset.FirstSeen) {
+      if (Packets != null && __isset.Packets) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("FirstSeen: ");
-        __sb.Append(FirstSeen);
-      }
-      if (__isset.LastSeen) {
-        if(!__first) { __sb.Append(", "); }
-        __first = false;
-        __sb.Append("LastSeen: ");
-        __sb.Append(LastSeen);
+        __sb.Append("Packets: ");
+        __sb.Append(Packets);
       }
       __sb.Append(")");
       return __sb.ToString();

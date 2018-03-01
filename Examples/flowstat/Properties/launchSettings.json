@@ -2,8 +2,8 @@
   "profiles": {
     "flowstat": {
       "commandName": "Project",
-      "commandLineArgs": "snmp.pcap",
-      "workingDirectory": "C:\\Users\\rysavy\\Documents\\Network Monitor 3\\Captures"
+      "commandLineArgs": "ISCX_Botnet-Testing.pcap",
+      "workingDirectory": "C:\\Users\\rysavy\\Documents\\Network Monitor 3\\Captures\\botnet"
     }
   }
 }

@@ -1,12 +1,14 @@
-﻿//namespace netcore ConversationTracker
+﻿// compile with:
+// thrift --gen csharp model.thrift 
+//namespace netcore ConversationTracker
 namespace csharp Netdx.ConversationTracker
-
 
 /// <summary>
 ///	Specifies the flow orientation if known.
 /// </summary>
 enum FlowOrientation { Undefined = 0; Upflow = 1; Downflow = 2;  }
 
+// Defines the type of protocol.
 enum ProtocolType {
         /// <summary> IPv6 Hop-by-Hop options. </summary>
         IP = 0;
@@ -88,7 +90,7 @@ struct PacketMetrics {
 }
 
 // The structure stores features as proposed in http://www.cl.cam.ac.uk/~awm22/publications/li2007machine.pdf
-struct TcpFlowFeaturesRecord : FlowRecord {
+struct TcpFlowFeaturesRecord {
     // Count of all packets with push bit set in TCP header
     1: i32 PushTcp;  
     // The total number of bytes sent in initial window
@@ -97,4 +99,14 @@ struct TcpFlowFeaturesRecord : FlowRecord {
     3: i32 RttSamples;  
     // Collection of packet metrics to be used for compute other values.
     4: list<PacketMetrics> Packets;
+}
+
+
+/// <summary>
+///
+///
+struct PcapPseudoheader {
+    1: i64 FileOffset;
+    2: i32 LinkType;
+    3: binary Filter;    
 }

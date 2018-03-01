@@ -21,62 +21,48 @@ namespace Netdx.ConversationTracker
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class FlowRecord : TBase
+  public partial class PcapPseudoheader : TBase
   {
-    private long _FirstSeen;
-    private long _LastSeen;
-    private long _Octets;
-    private int _Packets;
+    private long _FileOffset;
+    private int _LinkType;
+    private byte[] _Filter;
 
-    public long FirstSeen
+    public long FileOffset
     {
       get
       {
-        return _FirstSeen;
+        return _FileOffset;
       }
       set
       {
-        __isset.FirstSeen = true;
-        this._FirstSeen = value;
+        __isset.FileOffset = true;
+        this._FileOffset = value;
       }
     }
 
-    public long LastSeen
+    public int LinkType
     {
       get
       {
-        return _LastSeen;
+        return _LinkType;
       }
       set
       {
-        __isset.LastSeen = true;
-        this._LastSeen = value;
+        __isset.LinkType = true;
+        this._LinkType = value;
       }
     }
 
-    public long Octets
+    public byte[] Filter
     {
       get
       {
-        return _Octets;
+        return _Filter;
       }
       set
       {
-        __isset.Octets = true;
-        this._Octets = value;
-      }
-    }
-
-    public int Packets
-    {
-      get
-      {
-        return _Packets;
-      }
-      set
-      {
-        __isset.Packets = true;
-        this._Packets = value;
+        __isset.Filter = true;
+        this._Filter = value;
       }
     }
 
@@ -86,13 +72,12 @@ namespace Netdx.ConversationTracker
     [Serializable]
     #endif
     public struct Isset {
-      public bool FirstSeen;
-      public bool LastSeen;
-      public bool Octets;
-      public bool Packets;
+      public bool FileOffset;
+      public bool LinkType;
+      public bool Filter;
     }
 
-    public FlowRecord() {
+    public PcapPseudoheader() {
     }
 
     public void Read (TProtocol iprot)
@@ -112,28 +97,21 @@ namespace Netdx.ConversationTracker
           {
             case 1:
               if (field.Type == TType.I64) {
-                FirstSeen = iprot.ReadI64();
+                FileOffset = iprot.ReadI64();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
             case 2:
-              if (field.Type == TType.I64) {
-                LastSeen = iprot.ReadI64();
+              if (field.Type == TType.I32) {
+                LinkType = iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
             case 3:
-              if (field.Type == TType.I64) {
-                Octets = iprot.ReadI64();
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            case 4:
-              if (field.Type == TType.I32) {
-                Packets = iprot.ReadI32();
+              if (field.Type == TType.String) {
+                Filter = iprot.ReadBinary();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -156,39 +134,31 @@ namespace Netdx.ConversationTracker
       oprot.IncrementRecursionDepth();
       try
       {
-        TStruct struc = new TStruct("FlowRecord");
+        TStruct struc = new TStruct("PcapPseudoheader");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
-        if (__isset.FirstSeen) {
-          field.Name = "FirstSeen";
+        if (__isset.FileOffset) {
+          field.Name = "FileOffset";
           field.Type = TType.I64;
           field.ID = 1;
           oprot.WriteFieldBegin(field);
-          oprot.WriteI64(FirstSeen);
+          oprot.WriteI64(FileOffset);
           oprot.WriteFieldEnd();
         }
-        if (__isset.LastSeen) {
-          field.Name = "LastSeen";
-          field.Type = TType.I64;
+        if (__isset.LinkType) {
+          field.Name = "LinkType";
+          field.Type = TType.I32;
           field.ID = 2;
           oprot.WriteFieldBegin(field);
-          oprot.WriteI64(LastSeen);
+          oprot.WriteI32(LinkType);
           oprot.WriteFieldEnd();
         }
-        if (__isset.Octets) {
-          field.Name = "Octets";
-          field.Type = TType.I64;
+        if (Filter != null && __isset.Filter) {
+          field.Name = "Filter";
+          field.Type = TType.String;
           field.ID = 3;
           oprot.WriteFieldBegin(field);
-          oprot.WriteI64(Octets);
-          oprot.WriteFieldEnd();
-        }
-        if (__isset.Packets) {
-          field.Name = "Packets";
-          field.Type = TType.I32;
-          field.ID = 4;
-          oprot.WriteFieldBegin(field);
-          oprot.WriteI32(Packets);
+          oprot.WriteBinary(Filter);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -201,31 +171,25 @@ namespace Netdx.ConversationTracker
     }
 
     public override string ToString() {
-      StringBuilder __sb = new StringBuilder("FlowRecord(");
+      StringBuilder __sb = new StringBuilder("PcapPseudoheader(");
       bool __first = true;
-      if (__isset.FirstSeen) {
+      if (__isset.FileOffset) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("FirstSeen: ");
-        __sb.Append(FirstSeen);
+        __sb.Append("FileOffset: ");
+        __sb.Append(FileOffset);
       }
-      if (__isset.LastSeen) {
+      if (__isset.LinkType) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("LastSeen: ");
-        __sb.Append(LastSeen);
+        __sb.Append("LinkType: ");
+        __sb.Append(LinkType);
       }
-      if (__isset.Octets) {
+      if (Filter != null && __isset.Filter) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("Octets: ");
-        __sb.Append(Octets);
-      }
-      if (__isset.Packets) {
-        if(!__first) { __sb.Append(", "); }
-        __first = false;
-        __sb.Append("Packets: ");
-        __sb.Append(Packets);
+        __sb.Append("Filter: ");
+        __sb.Append(Filter);
       }
       __sb.Append(")");
       return __sb.ToString();

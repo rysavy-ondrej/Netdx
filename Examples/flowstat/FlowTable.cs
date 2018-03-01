@@ -6,6 +6,7 @@ using PacketDotNet;
 using IPEndPoint = System.Net.IPEndPoint;
 using SharpPcap;
 using System.Threading;
+using System.IO;
 
 namespace flowstat
 {
@@ -146,6 +147,17 @@ namespace flowstat
             {
                 m_table[key] = value;
             }
+        }
+
+
+        public void Write(Stream stream)
+        {
+
+        }
+
+        public void Read(Stream stream)
+        {
+            
         }
     }
 }
