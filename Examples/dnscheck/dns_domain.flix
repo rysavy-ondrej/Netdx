@@ -3,12 +3,12 @@
  */ 
 enum Packet {
     case Undefined,
-    case DnsPacket(Float64, Int, DnsPacketQR)
+    case DnsPacket(Float64, Str, Str, Int, DnsPacketQR)
 }
 
 def getPacketTs(f:Packet) : Float64 = 
     match (f) with {
-        case DnsPacket(ts,_,_) => ts    
+        case DnsPacket(ts,_,_,_,_) => ts    
         case _ => 0.0
     }
 // tests if the timestamp of q is within (p.ts + delta) interval
@@ -32,19 +32,19 @@ enum DnsPacketQR {
 
 def getDnsPacketId(p:Packet) : Int = 
     match (p) with {
-        case DnsPacket(_,id,_) => id    
+        case DnsPacket(_,_,_,id,_) => id    
         case _ => 0
     }
 
 def getDnsPacketQr(p:Packet) : Option[DnsPacketQR] = 
     match (p) with {
-        case DnsPacket(_,_,qr) => Some(qr)    
+        case DnsPacket(_,_,_,_,qr) => Some(qr)    
         case _ => None
     }
 
 def dnsIdEq(p: Packet, q: Packet): Bool = 
     match (p,q) with {
-        case (DnsPacket(_,pId,_), DnsPacket(_,qId,_)) => pId == qId
+        case (DnsPacket(_,_,_,pId,_), DnsPacket(_,_,_,qId,_)) => pId == qId
         case _ => false 
     }
 

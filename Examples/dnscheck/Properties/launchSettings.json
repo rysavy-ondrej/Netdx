@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "dnscheck": {
+      "commandName": "Project",
+      "commandLineArgs": "dump-events -i 0"
+    }
+  }
+}
