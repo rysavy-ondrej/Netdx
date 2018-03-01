@@ -96,8 +96,6 @@ namespace flowstat
             device.Close();
             sw.Stop();
             PrintTable();
-
-            FlowTable
         }
     }
 }
