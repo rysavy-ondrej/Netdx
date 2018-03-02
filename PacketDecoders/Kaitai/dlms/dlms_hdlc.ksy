@@ -1,8 +1,7 @@
 meta:
-  id: dlms
+  id: dlms_hdlc
   endian: be
   imports: 
-    - dlms_pdu
     - vlq_base128_be
 seq:
   - id: hdlc_header
@@ -11,9 +10,8 @@ seq:
     type: llc_header_fields
     if: hdlc_header.control.frame_type & 0x1 == 0 
 
-  - id: dlms_pdu
+  - id: data_pdu
     size: (hdlc_header.format.frame_length - hdlc_header.size) - 4
-    type: dlms_pdu
 
   - id: hdlc_trailer
     type: hdlc_trailer_fields
@@ -52,12 +50,12 @@ types:
         value: 3        
   llc_header_fields:
     seq:
-      - id: sig
+      - id: remote_lsap
         contents: [ 0xe6 ]
-      - id: packet_type
+      - id: local_lsap
         type: u1
         enum: llc_packet_type
-      - id: zero
+      - id: llc_quality
         contents: [ 0 ]
     instances:
       size:
