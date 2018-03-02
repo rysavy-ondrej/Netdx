@@ -5,6 +5,41 @@ using System.Collections.Generic;
 
 namespace Netdx.Packets.Industrial
 {
+
+    /// <summary>
+    /// This is parser for the data link layer for the 3-layer, connection-oriented, HDLC-based,
+    /// asynchronous communication COSEM profile. 
+    /// 
+    /// DLMS information is carried in the information field. To parse the informaiton 
+    /// field use dlms_acse or dlms_apdu. What to use depends on the first bbyte of information octet string:
+    /// 
+    /// * 91-101: dlms_acse
+    /// * 192-199: dlms_apdu
+    /// 
+    /// In order to ensure a coherent data link layer service specification for both connection-oriented and
+    /// connectionless operation modes, the data link layer is divided into two sub-layers: the Logical Link
+    /// Control (LLC) sub-layer and the Medium Access Control (MAC) sub-layer.
+    /// 
+    /// The LLC sub-layer is based on ISO/IEC 8802-2. 
+    /// 
+    /// The MAC sub-layer – the major part of this data link layer specification – is based on ISO/IEC13239 (HDLC). 
+    /// 
+    /// HDLC Addressing:
+    /// 
+    /// The HDLC frame format type 3 contains two address fields: a destination and a
+    /// source HDLC address. Depending on the direction of the data transfer, both the client and the
+    /// server addresses can be destination or source addresses.
+    /// The client address shall always be expressed on one byte.
+    /// The server address – to enable addressing more than one logical device within a single physical
+    /// device and to support the multi-drop configuration – may be divided into two parts:
+    /// - the upper HDLC address is used to address a Logical Device (a separately addressable entity within a physical device);
+    /// - the lower HDLC address is used to address a Physical Device (a physical device on the multi-drop).
+    ///   The upper HDLC address shall always be present. The lower HDLC address may be omitted if it is
+    ///   not required. 
+    /// The HDLC address extension mechanism applies to both parts. This mechanism specifies variable
+    /// length address fields, but for the purpose of this protocol, the length of a complete server address 
+    /// field is restricted to be one, two or four bytes long.
+    /// </summary>
     public partial class DlmsHdlc : KaitaiStruct
     {
         public static DlmsHdlc FromFile(string fileName)
@@ -49,7 +84,6 @@ namespace Netdx.Packets.Industrial
         {
             m_parent = p__parent;
             m_root = p__root ?? this;
-            f_size = false;
             _read();
         }
         private void _read()
@@ -59,7 +93,7 @@ namespace Netdx.Packets.Industrial
             if ((HdlcHeader.Control.FrameType & 1) == 0) {
                 _llcHeader = new LlcHeaderFields(m_io, this, m_root);
             }
-            _dataPdu = m_io.ReadBytes((HdlcHeader.Format.FrameLength - ((((HdlcHeader.Control.FrameType & 1) == 0 ? HdlcHeader.Size : 0) + LlcHeader.Size) + 2)));
+            _information = m_io.ReadBytes((HdlcHeader.Format.FrameLength - ((((HdlcHeader.Control.FrameType & 1) == 0 ? HdlcHeader.Size : 0) + LlcHeader.Size) + 2)));
             _fsc = m_io.ReadBytes(2);
             _stopFlag = m_io.EnsureFixedContents(new byte[] { 126 });
         }
@@ -208,16 +242,74 @@ namespace Netdx.Packets.Industrial
             private DlmsHdlc m_parent;
             private byte[] __raw_format;
             private byte[] __raw_control;
+
+            /// <summary>
+            /// The length of the frame format field is two bytes. It consists of three sub-fields referred to as the
+            /// Format type sub-field (4 bits), the Segmentation bit (S, 1 bit) and the frame length sub-field (11 bits).
+            /// </summary>
             public FormatType Format { get { return _format; } }
+
+            /// <summary>
+            /// Depending on the direction of the data transfer, both the client and the
+            /// server addresses can be destination or source addresses.
+            /// The HDLC address extension mechanism applies to address representation.
+            /// The client address is only 1 byte. Server address can be 1,2, 4 bytes.          
+            /// </summary>
             public HdlcAddress DstAddress { get { return _dstAddress; } }
+
+            /// <summary>
+            /// Depending on the direction of the data transfer, both the client and the
+            /// server addresses can be destination or source addresses. 
+            /// The HDLC address extension mechanism applies to address representation.
+            /// The client address is only 1 byte. Server address can be 1,2, 4 bytes.
+            /// </summary>
             public HdlcAddress SrcAddress { get { return _srcAddress; } }
+
+            /// <summary>
+            /// It indicates the type of commands or responses, and
+            ///  contains sequence numbers, where appropriate.
+            /// </summary>
             public ControlType Control { get { return _control; } }
+
+            /// <summary>
+            /// This check sequence is applied to only the header, i.e.,
+            /// the bits between the opening flag sequence and the header check sequence.
+            /// Frames that do not have an information field or have an empty information field, e.g., as with some supervisory frames,
+            /// do not contain an HCS. 
+            /// </summary>
             public ushort? Hcs { get { return _hcs; } }
             public DlmsHdlc M_Root { get { return m_root; } }
             public DlmsHdlc M_Parent { get { return m_parent; } }
             public byte[] M_RawFormat { get { return __raw_format; } }
             public byte[] M_RawControl { get { return __raw_control; } }
         }
+
+        /// <summary>
+        /// This mechanism specifies variable
+        /// length address fields, but for the purpose of this protocol, the length of a complete server address
+        /// field is restricted to be one, two or four bytes long. 
+        /// 
+        /// The address field range can be extended by
+        /// reserving the first transmitted bit (low-order) of each address octet which would then be set to
+        /// binary zero to indicate that the following octet is an extension of the address field. 
+        /// 
+        /// The format of the extended octet(s) shall be the same as that of the first octet. Thus, the address field may be
+        /// recursively extended. The last octet of an address field is indicted by setting the low-order bit to
+        /// binary one.
+        /// 
+        /// When extension is used, the presence of a binary &quot;1&quot; in the first transmitted bit of the first address
+        /// octet indicates that only one address octet is being used. The use of address extension thus
+        /// restricts the range of single octet addresses to 0x7F and for two octet addresses to 0…0x3FFF.
+        /// 
+        /// Single bytes address:
+        /// | address-7bits | 1 | 
+        /// 
+        /// Two bytes address: 
+        /// | address-7bits | 0 |  | address-7bits | 1 | 
+        /// 
+        /// Four bytes address:
+        /// | address-7bits | 0 |   | address-7bits | 0 |   | address-7bits | 0 |  | address-7bits | 1 | 
+        /// </summary>
         public partial class HdlcAddress : KaitaiStruct
         {
             public static HdlcAddress FromFile(string fileName)
@@ -285,7 +377,7 @@ namespace Netdx.Packets.Industrial
                 {
                     if (f_value)
                         return _value;
-                    _value = (int) ((((((((Bytes[Last].Value + (Last >= 1 ? (Bytes[(Last - 1)].Value << 7) : 0)) + (Last >= 2 ? (Bytes[(Last - 2)].Value << 14) : 0)) + (Last >= 3 ? (Bytes[(Last - 3)].Value << 21) : 0)) + (Last >= 4 ? (Bytes[(Last - 4)].Value << 28) : 0)) + (Last >= 5 ? (Bytes[(Last - 5)].Value << 35) : 0)) + (Last >= 6 ? (Bytes[(Last - 6)].Value << 42) : 0)) + (Last >= 7 ? (Bytes[(Last - 7)].Value << 49) : 0)));
+                    _value = (int) ((((Bytes[Last].Value + (Last >= 1 ? (Bytes[(Last - 1)].Value << 7) : 0)) + (Last >= 2 ? (Bytes[(Last - 2)].Value << 14) : 0)) + (Last >= 3 ? (Bytes[(Last - 3)].Value << 21) : 0)));
                     f_value = true;
                     return _value;
                 }
@@ -402,8 +494,21 @@ namespace Netdx.Packets.Industrial
             private byte[] _llcQuality;
             private DlmsHdlc m_root;
             private DlmsHdlc m_parent;
+
+            /// <summary>
+            /// Destination_LSAP is always 0xE6.
+            /// </summary>
             public byte[] RemoteLsap { get { return _remoteLsap; } }
+
+            /// <summary>
+            /// The value of the Source_LSAP is 0xE6 or 0xE7. The last bit is used as a command/response identifier:
+            /// 0xE6 ‘command’ and 0xE7 “response”. 
+            /// </summary>
             public LlcPacketType LocalLsap { get { return _localLsap; } }
+
+            /// <summary>
+            /// The quality value is reserved for future use and must be 0.
+            /// </summary>
             public byte[] LlcQuality { get { return _llcQuality; } }
             public DlmsHdlc M_Root { get { return m_root; } }
             public DlmsHdlc M_Parent { get { return m_parent; } }
@@ -506,44 +611,67 @@ namespace Netdx.Packets.Industrial
             private ulong _length;
             private DlmsHdlc m_root;
             private DlmsHdlc.HdlcHeaderFields m_parent;
+
+            /// <summary>
+            /// The value of the format type sub-field is 1010 (binary), which identifies a frame format type 3.
+            /// </summary>
             public ulong FrameFormatType { get { return _frameFormatType; } }
+
+            /// <summary>
+            /// Rules of using the segmentation bit are defined in the complete Green Book (?).
+            /// </summary>
             public bool SegmentationFlag { get { return _segmentationFlag; } }
+
+            /// <summary>
+            /// The value of the frame length subfield is the count of octets in the frame excluding the opening and
+            /// closing frame flag sequences. 
+            /// </summary>
             public ulong Length { get { return _length; } }
             public DlmsHdlc M_Root { get { return m_root; } }
             public DlmsHdlc.HdlcHeaderFields M_Parent { get { return m_parent; } }
         }
-        private bool f_size;
-        private int _size;
-        public int Size
-        {
-            get
-            {
-                if (f_size)
-                    return _size;
-                _size = (int) (M_Io.Size);
-                f_size = true;
-                return _size;
-            }
-        }
         private byte[] _startFlag;
         private HdlcHeaderFields _hdlcHeader;
         private LlcHeaderFields _llcHeader;
-        private byte[] _dataPdu;
+        private byte[] _information;
         private byte[] _fsc;
         private byte[] _stopFlag;
         private DlmsHdlc m_root;
         private KaitaiStruct m_parent;
+
+        /// <summary>
+        /// The flag field is one byte and its value is 7E.
+        /// </summary>
         public byte[] StartFlag { get { return _startFlag; } }
+
+        /// <summary>
+        /// The MAC sub-layer uses the HDLC frame format type 3 as defined in Annex H.4 of ISO/IEC 13239. 
+        /// </summary>
         public HdlcHeaderFields HdlcHeader { get { return _hdlcHeader; } }
+
+        /// <summary>
+        /// The LLC sub-layer transmits LSDUs transparently between its service user layer and the MAC sublayer.
+        /// </summary>
         public LlcHeaderFields LlcHeader { get { return _llcHeader; } }
 
         /// <summary>
-        /// frame_length in hdlc header gives the total lenght of the hdlc frame without start/stop flags
-        /// to get the length of encapsulated message, we substract size of hdlc and llc headers 
-        /// and hdlc trailer.
+        /// The information field may be any sequence of bytes. In the case of data frames (I and UI frames), it carries the MSDU. 
         /// </summary>
-        public byte[] DataPdu { get { return _dataPdu; } }
+        public byte[] Information { get { return _information; } }
+
+        /// <summary>
+        /// Unless otherwise noted, the frame checking sequence is
+        /// calculated for the entire length of the frame, excluding the opening flag, the FCS and any start and
+        /// stop elements (start/stop transmission).
+        /// </summary>
         public byte[] Fsc { get { return _fsc; } }
+
+        /// <summary>
+        /// The flag field is one byte and its value is 7E. 
+        /// When two or more frames are
+        /// transmitted continuously, a single flag is used as both the closing flag of one frame and the
+        /// opening flag of the next frame.
+        /// </summary>
         public byte[] StopFlag { get { return _stopFlag; } }
         public DlmsHdlc M_Root { get { return m_root; } }
         public KaitaiStruct M_Parent { get { return m_parent; } }

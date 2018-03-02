@@ -4,7 +4,13 @@ meta:
 doc: |
     This is parser for the data link layer for the 3-layer, connection-oriented, HDLC-based,
     asynchronous communication COSEM profile. 
-    
+
+    DLMS information is carried in the information field. To parse the informaiton 
+    field use dlms_acse or dlms_apdu. What to use depends on the first bbyte of information octet string:
+
+    * 91-101: dlms_acse
+    * 192-199: dlms_apdu
+
     In order to ensure a coherent data link layer service specification for both connection-oriented and
     connectionless operation modes, the data link layer is divided into two sub-layers: the Logical Link
     Control (LLC) sub-layer and the Medium Access Control (MAC) sub-layer.
