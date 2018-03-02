@@ -24,7 +24,7 @@ types:
   hdlc_header_fields:
     seq:
       - id: opening_flag 
-        type: u1
+        contents: [ 0x7e ]
       - id: format
         type: format_type
         size: 2
