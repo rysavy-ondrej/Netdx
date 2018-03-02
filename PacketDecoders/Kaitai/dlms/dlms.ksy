@@ -23,7 +23,7 @@ instances:
 types:
   hdlc_header_fields:
     seq:
-      - id: opening_flag 
+      - id: flag 
         contents: [ 0x7e ]
       - id: format
         type: format_type
@@ -46,7 +46,7 @@ types:
       - id: fsc
         size: 2
       - id: flag
-        size: 1
+        contents: [ 0x7e ]
     instances:
       size:
         value: 3        
