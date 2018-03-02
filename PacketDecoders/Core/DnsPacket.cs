@@ -1,8 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using System;
-using System.Collections.Generic;
 using Kaitai;
+using System.Collections.Generic;
 
 namespace Netdx.Packets.Core
 {
@@ -16,6 +15,7 @@ namespace Netdx.Packets.Core
         {
             return new DnsPacket(new KaitaiStream(fileName));
         }
+
 
         public enum ClassType
         {
@@ -44,15 +44,13 @@ namespace Netdx.Packets.Core
             Mx = 15,
             Txt = 16,
         }
-
-        public DnsPacket(KaitaiStream io, KaitaiStruct parent = null, DnsPacket root = null) : base(io)
+        public DnsPacket(KaitaiStream p__io, KaitaiStruct p__parent = null, DnsPacket p__root = null) : base(p__io)
         {
-            m_parent = parent;
-            m_root = root ?? this;
-            _parse();
+            m_parent = p__parent;
+            m_root = p__root ?? this;
+            _read();
         }
-
-        private void _parse()
+        private void _read()
         {
             _transactionId = m_io.ReadU2be();
             _flags = new PacketFlags(m_io, this, m_root);
@@ -61,11 +59,13 @@ namespace Netdx.Packets.Core
             _nscount = m_io.ReadU2be();
             _arcount = m_io.ReadU2be();
             _queries = new List<Query>((int) (Qdcount));
-            for (var i = 0; i < Qdcount; i++) {
+            for (var i = 0; i < Qdcount; i++)
+            {
                 _queries.Add(new Query(m_io, this, m_root));
             }
             _answers = new List<Answer>((int) (Ancount));
-            for (var i = 0; i < Ancount; i++) {
+            for (var i = 0; i < Ancount; i++)
+            {
                 _answers.Add(new Answer(m_io, this, m_root));
             }
         }
@@ -76,16 +76,15 @@ namespace Netdx.Packets.Core
                 return new PointerStruct(new KaitaiStream(fileName));
             }
 
-            public PointerStruct(KaitaiStream io, Label parent = null, DnsPacket root = null) : base(io)
+            public PointerStruct(KaitaiStream p__io, DnsPacket.Label p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
-            }
-
-            private void _parse()
-            {
+                m_parent = p__parent;
+                m_root = p__root;
                 f_contents = false;
+                _read();
+            }
+            private void _read()
+            {
                 _value = m_io.ReadU1();
             }
             private bool f_contents;
@@ -123,21 +122,20 @@ namespace Netdx.Packets.Core
                 return new Label(new KaitaiStream(fileName));
             }
 
-            public Label(KaitaiStream io, DomainName parent = null, DnsPacket root = null) : base(io)
+            public Label(KaitaiStream p__io, DnsPacket.DomainName p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
-            }
-
-            private void _parse()
-            {
+                m_parent = p__parent;
+                m_root = p__root;
                 f_isPointer = false;
+                _read();
+            }
+            private void _read()
+            {
                 _length = m_io.ReadU1();
                 if (IsPointer) {
                     _pointer = new PointerStruct(m_io, this, m_root);
                 }
-                if (!IsPointer) {
+                if (!(IsPointer)) {
                     _name = System.Text.Encoding.GetEncoding("ASCII").GetString(m_io.ReadBytes(Length));
                 }
             }
@@ -180,14 +178,13 @@ namespace Netdx.Packets.Core
                 return new Query(new KaitaiStream(fileName));
             }
 
-            public Query(KaitaiStream io, DnsPacket parent = null, DnsPacket root = null) : base(io)
+            public Query(KaitaiStream p__io, DnsPacket p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
             }
-
-            private void _parse()
+            private void _read()
             {
                 _name = new DomainName(m_io, this, m_root);
                 _type = ((DnsPacket.TypeType) m_io.ReadU2be());
@@ -211,21 +208,22 @@ namespace Netdx.Packets.Core
                 return new DomainName(new KaitaiStream(fileName));
             }
 
-            public DomainName(KaitaiStream io, KaitaiStruct parent = null, DnsPacket root = null) : base(io)
+            public DomainName(KaitaiStream p__io, KaitaiStruct p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
             }
-
-            private void _parse()
+            private void _read()
             {
                 _name = new List<Label>();
                 {
+                    var i = 0;
                     Label M_;
                     do {
                         M_ = new Label(m_io, this, m_root);
                         _name.Add(M_);
+                        i++;
                     } while (!( ((M_.Length == 0) || (M_.Length == 192)) ));
                 }
             }
@@ -247,17 +245,17 @@ namespace Netdx.Packets.Core
                 return new Address(new KaitaiStream(fileName));
             }
 
-            public Address(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            public Address(KaitaiStream p__io, DnsPacket.Answer p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
             }
-
-            private void _parse()
+            private void _read()
             {
                 _ip = new List<byte>((int) (4));
-                for (var i = 0; i < 4; i++) {
+                for (var i = 0; i < 4; i++)
+                {
                     _ip.Add(m_io.ReadU1());
                 }
             }
@@ -275,14 +273,13 @@ namespace Netdx.Packets.Core
                 return new Answer(new KaitaiStream(fileName));
             }
 
-            public Answer(KaitaiStream io, DnsPacket parent = null, DnsPacket root = null) : base(io)
+            public Answer(KaitaiStream p__io, DnsPacket p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
             }
-
-            private void _parse()
+            private void _read()
             {
                 _name = new DomainName(m_io, this, m_root);
                 _type = ((DnsPacket.TypeType) m_io.ReadU2be());
@@ -330,15 +327,10 @@ namespace Netdx.Packets.Core
                 return new PacketFlags(new KaitaiStream(fileName));
             }
 
-            public PacketFlags(KaitaiStream io, DnsPacket parent = null, DnsPacket root = null) : base(io)
+            public PacketFlags(KaitaiStream p__io, DnsPacket p__parent = null, DnsPacket p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
-            }
-
-            private void _parse()
-            {
+                m_parent = p__parent;
+                m_root = p__root;
                 f_qr = false;
                 f_ra = false;
                 f_tc = false;
@@ -349,6 +341,10 @@ namespace Netdx.Packets.Core
                 f_rd = false;
                 f_cd = false;
                 f_ad = false;
+                _read();
+            }
+            private void _read()
+            {
                 _flag = m_io.ReadU2be();
             }
             private bool f_qr;

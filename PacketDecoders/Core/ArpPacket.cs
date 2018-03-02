@@ -1,7 +1,5 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using System;
-using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Core
@@ -12,6 +10,7 @@ namespace Netdx.Packets.Core
         {
             return new ArpPacket(new KaitaiStream(fileName));
         }
+
 
         public enum ArpOpCode
         {
@@ -39,15 +38,13 @@ namespace Netdx.Packets.Core
             MarsRedirectMap = 22,
             MaposUnarp = 23,
         }
-
-        public ArpPacket(KaitaiStream io, KaitaiStruct parent = null, ArpPacket root = null) : base(io)
+        public ArpPacket(KaitaiStream p__io, KaitaiStruct p__parent = null, ArpPacket p__root = null) : base(p__io)
         {
-            m_parent = parent;
-            m_root = root ?? this;
-            _parse();
+            m_parent = p__parent;
+            m_root = p__root ?? this;
+            _read();
         }
-
-        private void _parse()
+        private void _read()
         {
             _hardwareType = m_io.ReadU2be();
             _protocolType = m_io.ReadU2be();
