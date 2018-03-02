@@ -46,13 +46,14 @@ seq:
       The MAC sub-layer uses the HDLC frame format type 3 as defined in Annex H.4 of ISO/IEC 13239. 
   - id: llc_header
     type: llc_header_fields
-    if: hdlc_header.control.frame_type & 0x1 == 0 
+    if: 'hdlc_header.control.frame_type & 0x1 == 0' 
     doc: |
       The LLC sub-layer transmits LSDUs transparently between its service user layer and the MAC sublayer.
+      LLC is used only with I-frames.
 
   - id: information
     size: |
-      hdlc_header.format.frame_length - ((hdlc_header.control.frame_type & 0x1 == 0 ? hdlc_header.size : 0) + llc_header.size + 2)
+      hdlc_header.format.frame_length - (hdlc_header.size + (hdlc_header.control.frame_type & 0x1 == 0 ? llc_header.size : 0) + 2)
     doc: |
       The information field may be any sequence of bytes. In the case of data frames (I and UI frames), it carries the MSDU. 
   - id: fsc
@@ -115,21 +116,28 @@ types:
     seq:
       - id: remote_lsap
         contents: [ 0xe6 ]
+        if: 'llc_start_byte == 0xe6'
         doc: |
           Destination_LSAP is always 0xE6.
       - id: local_lsap
         type: u1
         enum: llc_packet_type
+        if: 'llc_start_byte == 0xe6'
         doc: |
           The value of the Source_LSAP is 0xE6 or 0xE7. The last bit is used as a command/response identifier:
           0xE6 ‘command’ and 0xE7 “response”. 
       - id: llc_quality
         contents: [ 0 ]
+        if: 'llc_start_byte == 0xe6'
         doc: |
           The quality value is reserved for future use and must be 0.
     instances:
       size:
-        value: 3
+        value: 'llc_start_byte == 0xe6 ? 3 : 0'
+      llc_start_byte:
+        pos: _io.pos
+        type: u1
+      
   format_type:
     seq:
       - id: frame_format_type
@@ -182,7 +190,7 @@ types:
         type: b1
         enum: hdlc_pf_bit
       - id: s_frame_type
-        type: b3        
+        type: b2        
         enum: s_frame_type
   u_frame_control_byte:
     seq:
@@ -192,7 +200,7 @@ types:
         type: b1
         enum: hdlc_pf_bit
       - id: s_type
-        type: b3
+        type: b2
   hdlc_address:   
     doc: |
       This mechanism specifies variable

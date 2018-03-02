@@ -19,6 +19,10 @@ Both `dlms_hdlc.ksy` and `dlms_acse.ksy` can be used in Kaitai IDE. `dlms_apdu.k
 some problem with type referencing. However, the generated parsers (at least for C#) works. For some test data see Netdx/Test/Dataset/dlms/raw folder.
 
 To test `dlms_hdlc.ksy` use: 
+
+* `hdlc_01.raw`
+* `hdlc_02.raw`
+* `hdlc_03.raw` - this is i-frame but does not contain llc header.
 * `dlms_get_request.raw` - example of get request command including hdlc/llc layer.
 
 To test `dlms_acse.ksy` use the following files:
