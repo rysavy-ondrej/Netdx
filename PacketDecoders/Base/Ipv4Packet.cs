@@ -1,8 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using System;
-using System.Collections.Generic;
 using Kaitai;
+using System.Collections.Generic;
 
 namespace Netdx.Packets.Base
 {
@@ -12,6 +11,7 @@ namespace Netdx.Packets.Base
         {
             return new Ipv4Packet(new KaitaiStream(fileName));
         }
+
 
         public enum ProtocolEnum
         {
@@ -160,19 +160,17 @@ namespace Netdx.Packets.Base
             Rohc = 142,
             Reserved255 = 255,
         }
-
-        public Ipv4Packet(KaitaiStream io, KaitaiStruct parent = null, Ipv4Packet root = null) : base(io)
+        public Ipv4Packet(KaitaiStream p__io, KaitaiStruct p__parent = null, Ipv4Packet p__root = null) : base(p__io)
         {
-            m_parent = parent;
-            m_root = root ?? this;
-            _parse();
-        }
-
-        private void _parse()
-        {
+            m_parent = p__parent;
+            m_root = p__root ?? this;
             f_version = false;
             f_ihl = false;
             f_ihlBytes = false;
+            _read();
+        }
+        private void _read()
+        {
             _b1 = m_io.ReadU1();
             _b2 = m_io.ReadU1();
             _totalLength = m_io.ReadU2be();
@@ -224,18 +222,21 @@ namespace Netdx.Packets.Base
                 return new Ipv4Options(new KaitaiStream(fileName));
             }
 
-            public Ipv4Options(KaitaiStream io, Ipv4Packet parent = null, Ipv4Packet root = null) : base(io)
+            public Ipv4Options(KaitaiStream p__io, Ipv4Packet p__parent = null, Ipv4Packet p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
             }
-
-            private void _parse()
+            private void _read()
             {
                 _entries = new List<Ipv4Option>();
-                while (!m_io.IsEof) {
-                    _entries.Add(new Ipv4Option(m_io, this, m_root));
+                {
+                    var i = 0;
+                    while (!m_io.IsEof) {
+                        _entries.Add(new Ipv4Option(m_io, this, m_root));
+                        i++;
+                    }
                 }
             }
             private List<Ipv4Option> _entries;
@@ -252,18 +253,17 @@ namespace Netdx.Packets.Base
                 return new Ipv4Option(new KaitaiStream(fileName));
             }
 
-            public Ipv4Option(KaitaiStream io, Ipv4Options parent = null, Ipv4Packet root = null) : base(io)
+            public Ipv4Option(KaitaiStream p__io, Ipv4Packet.Ipv4Options p__parent = null, Ipv4Packet p__root = null) : base(p__io)
             {
-                m_parent = parent;
-                m_root = root;
-                _parse();
-            }
-
-            private void _parse()
-            {
+                m_parent = p__parent;
+                m_root = p__root;
                 f_copy = false;
                 f_optClass = false;
                 f_number = false;
+                _read();
+            }
+            private void _read()
+            {
                 _b1 = m_io.ReadU1();
                 _len = m_io.ReadU1();
                 _body = m_io.ReadBytes((Len > 2 ? (Len - 2) : 0));

@@ -25,7 +25,7 @@
         },
         {
             "label": "kaitai",
-            "command": "kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Base -d ./PacketDecoders/Base ./PacketDecoders/Kaitai/base/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Core -d ./PacketDecoders/Core ./PacketDecoders/Kaitai/core/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Common -d ./PacketDecoders/Common ./PacketDecoders/Kaitai/common/*.ksy",
+            "command": "kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Base -d ./PacketDecoders/Base ./PacketDecoders/Kaitai/base/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Core -d ./PacketDecoders/Core ./PacketDecoders/Kaitai/core/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Common -d ./PacketDecoders/Common ./PacketDecoders/Kaitai/common/*.ksy ; kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Industrial -d ./PacketDecoders/Industrial/Dlms ./PacketDecoders/Kaitai/dlms/*.ksy",
             "type": "shell",
             "group": "build",
             "presentation": {

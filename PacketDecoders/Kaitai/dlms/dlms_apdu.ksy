@@ -1,5 +1,5 @@
 meta:
-  id: dlms_pdu
+  id: dlms_apdu
   endian: be
   imports: 
     - dlms_get_request
@@ -27,15 +27,6 @@ seq:
         'dlms_pdu_type::action_response': dlms_action_response
 enums:
   dlms_pdu_type:
-    1: initiate_request
-    5: read_request 
-    6: write_request
-    8: initiate_response
-    12: read_response
-    13: write_response
-    14: confirmed_service_error
-    22: unconfirmed_write_request
-    24: information_report_request
     192: get_request 
     193: set_request
     194: even_notification_request
