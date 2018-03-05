@@ -1,7 +1,8 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using Kaitai;
+using System;
 using System.Collections.Generic;
+using Kaitai;
 
 namespace Netdx.Packets.Industrial
 {
@@ -21,7 +22,6 @@ namespace Netdx.Packets.Industrial
         {
             return new DlmsAcse(new KaitaiStream(fileName));
         }
-
 
         public enum AcsePduType
         {
@@ -69,13 +69,15 @@ namespace Netdx.Packets.Industrial
             ImplementationInformation = 189,
             UserInformation = 190,
         }
-        public DlmsAcse(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsAcse p__root = null) : base(p__io)
+
+        public DlmsAcse(KaitaiStream io, KaitaiStruct parent = null, DlmsAcse root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _pduType = ((AcsePduType) m_io.ReadU1());
             switch (PduType) {
@@ -112,13 +114,14 @@ namespace Netdx.Packets.Industrial
                 return new RlrqPdu(new KaitaiStream(fileName));
             }
 
-            public RlrqPdu(KaitaiStream p__io, DlmsAcse p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public RlrqPdu(KaitaiStream io, DlmsAcse parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsAcse m_root;
@@ -133,13 +136,14 @@ namespace Netdx.Packets.Industrial
                 return new AbrtPdu(new KaitaiStream(fileName));
             }
 
-            public AbrtPdu(KaitaiStream p__io, DlmsAcse p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public AbrtPdu(KaitaiStream io, DlmsAcse parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsAcse m_root;
@@ -154,13 +158,14 @@ namespace Netdx.Packets.Industrial
                 return new AarePduField(new KaitaiStream(fileName));
             }
 
-            public AarePduField(KaitaiStream p__io, DlmsAcse.AarePdu p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public AarePduField(KaitaiStream io, AarePdu parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _tag = ((DlmsAcse.AarePduFields) m_io.ReadU1());
                 _length = new BerLength(m_io, this, m_root);
@@ -184,13 +189,14 @@ namespace Netdx.Packets.Industrial
                 return new AarqPduField(new KaitaiStream(fileName));
             }
 
-            public AarqPduField(KaitaiStream p__io, DlmsAcse.AarqPdu p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public AarqPduField(KaitaiStream io, AarqPdu parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _tag = ((DlmsAcse.AarqPduFields) m_io.ReadU1());
                 _length = new BerLength(m_io, this, m_root);
@@ -240,22 +246,19 @@ namespace Netdx.Packets.Industrial
                 return new AarqPdu(new KaitaiStream(fileName));
             }
 
-            public AarqPdu(KaitaiStream p__io, DlmsAcse p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public AarqPdu(KaitaiStream io, DlmsAcse parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _length = new BerLength(m_io, this, m_root);
                 _fields = new List<AarqPduField>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _fields.Add(new AarqPduField(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _fields.Add(new AarqPduField(m_io, this, m_root));
                 }
             }
             private BerLength _length;
@@ -299,22 +302,19 @@ namespace Netdx.Packets.Industrial
                 return new AarePdu(new KaitaiStream(fileName));
             }
 
-            public AarePdu(KaitaiStream p__io, DlmsAcse p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public AarePdu(KaitaiStream io, DlmsAcse parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _length = new BerLength(m_io, this, m_root);
                 _fields = new List<AarePduField>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _fields.Add(new AarePduField(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _fields.Add(new AarePduField(m_io, this, m_root));
                 }
             }
             private BerLength _length;
@@ -333,15 +333,16 @@ namespace Netdx.Packets.Industrial
                 return new BerLength(new KaitaiStream(fileName));
             }
 
-            public BerLength(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public BerLength(KaitaiStream io, KaitaiStruct parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_value = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_value = false;
                 _b1 = m_io.ReadU1();
                 if (B1 == 130) {
                     _int2 = m_io.ReadU2be();
@@ -361,11 +362,11 @@ namespace Netdx.Packets.Industrial
                 }
             }
             private byte _b1;
-            private ushort? _int2;
+            private ushort _int2;
             private DlmsAcse m_root;
             private KaitaiStruct m_parent;
             public byte B1 { get { return _b1; } }
-            public ushort? Int2 { get { return _int2; } }
+            public ushort Int2 { get { return _int2; } }
             public DlmsAcse M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -376,13 +377,14 @@ namespace Netdx.Packets.Industrial
                 return new RlrePdu(new KaitaiStream(fileName));
             }
 
-            public RlrePdu(KaitaiStream p__io, DlmsAcse p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public RlrePdu(KaitaiStream io, DlmsAcse parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsAcse m_root;
@@ -397,13 +399,14 @@ namespace Netdx.Packets.Industrial
                 return new AdtPdu(new KaitaiStream(fileName));
             }
 
-            public AdtPdu(KaitaiStream p__io, DlmsAcse p__parent = null, DlmsAcse p__root = null) : base(p__io)
+            public AdtPdu(KaitaiStream io, DlmsAcse parent = null, DlmsAcse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsAcse m_root;

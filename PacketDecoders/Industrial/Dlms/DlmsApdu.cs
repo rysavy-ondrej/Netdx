@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -11,7 +13,6 @@ namespace Netdx.Packets.Industrial
             return new DlmsApdu(new KaitaiStream(fileName));
         }
 
-
         public enum DlmsPduType
         {
             GetRequest = 192,
@@ -22,13 +23,15 @@ namespace Netdx.Packets.Industrial
             SetResponse = 197,
             ActionResponse = 199,
         }
-        public DlmsApdu(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsApdu p__root = null) : base(p__io)
+
+        public DlmsApdu(KaitaiStream io, KaitaiStruct parent = null, DlmsApdu root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _pduType = ((DlmsPduType) m_io.ReadU1());
             switch (PduType) {

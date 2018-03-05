@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -11,7 +13,6 @@ namespace Netdx.Packets.Industrial
             return new DlmsActionRequest(new KaitaiStream(fileName));
         }
 
-
         public enum ActionRequestType
         {
             ActionRequestNormal = 1,
@@ -21,13 +22,15 @@ namespace Netdx.Packets.Industrial
             ActionRequestWithListAndFirstPblock = 5,
             ActionRequestWithPblock = 6,
         }
-        public DlmsActionRequest(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+
+        public DlmsActionRequest(KaitaiStream io, KaitaiStruct parent = null, DlmsActionRequest root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _requestType = ((ActionRequestType) m_io.ReadU1());
             switch (RequestType) {
@@ -64,13 +67,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionRequestWithFirstPblock(new KaitaiStream(fileName));
             }
 
-            public ActionRequestWithFirstPblock(KaitaiStream p__io, DlmsActionRequest p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+            public ActionRequestWithFirstPblock(KaitaiStream io, DlmsActionRequest parent = null, DlmsActionRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionRequest m_root;
@@ -85,13 +89,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionRequestWithListAndFirstPblock(new KaitaiStream(fileName));
             }
 
-            public ActionRequestWithListAndFirstPblock(KaitaiStream p__io, DlmsActionRequest p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+            public ActionRequestWithListAndFirstPblock(KaitaiStream io, DlmsActionRequest parent = null, DlmsActionRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionRequest m_root;
@@ -106,13 +111,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionRequestNormal(new KaitaiStream(fileName));
             }
 
-            public ActionRequestNormal(KaitaiStream p__io, DlmsActionRequest p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+            public ActionRequestNormal(KaitaiStream io, DlmsActionRequest parent = null, DlmsActionRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _cosemMethodDescriptor = new DlmsStruct.CosemMethodDescriptor(m_io);
@@ -136,13 +142,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionRequestNextPblock(new KaitaiStream(fileName));
             }
 
-            public ActionRequestNextPblock(KaitaiStream p__io, DlmsActionRequest p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+            public ActionRequestNextPblock(KaitaiStream io, DlmsActionRequest parent = null, DlmsActionRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _blockNumber = m_io.ReadU4be();
@@ -163,13 +170,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionRequestWithPblock(new KaitaiStream(fileName));
             }
 
-            public ActionRequestWithPblock(KaitaiStream p__io, DlmsActionRequest p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+            public ActionRequestWithPblock(KaitaiStream io, DlmsActionRequest parent = null, DlmsActionRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionRequest m_root;
@@ -184,13 +192,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionRequestWithList(new KaitaiStream(fileName));
             }
 
-            public ActionRequestWithList(KaitaiStream p__io, DlmsActionRequest p__parent = null, DlmsActionRequest p__root = null) : base(p__io)
+            public ActionRequestWithList(KaitaiStream io, DlmsActionRequest parent = null, DlmsActionRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionRequest m_root;

@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -11,7 +13,6 @@ namespace Netdx.Packets.Industrial
             return new DlmsSetRequest(new KaitaiStream(fileName));
         }
 
-
         public enum SetRequestType
         {
             SetRequestNormal = 1,
@@ -20,13 +21,15 @@ namespace Netdx.Packets.Industrial
             SetRequestWithList = 4,
             SetRequestWithListAndFirstDatablock = 5,
         }
-        public DlmsSetRequest(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsSetRequest p__root = null) : base(p__io)
+
+        public DlmsSetRequest(KaitaiStream io, KaitaiStruct parent = null, DlmsSetRequest root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _requestType = ((SetRequestType) m_io.ReadU1());
             switch (RequestType) {
@@ -59,13 +62,14 @@ namespace Netdx.Packets.Industrial
                 return new SetRequestWithListAndFirstDatablock(new KaitaiStream(fileName));
             }
 
-            public SetRequestWithListAndFirstDatablock(KaitaiStream p__io, DlmsSetRequest p__parent = null, DlmsSetRequest p__root = null) : base(p__io)
+            public SetRequestWithListAndFirstDatablock(KaitaiStream io, DlmsSetRequest parent = null, DlmsSetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _attributeDescriptorList = new DlmsStruct.SequenceOfCosemAttributeDescriptorWithSelection(m_io);
@@ -89,13 +93,14 @@ namespace Netdx.Packets.Industrial
                 return new SetRequestWithFirstDatablock(new KaitaiStream(fileName));
             }
 
-            public SetRequestWithFirstDatablock(KaitaiStream p__io, DlmsSetRequest p__parent = null, DlmsSetRequest p__root = null) : base(p__io)
+            public SetRequestWithFirstDatablock(KaitaiStream io, DlmsSetRequest parent = null, DlmsSetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _datablock = new DlmsStruct.DatablockSa(m_io);
@@ -116,13 +121,14 @@ namespace Netdx.Packets.Industrial
                 return new SetRequestWithDatablock(new KaitaiStream(fileName));
             }
 
-            public SetRequestWithDatablock(KaitaiStream p__io, DlmsSetRequest p__parent = null, DlmsSetRequest p__root = null) : base(p__io)
+            public SetRequestWithDatablock(KaitaiStream io, DlmsSetRequest parent = null, DlmsSetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _cosemAttributeDescriptor = new DlmsStruct.CosemAttributeDescriptor(m_io);
@@ -149,13 +155,14 @@ namespace Netdx.Packets.Industrial
                 return new SetRequestWithList(new KaitaiStream(fileName));
             }
 
-            public SetRequestWithList(KaitaiStream p__io, DlmsSetRequest p__parent = null, DlmsSetRequest p__root = null) : base(p__io)
+            public SetRequestWithList(KaitaiStream io, DlmsSetRequest parent = null, DlmsSetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _attributeDescriptorList = new DlmsStruct.SequenceOfCosemAttributeDescriptorWithSelection(m_io);
@@ -179,13 +186,14 @@ namespace Netdx.Packets.Industrial
                 return new SetRequestNormal(new KaitaiStream(fileName));
             }
 
-            public SetRequestNormal(KaitaiStream p__io, DlmsSetRequest p__parent = null, DlmsSetRequest p__root = null) : base(p__io)
+            public SetRequestNormal(KaitaiStream io, DlmsSetRequest parent = null, DlmsSetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _cosemAttributeDescriptor = new DlmsStruct.CosemAttributeDescriptor(m_io);

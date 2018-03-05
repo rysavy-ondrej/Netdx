@@ -1,7 +1,8 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using Kaitai;
+using System;
 using System.Collections.Generic;
+using Kaitai;
 
 namespace Netdx.Packets.Common
 {
@@ -11,7 +12,6 @@ namespace Netdx.Packets.Common
         {
             return new TlsRecord(new KaitaiStream(fileName));
         }
-
 
         public enum TlsContentType
         {
@@ -35,13 +35,15 @@ namespace Netdx.Packets.Common
             ClientKeyExchange = 16,
             Finished = 20,
         }
-        public TlsRecord(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+
+        public TlsRecord(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _contentType = ((TlsContentType) m_io.ReadU1());
             _version = new TlsVersion(m_io, this, m_root);
@@ -86,13 +88,14 @@ namespace Netdx.Packets.Common
                 return new ServerName(new KaitaiStream(fileName));
             }
 
-            public ServerName(KaitaiStream p__io, TlsRecord.Sni p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public ServerName(KaitaiStream io, Sni parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _nameType = m_io.ReadU1();
                 _length = m_io.ReadU2be();
@@ -116,13 +119,14 @@ namespace Netdx.Packets.Common
                 return new Random(new KaitaiStream(fileName));
             }
 
-            public Random(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Random(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _gmtUnixTime = m_io.ReadU4be();
                 _randomBytes = m_io.ReadBytes(28);
@@ -143,13 +147,14 @@ namespace Netdx.Packets.Common
                 return new TlsCertificateRequest(new KaitaiStream(fileName));
             }
 
-            public TlsCertificateRequest(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsCertificateRequest(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _empty = m_io.ReadBytes(0);
             }
@@ -167,25 +172,22 @@ namespace Netdx.Packets.Common
                 return new TlsCertificate(new KaitaiStream(fileName));
             }
 
-            public TlsCertificate(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsCertificate(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _certLength = new TlsLength(m_io, this, m_root);
                 __raw_certificates = new List<byte[]>();
                 _certificates = new List<Certificate>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        __raw_certificates.Add(m_io.ReadBytes(CertLength.Value));
-                        var io___raw_certificates = new KaitaiStream(__raw_certificates[__raw_certificates.Count - 1]);
-                        _certificates.Add(new Certificate(io___raw_certificates, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    __raw_certificates.Add(m_io.ReadBytes(CertLength.Value));
+                    var io___raw_certificates = new KaitaiStream(__raw_certificates[__raw_certificates.Count - 1]);
+                    _certificates.Add(new Certificate(io___raw_certificates, this, m_root));
                 }
             }
             private TlsLength _certLength;
@@ -206,13 +208,14 @@ namespace Netdx.Packets.Common
                 return new Certificate(new KaitaiStream(fileName));
             }
 
-            public Certificate(KaitaiStream p__io, TlsRecord.TlsCertificate p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Certificate(KaitaiStream io, TlsCertificate parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _certLength = new TlsLength(m_io, this, m_root);
                 _body = m_io.ReadBytes(CertLength.Value);
@@ -233,13 +236,14 @@ namespace Netdx.Packets.Common
                 return new SessionId(new KaitaiStream(fileName));
             }
 
-            public SessionId(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public SessionId(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _len = m_io.ReadU1();
                 _sid = m_io.ReadBytes(Len);
@@ -260,22 +264,19 @@ namespace Netdx.Packets.Common
                 return new Sni(new KaitaiStream(fileName));
             }
 
-            public Sni(KaitaiStream p__io, TlsRecord.Extension p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Sni(KaitaiStream io, Extension parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _listLength = m_io.ReadU2be();
                 _serverNames = new List<ServerName>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _serverNames.Add(new ServerName(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _serverNames.Add(new ServerName(m_io, this, m_root));
                 }
             }
             private ushort _listLength;
@@ -294,13 +295,14 @@ namespace Netdx.Packets.Common
                 return new TlsServerHello(new KaitaiStream(fileName));
             }
 
-            public TlsServerHello(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsServerHello(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _version = new TlsVersion(m_io, this, m_root);
                 _random = new Random(m_io, this, m_root);
@@ -335,18 +337,18 @@ namespace Netdx.Packets.Common
                 return new CipherSuites(new KaitaiStream(fileName));
             }
 
-            public CipherSuites(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public CipherSuites(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _len = m_io.ReadU2be();
                 _cipherSuiteList = new List<ushort>((int) ((Len / 2)));
-                for (var i = 0; i < (Len / 2); i++)
-                {
+                for (var i = 0; i < (Len / 2); i++) {
                     _cipherSuiteList.Add(m_io.ReadU2be());
                 }
             }
@@ -366,13 +368,14 @@ namespace Netdx.Packets.Common
                 return new TlsClientKeyExchange(new KaitaiStream(fileName));
             }
 
-            public TlsClientKeyExchange(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsClientKeyExchange(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _tlsPremasterSecret = new TlsPreMasterSecret(m_io, this, m_root);
             }
@@ -390,13 +393,14 @@ namespace Netdx.Packets.Common
                 return new TlsChangeCipherSpec(new KaitaiStream(fileName));
             }
 
-            public TlsChangeCipherSpec(KaitaiStream p__io, TlsRecord p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsChangeCipherSpec(KaitaiStream io, TlsRecord parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _changeMessage = m_io.ReadBytesFull();
             }
@@ -414,13 +418,14 @@ namespace Netdx.Packets.Common
                 return new CompressionMethods(new KaitaiStream(fileName));
             }
 
-            public CompressionMethods(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public CompressionMethods(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _len = m_io.ReadU1();
                 _bytes = m_io.ReadBytes(Len);
@@ -441,13 +446,14 @@ namespace Netdx.Packets.Common
                 return new TlsCertificateVerify(new KaitaiStream(fileName));
             }
 
-            public TlsCertificateVerify(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsCertificateVerify(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _empty = m_io.ReadBytes(0);
             }
@@ -465,22 +471,19 @@ namespace Netdx.Packets.Common
                 return new Alpn(new KaitaiStream(fileName));
             }
 
-            public Alpn(KaitaiStream p__io, TlsRecord.Extension p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Alpn(KaitaiStream io, Extension parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _extLen = m_io.ReadU2be();
                 _alpnProtocols = new List<Protocol>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _alpnProtocols.Add(new Protocol(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _alpnProtocols.Add(new Protocol(m_io, this, m_root));
                 }
             }
             private ushort _extLen;
@@ -499,22 +502,19 @@ namespace Netdx.Packets.Common
                 return new Extensions(new KaitaiStream(fileName));
             }
 
-            public Extensions(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Extensions(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _len = m_io.ReadU2be();
                 _extensionList = new List<Extension>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _extensionList.Add(new Extension(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _extensionList.Add(new Extension(m_io, this, m_root));
                 }
             }
             private ushort _len;
@@ -533,13 +533,14 @@ namespace Netdx.Packets.Common
                 return new TlsPreMasterSecret(new KaitaiStream(fileName));
             }
 
-            public TlsPreMasterSecret(KaitaiStream p__io, TlsRecord.TlsClientKeyExchange p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsPreMasterSecret(KaitaiStream io, TlsClientKeyExchange parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _secretLength = m_io.ReadU2be();
                 _secret = m_io.ReadBytes(SecretLength);
@@ -560,13 +561,14 @@ namespace Netdx.Packets.Common
                 return new TlsServerKeyExchange(new KaitaiStream(fileName));
             }
 
-            public TlsServerKeyExchange(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsServerKeyExchange(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _empty = m_io.ReadBytes(0);
             }
@@ -584,13 +586,14 @@ namespace Netdx.Packets.Common
                 return new TlsApplicationData(new KaitaiStream(fileName));
             }
 
-            public TlsApplicationData(KaitaiStream p__io, TlsRecord p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsApplicationData(KaitaiStream io, TlsRecord parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _body = m_io.ReadBytesFull();
             }
@@ -608,13 +611,14 @@ namespace Netdx.Packets.Common
                 return new TlsClientHello(new KaitaiStream(fileName));
             }
 
-            public TlsClientHello(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsClientHello(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _version = new TlsVersion(m_io, this, m_root);
                 _random = new Random(m_io, this, m_root);
@@ -649,13 +653,14 @@ namespace Netdx.Packets.Common
                 return new TlsServerHelloDone(new KaitaiStream(fileName));
             }
 
-            public TlsServerHelloDone(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsServerHelloDone(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _empty = m_io.ReadBytes(0);
             }
@@ -673,13 +678,14 @@ namespace Netdx.Packets.Common
                 return new TlsEncryptedMessage(new KaitaiStream(fileName));
             }
 
-            public TlsEncryptedMessage(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsEncryptedMessage(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _encryptedMessage = m_io.ReadBytesFull();
             }
@@ -697,13 +703,14 @@ namespace Netdx.Packets.Common
                 return new TlsEmpty(new KaitaiStream(fileName));
             }
 
-            public TlsEmpty(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsEmpty(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _empty = m_io.ReadBytes(0);
             }
@@ -721,13 +728,14 @@ namespace Netdx.Packets.Common
                 return new TlsHandshake(new KaitaiStream(fileName));
             }
 
-            public TlsHandshake(KaitaiStream p__io, TlsRecord p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsHandshake(KaitaiStream io, TlsRecord parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _handshakeType = ((TlsRecord.TlsHandshakeType) m_io.ReadU1());
                 _bodyLength = new TlsLength(m_io, this, m_root);
@@ -820,13 +828,14 @@ namespace Netdx.Packets.Common
                 return new Protocol(new KaitaiStream(fileName));
             }
 
-            public Protocol(KaitaiStream p__io, TlsRecord.Alpn p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Protocol(KaitaiStream io, Alpn parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _strlen = m_io.ReadU1();
                 _name = m_io.ReadBytes(Strlen);
@@ -847,15 +856,16 @@ namespace Netdx.Packets.Common
                 return new TlsLength(new KaitaiStream(fileName));
             }
 
-            public TlsLength(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsLength(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_value = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_value = false;
                 _hlen = m_io.ReadU1();
                 _llen = m_io.ReadU2be();
             }
@@ -888,13 +898,14 @@ namespace Netdx.Packets.Common
                 return new TlsVersion(new KaitaiStream(fileName));
             }
 
-            public TlsVersion(KaitaiStream p__io, KaitaiStruct p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsVersion(KaitaiStream io, KaitaiStruct parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _major = m_io.ReadU1();
                 _minor = m_io.ReadU1();
@@ -915,13 +926,14 @@ namespace Netdx.Packets.Common
                 return new TlsFinished(new KaitaiStream(fileName));
             }
 
-            public TlsFinished(KaitaiStream p__io, TlsRecord.TlsHandshake p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public TlsFinished(KaitaiStream io, TlsHandshake parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _verifyData = m_io.ReadBytesFull();
             }
@@ -939,13 +951,14 @@ namespace Netdx.Packets.Common
                 return new Extension(new KaitaiStream(fileName));
             }
 
-            public Extension(KaitaiStream p__io, TlsRecord.Extensions p__parent = null, TlsRecord p__root = null) : base(p__io)
+            public Extension(KaitaiStream io, Extensions parent = null, TlsRecord root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _type = m_io.ReadU2be();
                 _len = m_io.ReadU2be();

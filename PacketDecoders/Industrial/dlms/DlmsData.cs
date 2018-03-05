@@ -1,7 +1,8 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using Kaitai;
+using System;
 using System.Collections.Generic;
+using Kaitai;
 
 namespace Netdx.Packets.Industrial
 {
@@ -11,7 +12,6 @@ namespace Netdx.Packets.Industrial
         {
             return new DlmsData(new KaitaiStream(fileName));
         }
-
 
         public enum DataType
         {
@@ -40,13 +40,15 @@ namespace Netdx.Packets.Industrial
             Time = 27,
             DoNotCare = 255,
         }
-        public DlmsData(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsData p__root = null) : base(p__io)
+
+        public DlmsData(KaitaiStream io, KaitaiStruct parent = null, DlmsData root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _datatype = ((DataType) m_io.ReadU1());
             switch (Datatype) {
@@ -155,13 +157,14 @@ namespace Netdx.Packets.Industrial
                 return new DoubleLong(new KaitaiStream(fileName));
             }
 
-            public DoubleLong(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public DoubleLong(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadS4be();
             }
@@ -179,13 +182,14 @@ namespace Netdx.Packets.Industrial
                 return new OctetString(new KaitaiStream(fileName));
             }
 
-            public OctetString(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public OctetString(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _length = new LengthEncoded(m_io, this, m_root);
                 _value = System.Text.Encoding.GetEncoding("ascii").GetString(m_io.ReadBytes(Length.Value));
@@ -206,13 +210,14 @@ namespace Netdx.Packets.Industrial
                 return new NullData(new KaitaiStream(fileName));
             }
 
-            public NullData(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public NullData(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _nothing = m_io.ReadBytes(0);
             }
@@ -230,13 +235,14 @@ namespace Netdx.Packets.Industrial
                 return new OctetStringOptional(new KaitaiStream(fileName));
             }
 
-            public OctetStringOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsData p__root = null) : base(p__io)
+            public OctetStringOptional(KaitaiStream io, KaitaiStruct parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _present = m_io.ReadU1();
                 if (Present != 0) {
@@ -259,13 +265,14 @@ namespace Netdx.Packets.Industrial
                 return new Float64(new KaitaiStream(fileName));
             }
 
-            public Float64(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Float64(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadF8be();
             }
@@ -283,15 +290,16 @@ namespace Netdx.Packets.Industrial
                 return new LengthEncoded(new KaitaiStream(fileName));
             }
 
-            public LengthEncoded(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsData p__root = null) : base(p__io)
+            public LengthEncoded(KaitaiStream io, KaitaiStruct parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_value = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_value = false;
                 _b1 = m_io.ReadU1();
                 if (B1 == 130) {
                     _int2 = m_io.ReadU2be();
@@ -311,11 +319,11 @@ namespace Netdx.Packets.Industrial
                 }
             }
             private byte _b1;
-            private ushort? _int2;
+            private ushort _int2;
             private DlmsData m_root;
             private KaitaiStruct m_parent;
             public byte B1 { get { return _b1; } }
-            public ushort? Int2 { get { return _int2; } }
+            public ushort Int2 { get { return _int2; } }
             public DlmsData M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -326,13 +334,14 @@ namespace Netdx.Packets.Industrial
                 return new CompactArray(new KaitaiStream(fileName));
             }
 
-            public CompactArray(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public CompactArray(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsData m_root;
@@ -347,13 +356,14 @@ namespace Netdx.Packets.Industrial
                 return new DoNotCare(new KaitaiStream(fileName));
             }
 
-            public DoNotCare(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public DoNotCare(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsData m_root;
@@ -368,13 +378,14 @@ namespace Netdx.Packets.Industrial
                 return new Array(new KaitaiStream(fileName));
             }
 
-            public Array(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Array(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsData m_root;
@@ -389,13 +400,14 @@ namespace Netdx.Packets.Industrial
                 return new Float32(new KaitaiStream(fileName));
             }
 
-            public Float32(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Float32(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadF4be();
             }
@@ -413,13 +425,14 @@ namespace Netdx.Packets.Industrial
                 return new Long(new KaitaiStream(fileName));
             }
 
-            public Long(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Long(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadS2be();
             }
@@ -437,13 +450,14 @@ namespace Netdx.Packets.Industrial
                 return new Boolean(new KaitaiStream(fileName));
             }
 
-            public Boolean(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Boolean(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadU1();
             }
@@ -461,13 +475,14 @@ namespace Netdx.Packets.Industrial
                 return new Structure(new KaitaiStream(fileName));
             }
 
-            public Structure(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Structure(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsData m_root;
@@ -482,13 +497,14 @@ namespace Netdx.Packets.Industrial
                 return new Date(new KaitaiStream(fileName));
             }
 
-            public Date(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Date(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadBytes(5);
             }
@@ -506,13 +522,14 @@ namespace Netdx.Packets.Industrial
                 return new DoubleLongUnsigned(new KaitaiStream(fileName));
             }
 
-            public DoubleLongUnsigned(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public DoubleLongUnsigned(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadU4be();
             }
@@ -530,13 +547,14 @@ namespace Netdx.Packets.Industrial
                 return new VisibleString(new KaitaiStream(fileName));
             }
 
-            public VisibleString(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public VisibleString(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsData m_root;
@@ -551,13 +569,14 @@ namespace Netdx.Packets.Industrial
                 return new Enum(new KaitaiStream(fileName));
             }
 
-            public Enum(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Enum(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadU1();
             }
@@ -575,13 +594,14 @@ namespace Netdx.Packets.Industrial
                 return new Unsigned(new KaitaiStream(fileName));
             }
 
-            public Unsigned(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Unsigned(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadU1();
             }
@@ -599,13 +619,14 @@ namespace Netdx.Packets.Industrial
                 return new DateTime(new KaitaiStream(fileName));
             }
 
-            public DateTime(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public DateTime(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadBytes(12);
             }
@@ -623,13 +644,14 @@ namespace Netdx.Packets.Industrial
                 return new Long64Unsigned(new KaitaiStream(fileName));
             }
 
-            public Long64Unsigned(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Long64Unsigned(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadU8be();
             }
@@ -647,13 +669,14 @@ namespace Netdx.Packets.Industrial
                 return new Integer(new KaitaiStream(fileName));
             }
 
-            public Integer(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Integer(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadS1();
             }
@@ -671,13 +694,14 @@ namespace Netdx.Packets.Industrial
                 return new Time(new KaitaiStream(fileName));
             }
 
-            public Time(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Time(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadBytes(4);
             }
@@ -695,13 +719,14 @@ namespace Netdx.Packets.Industrial
                 return new Bcd(new KaitaiStream(fileName));
             }
 
-            public Bcd(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Bcd(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsData m_root;
@@ -716,13 +741,14 @@ namespace Netdx.Packets.Industrial
                 return new Long64(new KaitaiStream(fileName));
             }
 
-            public Long64(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public Long64(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadS8be();
             }
@@ -740,18 +766,18 @@ namespace Netdx.Packets.Industrial
                 return new BitString(new KaitaiStream(fileName));
             }
 
-            public BitString(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public BitString(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _length = new LengthEncoded(m_io, this, m_root);
                 _value = new List<byte>((int) (Length.Value));
-                for (var i = 0; i < Length.Value; i++)
-                {
+                for (var i = 0; i < Length.Value; i++) {
                     _value.Add(m_io.ReadU1());
                 }
             }
@@ -771,13 +797,14 @@ namespace Netdx.Packets.Industrial
                 return new BooleanOptional(new KaitaiStream(fileName));
             }
 
-            public BooleanOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsData p__root = null) : base(p__io)
+            public BooleanOptional(KaitaiStream io, KaitaiStruct parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _present = m_io.ReadU1();
                 if (Present != 0) {
@@ -800,13 +827,14 @@ namespace Netdx.Packets.Industrial
                 return new LongUnsigned(new KaitaiStream(fileName));
             }
 
-            public LongUnsigned(KaitaiStream p__io, DlmsData p__parent = null, DlmsData p__root = null) : base(p__io)
+            public LongUnsigned(KaitaiStream io, DlmsData parent = null, DlmsData root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = m_io.ReadU2be();
             }

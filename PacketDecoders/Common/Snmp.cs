@@ -1,7 +1,8 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using Kaitai;
+using System;
 using System.Collections.Generic;
+using Kaitai;
 
 namespace Netdx.Packets.Common
 {
@@ -11,7 +12,6 @@ namespace Netdx.Packets.Common
         {
             return new Snmp(new KaitaiStream(fileName));
         }
-
 
         public enum AsnTypeTag
         {
@@ -61,13 +61,15 @@ namespace Netdx.Packets.Common
             ReadOnly = 4,
             GenErr = 5,
         }
-        public Snmp(KaitaiStream p__io, KaitaiStruct p__parent = null, Snmp p__root = null) : base(p__io)
+
+        public Snmp(KaitaiStream io, KaitaiStruct parent = null, Snmp root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _hdr = new AsnHdr(m_io, this, m_root);
             _version = new AsnObj(m_io, this, m_root);
@@ -107,15 +109,16 @@ namespace Netdx.Packets.Common
                 return new ErrorStatus(new KaitaiStream(fileName));
             }
 
-            public ErrorStatus(KaitaiStream p__io, Snmp.Pdu p__parent = null, Snmp p__root = null) : base(p__io)
+            public ErrorStatus(KaitaiStream io, Pdu parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_code = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_code = false;
                 _hdr = new AsnHdr(m_io, this, m_root);
                 __raw_val = m_io.ReadBytes(Hdr.Len.Value);
                 var io___raw_val = new KaitaiStream(__raw_val);
@@ -152,13 +155,14 @@ namespace Netdx.Packets.Common
                 return new AsnObj(new KaitaiStream(fileName));
             }
 
-            public AsnObj(KaitaiStream p__io, KaitaiStruct p__parent = null, Snmp p__root = null) : base(p__io)
+            public AsnObj(KaitaiStream io, KaitaiStruct parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _hdr = new AsnHdr(m_io, this, m_root);
                 switch (Hdr.Tag) {
@@ -228,23 +232,20 @@ namespace Netdx.Packets.Common
                 return new VariableBindings(new KaitaiStream(fileName));
             }
 
-            public VariableBindings(KaitaiStream p__io, Snmp.Pdu p__parent = null, Snmp p__root = null) : base(p__io)
+            public VariableBindings(KaitaiStream io, Pdu parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _seqTypeTag = m_io.EnsureFixedContents(new byte[] { 48 });
                 _len = new LenEncoded(m_io, this, m_root);
                 _entries = new List<VariableBinding>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _entries.Add(new VariableBinding(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _entries.Add(new VariableBinding(m_io, this, m_root));
                 }
             }
             private byte[] _seqTypeTag;
@@ -265,21 +266,18 @@ namespace Netdx.Packets.Common
                 return new BodySequence(new KaitaiStream(fileName));
             }
 
-            public BodySequence(KaitaiStream p__io, Snmp.AsnObj p__parent = null, Snmp p__root = null) : base(p__io)
+            public BodySequence(KaitaiStream io, AsnObj parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _entries = new List<AsnObj>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _entries.Add(new AsnObj(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _entries.Add(new AsnObj(m_io, this, m_root));
                 }
             }
             private List<AsnObj> _entries;
@@ -296,21 +294,18 @@ namespace Netdx.Packets.Common
                 return new Trap1(new KaitaiStream(fileName));
             }
 
-            public Trap1(KaitaiStream p__io, Snmp p__parent = null, Snmp p__root = null) : base(p__io)
+            public Trap1(KaitaiStream io, Snmp parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _items = new List<AsnObj>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _items.Add(new AsnObj(m_io, this, m_root));
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _items.Add(new AsnObj(m_io, this, m_root));
                 }
             }
             private List<AsnObj> _items;
@@ -327,13 +322,14 @@ namespace Netdx.Packets.Common
                 return new AsnHdr(new KaitaiStream(fileName));
             }
 
-            public AsnHdr(KaitaiStream p__io, KaitaiStruct p__parent = null, Snmp p__root = null) : base(p__io)
+            public AsnHdr(KaitaiStream io, KaitaiStruct parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _tag = ((Snmp.AsnTypeTag) m_io.ReadU1());
                 _len = new LenEncoded(m_io, this, m_root);
@@ -354,13 +350,14 @@ namespace Netdx.Packets.Common
                 return new BodyUtf8string(new KaitaiStream(fileName));
             }
 
-            public BodyUtf8string(KaitaiStream p__io, Snmp.AsnObj p__parent = null, Snmp p__root = null) : base(p__io)
+            public BodyUtf8string(KaitaiStream io, AsnObj parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = System.Text.Encoding.GetEncoding("UTF-8").GetString(m_io.ReadBytesFull());
             }
@@ -378,13 +375,14 @@ namespace Netdx.Packets.Common
                 return new GetRequest(new KaitaiStream(fileName));
             }
 
-            public GetRequest(KaitaiStream p__io, Snmp p__parent = null, Snmp p__root = null) : base(p__io)
+            public GetRequest(KaitaiStream io, Snmp parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _pdu = new Pdu(m_io, this, m_root);
             }
@@ -402,13 +400,14 @@ namespace Netdx.Packets.Common
                 return new Trap2(new KaitaiStream(fileName));
             }
 
-            public Trap2(KaitaiStream p__io, Snmp p__parent = null, Snmp p__root = null) : base(p__io)
+            public Trap2(KaitaiStream io, Snmp parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _requestId = new Pdu(m_io, this, m_root);
             }
@@ -426,13 +425,14 @@ namespace Netdx.Packets.Common
                 return new VariableBinding(new KaitaiStream(fileName));
             }
 
-            public VariableBinding(KaitaiStream p__io, Snmp.VariableBindings p__parent = null, Snmp p__root = null) : base(p__io)
+            public VariableBinding(KaitaiStream io, VariableBindings parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _seqTypeTag = m_io.EnsureFixedContents(new byte[] { 48 });
                 _len = new LenEncoded(m_io, this, m_root);
@@ -459,22 +459,19 @@ namespace Netdx.Packets.Common
                 return new BodyInteger(new KaitaiStream(fileName));
             }
 
-            public BodyInteger(KaitaiStream p__io, KaitaiStruct p__parent = null, Snmp p__root = null) : base(p__io)
+            public BodyInteger(KaitaiStream io, KaitaiStruct parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_value = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_value = false;
                 _bytes = new List<byte>();
-                {
-                    var i = 0;
-                    while (!m_io.IsEof) {
-                        _bytes.Add(m_io.ReadU1());
-                        i++;
-                    }
+                while (!m_io.IsEof) {
+                    _bytes.Add(m_io.ReadU1());
                 }
             }
             private bool f_value;
@@ -508,13 +505,14 @@ namespace Netdx.Packets.Common
                 return new Response(new KaitaiStream(fileName));
             }
 
-            public Response(KaitaiStream p__io, Snmp p__parent = null, Snmp p__root = null) : base(p__io)
+            public Response(KaitaiStream io, Snmp parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _pdu = new Pdu(m_io, this, m_root);
             }
@@ -532,13 +530,14 @@ namespace Netdx.Packets.Common
                 return new Pdu(new KaitaiStream(fileName));
             }
 
-            public Pdu(KaitaiStream p__io, KaitaiStruct p__parent = null, Snmp p__root = null) : base(p__io)
+            public Pdu(KaitaiStream io, KaitaiStruct parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _requestId = new AsnObj(m_io, this, m_root);
                 _errorStatus = new ErrorStatus(m_io, this, m_root);
@@ -565,13 +564,14 @@ namespace Netdx.Packets.Common
                 return new GetNextRequest(new KaitaiStream(fileName));
             }
 
-            public GetNextRequest(KaitaiStream p__io, Snmp p__parent = null, Snmp p__root = null) : base(p__io)
+            public GetNextRequest(KaitaiStream io, Snmp parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _pdu = new Pdu(m_io, this, m_root);
             }
@@ -589,13 +589,14 @@ namespace Netdx.Packets.Common
                 return new SetRequest(new KaitaiStream(fileName));
             }
 
-            public SetRequest(KaitaiStream p__io, Snmp p__parent = null, Snmp p__root = null) : base(p__io)
+            public SetRequest(KaitaiStream io, Snmp parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _pdu = new Pdu(m_io, this, m_root);
             }
@@ -613,15 +614,16 @@ namespace Netdx.Packets.Common
                 return new LenEncoded(new KaitaiStream(fileName));
             }
 
-            public LenEncoded(KaitaiStream p__io, KaitaiStruct p__parent = null, Snmp p__root = null) : base(p__io)
+            public LenEncoded(KaitaiStream io, KaitaiStruct parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_value = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_value = false;
                 _b1 = m_io.ReadU1();
                 __raw_b2 = m_io.ReadBytes((B1 < 128 ? 0 : (B1 & 127)));
                 var io___raw_b2 = new KaitaiStream(__raw_b2);
@@ -658,13 +660,14 @@ namespace Netdx.Packets.Common
                 return new BodyPrintableString(new KaitaiStream(fileName));
             }
 
-            public BodyPrintableString(KaitaiStream p__io, Snmp.AsnObj p__parent = null, Snmp p__root = null) : base(p__io)
+            public BodyPrintableString(KaitaiStream io, AsnObj parent = null, Snmp root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = System.Text.Encoding.GetEncoding("ASCII").GetString(m_io.ReadBytesFull());
             }

@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -11,13 +13,14 @@ namespace Netdx.Packets.Industrial
             return new DlmsEventNotificationRequest(new KaitaiStream(fileName));
         }
 
-        public DlmsEventNotificationRequest(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsEventNotificationRequest p__root = null) : base(p__io)
+        public DlmsEventNotificationRequest(KaitaiStream io, KaitaiStruct parent = null, DlmsEventNotificationRequest root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _time = new DlmsStruct.CosemDateTimeOptional(m_io);
             _cosemAttributeDescriptor = new DlmsStruct.CosemAttributeDescriptor(m_io);

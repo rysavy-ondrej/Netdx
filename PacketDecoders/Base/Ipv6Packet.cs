@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Base
@@ -11,13 +13,14 @@ namespace Netdx.Packets.Base
             return new Ipv6Packet(new KaitaiStream(fileName));
         }
 
-        public Ipv6Packet(KaitaiStream p__io, KaitaiStruct p__parent = null, Ipv6Packet p__root = null) : base(p__io)
+        public Ipv6Packet(KaitaiStream io, KaitaiStruct parent = null, Ipv6Packet root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _version = m_io.ReadBitsInt(4);
             _trafficClass = m_io.ReadBitsInt(8);
@@ -59,13 +62,14 @@ namespace Netdx.Packets.Base
                 return new NoNextHeader(new KaitaiStream(fileName));
             }
 
-            public NoNextHeader(KaitaiStream p__io, KaitaiStruct p__parent = null, Ipv6Packet p__root = null) : base(p__io)
+            public NoNextHeader(KaitaiStream io, KaitaiStruct parent = null, Ipv6Packet root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private Ipv6Packet m_root;
@@ -80,13 +84,14 @@ namespace Netdx.Packets.Base
                 return new OptionHopByHop(new KaitaiStream(fileName));
             }
 
-            public OptionHopByHop(KaitaiStream p__io, KaitaiStruct p__parent = null, Ipv6Packet p__root = null) : base(p__io)
+            public OptionHopByHop(KaitaiStream io, KaitaiStruct parent = null, Ipv6Packet root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _nextHeaderType = m_io.ReadU1();
                 _hdrExtLen = m_io.ReadU1();

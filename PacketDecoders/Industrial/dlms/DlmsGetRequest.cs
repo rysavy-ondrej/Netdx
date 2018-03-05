@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -11,20 +13,21 @@ namespace Netdx.Packets.Industrial
             return new DlmsGetRequest(new KaitaiStream(fileName));
         }
 
-
         public enum GetRequestType
         {
             GetRequestNormal = 1,
             GetRequestNext = 2,
             GetRequestWithList = 3,
         }
-        public DlmsGetRequest(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsGetRequest p__root = null) : base(p__io)
+
+        public DlmsGetRequest(KaitaiStream io, KaitaiStruct parent = null, DlmsGetRequest root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _requestType = ((GetRequestType) m_io.ReadU1());
             switch (RequestType) {
@@ -49,13 +52,14 @@ namespace Netdx.Packets.Industrial
                 return new GetRequestNormal(new KaitaiStream(fileName));
             }
 
-            public GetRequestNormal(KaitaiStream p__io, DlmsGetRequest p__parent = null, DlmsGetRequest p__root = null) : base(p__io)
+            public GetRequestNormal(KaitaiStream io, DlmsGetRequest parent = null, DlmsGetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _cosemAttributeDescriptor = new DlmsStruct.CosemAttributeDescriptor(m_io);
@@ -79,13 +83,14 @@ namespace Netdx.Packets.Industrial
                 return new GetRequestNext(new KaitaiStream(fileName));
             }
 
-            public GetRequestNext(KaitaiStream p__io, DlmsGetRequest p__parent = null, DlmsGetRequest p__root = null) : base(p__io)
+            public GetRequestNext(KaitaiStream io, DlmsGetRequest parent = null, DlmsGetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _blockNumber = m_io.ReadU4be();
@@ -106,13 +111,14 @@ namespace Netdx.Packets.Industrial
                 return new GetRequestWithList(new KaitaiStream(fileName));
             }
 
-            public GetRequestWithList(KaitaiStream p__io, DlmsGetRequest p__parent = null, DlmsGetRequest p__root = null) : base(p__io)
+            public GetRequestWithList(KaitaiStream io, DlmsGetRequest parent = null, DlmsGetRequest root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _attributeDescriptorList = new DlmsStruct.CosemAttributeDescriptorWithSelection(m_io);

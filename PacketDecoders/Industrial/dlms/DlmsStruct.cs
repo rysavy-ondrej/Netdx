@@ -1,7 +1,8 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
-using Kaitai;
+using System;
 using System.Collections.Generic;
+using Kaitai;
 
 namespace Netdx.Packets.Industrial
 {
@@ -11,7 +12,6 @@ namespace Netdx.Packets.Industrial
         {
             return new DlmsStruct(new KaitaiStream(fileName));
         }
-
 
         public enum AccessResult
         {
@@ -31,13 +31,15 @@ namespace Netdx.Packets.Industrial
             NoLongSetInProgress = 18,
             OtherReason = 250,
         }
-        public DlmsStruct(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+
+        public DlmsStruct(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
         }
         public partial class SequenceOfData : KaitaiStruct
@@ -47,18 +49,18 @@ namespace Netdx.Packets.Industrial
                 return new SequenceOfData(new KaitaiStream(fileName));
             }
 
-            public SequenceOfData(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public SequenceOfData(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _itemCount = new LengthEncoded(m_io, this, m_root);
                 _items = new List<DlmsData>((int) (ItemCount.Value));
-                for (var i = 0; i < ItemCount.Value; i++)
-                {
+                for (var i = 0; i < ItemCount.Value; i++) {
                     _items.Add(new DlmsData(m_io));
                 }
             }
@@ -78,18 +80,18 @@ namespace Netdx.Packets.Industrial
                 return new SequenceOfCosemAttributeDescriptorWithSelection(new KaitaiStream(fileName));
             }
 
-            public SequenceOfCosemAttributeDescriptorWithSelection(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public SequenceOfCosemAttributeDescriptorWithSelection(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _itemCount = new LengthEncoded(m_io, this, m_root);
                 _items = new List<CosemAttributeDescriptorWithSelection>((int) (ItemCount.Value));
-                for (var i = 0; i < ItemCount.Value; i++)
-                {
+                for (var i = 0; i < ItemCount.Value; i++) {
                     _items.Add(new CosemAttributeDescriptorWithSelection(m_io, this, m_root));
                 }
             }
@@ -109,13 +111,14 @@ namespace Netdx.Packets.Industrial
                 return new CosemDateTime(new KaitaiStream(fileName));
             }
 
-            public CosemDateTime(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemDateTime(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _bytes = m_io.ReadBytes(12);
             }
@@ -133,13 +136,14 @@ namespace Netdx.Packets.Industrial
                 return new DataOptional(new KaitaiStream(fileName));
             }
 
-            public DataOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public DataOptional(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _present = m_io.ReadU1();
                 if (Present != 0) {
@@ -162,13 +166,14 @@ namespace Netdx.Packets.Industrial
                 return new GetDataResult(new KaitaiStream(fileName));
             }
 
-            public GetDataResult(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public GetDataResult(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _data = new DlmsData(m_io);
                 _dataAccessResult = new DataAccessResult(m_io, this, m_root);
@@ -189,13 +194,14 @@ namespace Netdx.Packets.Industrial
                 return new CosemObjectInstanceId(new KaitaiStream(fileName));
             }
 
-            public CosemObjectInstanceId(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemObjectInstanceId(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _oid = m_io.ReadBytes(6);
             }
@@ -213,13 +219,14 @@ namespace Netdx.Packets.Industrial
                 return new CosemMethodDescriptor(new KaitaiStream(fileName));
             }
 
-            public CosemMethodDescriptor(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemMethodDescriptor(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _classId = m_io.ReadU2be();
                 _instanceId = new CosemObjectInstanceId(m_io, this, m_root);
@@ -243,13 +250,14 @@ namespace Netdx.Packets.Industrial
                 return new DatablockSa(new KaitaiStream(fileName));
             }
 
-            public DatablockSa(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public DatablockSa(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _data = m_io.ReadBytesFull();
             }
@@ -267,13 +275,14 @@ namespace Netdx.Packets.Industrial
                 return new CosemAttributeDescriptorWithSelection(new KaitaiStream(fileName));
             }
 
-            public CosemAttributeDescriptorWithSelection(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemAttributeDescriptorWithSelection(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _cosemAttributeDescriptor = new CosemAttributeDescriptor(m_io, this, m_root);
                 _accessSelection = new SelectiveAccessDescriptorOptional(m_io, this, m_root);
@@ -294,13 +303,14 @@ namespace Netdx.Packets.Industrial
                 return new DatablockG(new KaitaiStream(fileName));
             }
 
-            public DatablockG(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public DatablockG(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _lastBlock = m_io.ReadU1();
                 _blockNumber = m_io.ReadU4be();
@@ -336,15 +346,16 @@ namespace Netdx.Packets.Industrial
                 return new LengthEncoded(new KaitaiStream(fileName));
             }
 
-            public LengthEncoded(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public LengthEncoded(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                f_value = false;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
+                f_value = false;
                 _b1 = m_io.ReadU1();
                 if (B1 == 130) {
                     _int2 = m_io.ReadU2be();
@@ -364,11 +375,11 @@ namespace Netdx.Packets.Industrial
                 }
             }
             private byte _b1;
-            private ushort? _int2;
+            private ushort _int2;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
             public byte B1 { get { return _b1; } }
-            public ushort? Int2 { get { return _int2; } }
+            public ushort Int2 { get { return _int2; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -379,18 +390,18 @@ namespace Netdx.Packets.Industrial
                 return new SequenceOfGetDataResult(new KaitaiStream(fileName));
             }
 
-            public SequenceOfGetDataResult(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public SequenceOfGetDataResult(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _itemCount = new LengthEncoded(m_io, this, m_root);
                 _items = new List<GetDataResult>((int) (ItemCount.Value));
-                for (var i = 0; i < ItemCount.Value; i++)
-                {
+                for (var i = 0; i < ItemCount.Value; i++) {
                     _items.Add(new GetDataResult(m_io, this, m_root));
                 }
             }
@@ -410,13 +421,14 @@ namespace Netdx.Packets.Industrial
                 return new InvokeIdAndPriority(new KaitaiStream(fileName));
             }
 
-            public InvokeIdAndPriority(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public InvokeIdAndPriority(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _priority = m_io.ReadBitsInt(1) != 0;
                 _serviceClass = m_io.ReadBitsInt(1) != 0;
@@ -440,18 +452,18 @@ namespace Netdx.Packets.Industrial
                 return new SequenceOfDataAccessResult(new KaitaiStream(fileName));
             }
 
-            public SequenceOfDataAccessResult(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public SequenceOfDataAccessResult(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _itemCount = new LengthEncoded(m_io, this, m_root);
                 _items = new List<DataAccessResult>((int) (ItemCount.Value));
-                for (var i = 0; i < ItemCount.Value; i++)
-                {
+                for (var i = 0; i < ItemCount.Value; i++) {
                     _items.Add(new DataAccessResult(m_io, this, m_root));
                 }
             }
@@ -471,13 +483,14 @@ namespace Netdx.Packets.Industrial
                 return new SelectiveAccessDescriptor(new KaitaiStream(fileName));
             }
 
-            public SelectiveAccessDescriptor(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public SelectiveAccessDescriptor(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _accessSelector = m_io.ReadU1();
                 _accessParameters = new DlmsData(m_io);
@@ -498,13 +511,14 @@ namespace Netdx.Packets.Industrial
                 return new CosemDateTimeOptional(new KaitaiStream(fileName));
             }
 
-            public CosemDateTimeOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemDateTimeOptional(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _present = m_io.ReadU1();
                 if (Present != 0) {
@@ -527,13 +541,14 @@ namespace Netdx.Packets.Industrial
                 return new DataAccessResult(new KaitaiStream(fileName));
             }
 
-            public DataAccessResult(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public DataAccessResult(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _value = ((DlmsStruct.AccessResult) m_io.ReadU1());
             }
@@ -551,13 +566,14 @@ namespace Netdx.Packets.Industrial
                 return new SelectiveAccessDescriptorOptional(new KaitaiStream(fileName));
             }
 
-            public SelectiveAccessDescriptorOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public SelectiveAccessDescriptorOptional(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _present = m_io.ReadU1();
                 if (Present != 0) {
@@ -580,13 +596,14 @@ namespace Netdx.Packets.Industrial
                 return new GetDataResultOptional(new KaitaiStream(fileName));
             }
 
-            public GetDataResultOptional(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public GetDataResultOptional(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _present = m_io.ReadU1();
                 if (Present != 0) {
@@ -609,13 +626,14 @@ namespace Netdx.Packets.Industrial
                 return new CosemAttributeDescriptor(new KaitaiStream(fileName));
             }
 
-            public CosemAttributeDescriptor(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsStruct p__root = null) : base(p__io)
+            public CosemAttributeDescriptor(KaitaiStream io, KaitaiStruct parent = null, DlmsStruct root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _classId = m_io.ReadU2be();
                 _instanceId = new CosemObjectInstanceId(m_io, this, m_root);

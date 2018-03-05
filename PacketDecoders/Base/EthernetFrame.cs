@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Base
@@ -10,7 +12,6 @@ namespace Netdx.Packets.Base
         {
             return new EthernetFrame(new KaitaiStream(fileName));
         }
-
 
         public enum EtherTypeEnum
         {
@@ -23,13 +24,15 @@ namespace Netdx.Packets.Base
             Arp = 2054,
             Ipv6 = 34525,
         }
-        public EthernetFrame(KaitaiStream p__io, KaitaiStruct p__parent = null, EthernetFrame p__root = null) : base(p__io)
+
+        public EthernetFrame(KaitaiStream io, KaitaiStruct parent = null, EthernetFrame root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _dstMac = m_io.ReadBytes(6);
             _srcMac = m_io.ReadBytes(6);

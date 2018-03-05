@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -10,7 +12,6 @@ namespace Netdx.Packets.Industrial
         {
             return new DlmsActionResponse(new KaitaiStream(fileName));
         }
-
 
         public enum ActionResponseType
         {
@@ -36,13 +37,15 @@ namespace Netdx.Packets.Industrial
             NoLongActionInProgress = 16,
             OtherReason = 250,
         }
-        public DlmsActionResponse(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsActionResponse p__root = null) : base(p__io)
+
+        public DlmsActionResponse(KaitaiStream io, KaitaiStruct parent = null, DlmsActionResponse root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _responseType = ((ActionResponseType) m_io.ReadU1());
             switch (ResponseType) {
@@ -71,13 +74,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionResponseWithPblock(new KaitaiStream(fileName));
             }
 
-            public ActionResponseWithPblock(KaitaiStream p__io, DlmsActionResponse p__parent = null, DlmsActionResponse p__root = null) : base(p__io)
+            public ActionResponseWithPblock(KaitaiStream io, DlmsActionResponse parent = null, DlmsActionResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionResponse m_root;
@@ -92,13 +96,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionResponseWithOptionalData(new KaitaiStream(fileName));
             }
 
-            public ActionResponseWithOptionalData(KaitaiStream p__io, DlmsActionResponse.ActionResponseNormal p__parent = null, DlmsActionResponse p__root = null) : base(p__io)
+            public ActionResponseWithOptionalData(KaitaiStream io, ActionResponseNormal parent = null, DlmsActionResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _result = ((DlmsActionResponse.ActionResult) m_io.ReadU1());
                 _returnParameters = new DlmsStruct.GetDataResultOptional(m_io);
@@ -119,13 +124,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionResponseNormal(new KaitaiStream(fileName));
             }
 
-            public ActionResponseNormal(KaitaiStream p__io, DlmsActionResponse p__parent = null, DlmsActionResponse p__root = null) : base(p__io)
+            public ActionResponseNormal(KaitaiStream io, DlmsActionResponse parent = null, DlmsActionResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _singleResponse = new ActionResponseWithOptionalData(m_io, this, m_root);
@@ -146,13 +152,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionResponseNextPblock(new KaitaiStream(fileName));
             }
 
-            public ActionResponseNextPblock(KaitaiStream p__io, DlmsActionResponse p__parent = null, DlmsActionResponse p__root = null) : base(p__io)
+            public ActionResponseNextPblock(KaitaiStream io, DlmsActionResponse parent = null, DlmsActionResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionResponse m_root;
@@ -167,13 +174,14 @@ namespace Netdx.Packets.Industrial
                 return new ActionResponseWithList(new KaitaiStream(fileName));
             }
 
-            public ActionResponseWithList(KaitaiStream p__io, DlmsActionResponse p__parent = null, DlmsActionResponse p__root = null) : base(p__io)
+            public ActionResponseWithList(KaitaiStream io, DlmsActionResponse parent = null, DlmsActionResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
             }
             private DlmsActionResponse m_root;

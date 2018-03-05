@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Industrial
@@ -11,7 +13,6 @@ namespace Netdx.Packets.Industrial
             return new DlmsSetResponse(new KaitaiStream(fileName));
         }
 
-
         public enum SetResponseType
         {
             SetResponseNormal = 1,
@@ -20,13 +21,15 @@ namespace Netdx.Packets.Industrial
             SetResponseLastDatablockWithList = 4,
             SetResponseWithList = 5,
         }
-        public DlmsSetResponse(KaitaiStream p__io, KaitaiStruct p__parent = null, DlmsSetResponse p__root = null) : base(p__io)
+
+        public DlmsSetResponse(KaitaiStream io, KaitaiStruct parent = null, DlmsSetResponse root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _responseType = ((SetResponseType) m_io.ReadU1());
             switch (ResponseType) {
@@ -59,13 +62,14 @@ namespace Netdx.Packets.Industrial
                 return new SetResponseLastDatablock(new KaitaiStream(fileName));
             }
 
-            public SetResponseLastDatablock(KaitaiStream p__io, DlmsSetResponse p__parent = null, DlmsSetResponse p__root = null) : base(p__io)
+            public SetResponseLastDatablock(KaitaiStream io, DlmsSetResponse parent = null, DlmsSetResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _result = new DlmsStruct.DataAccessResult(m_io);
@@ -89,13 +93,14 @@ namespace Netdx.Packets.Industrial
                 return new SetResponseDatablock(new KaitaiStream(fileName));
             }
 
-            public SetResponseDatablock(KaitaiStream p__io, DlmsSetResponse p__parent = null, DlmsSetResponse p__root = null) : base(p__io)
+            public SetResponseDatablock(KaitaiStream io, DlmsSetResponse parent = null, DlmsSetResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _blockNumber = m_io.ReadU4be();
@@ -116,13 +121,14 @@ namespace Netdx.Packets.Industrial
                 return new SetResponseLastDatablockWithList(new KaitaiStream(fileName));
             }
 
-            public SetResponseLastDatablockWithList(KaitaiStream p__io, DlmsSetResponse p__parent = null, DlmsSetResponse p__root = null) : base(p__io)
+            public SetResponseLastDatablockWithList(KaitaiStream io, DlmsSetResponse parent = null, DlmsSetResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _result = new DlmsStruct.SequenceOfDataAccessResult(m_io);
@@ -146,13 +152,14 @@ namespace Netdx.Packets.Industrial
                 return new SetResponseWithList(new KaitaiStream(fileName));
             }
 
-            public SetResponseWithList(KaitaiStream p__io, DlmsSetResponse p__parent = null, DlmsSetResponse p__root = null) : base(p__io)
+            public SetResponseWithList(KaitaiStream io, DlmsSetResponse parent = null, DlmsSetResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _result = new DlmsStruct.SequenceOfDataAccessResult(m_io);
@@ -173,13 +180,14 @@ namespace Netdx.Packets.Industrial
                 return new SetResponseNormal(new KaitaiStream(fileName));
             }
 
-            public SetResponseNormal(KaitaiStream p__io, DlmsSetResponse p__parent = null, DlmsSetResponse p__root = null) : base(p__io)
+            public SetResponseNormal(KaitaiStream io, DlmsSetResponse parent = null, DlmsSetResponse root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
                 _result = new DlmsStruct.DataAccessResult(m_io);

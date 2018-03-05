@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Base
@@ -10,7 +12,6 @@ namespace Netdx.Packets.Base
         {
             return new LlcFrame(new KaitaiStream(fileName));
         }
-
 
         public enum LlcSframeCommand
         {
@@ -78,13 +79,15 @@ namespace Netdx.Packets.Base
             CommandFrame = 0,
             ResponseFrame = 1,
         }
-        public LlcFrame(KaitaiStream p__io, KaitaiStruct p__parent = null, LlcFrame p__root = null) : base(p__io)
+
+        public LlcFrame(KaitaiStream io, KaitaiStruct parent = null, LlcFrame root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _dsapAddress = m_io.ReadBitsInt(7);
             _dsapType = ((AddressTypeEnum) m_io.ReadBitsInt(1));
@@ -101,16 +104,17 @@ namespace Netdx.Packets.Base
                 return new ControlType(new KaitaiStream(fileName));
             }
 
-            public ControlType(KaitaiStream p__io, LlcFrame p__parent = null, LlcFrame p__root = null) : base(p__io)
+            public ControlType(KaitaiStream io, LlcFrame parent = null, LlcFrame root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
                 f_controlByte = false;
                 f_type = false;
-                _read();
-            }
-            private void _read()
-            {
                 switch (Type) {
                 case LlcFrame.ControlFrameType.Iframe: {
                     _frameContent = new Information(m_io, this, m_root);
@@ -169,13 +173,14 @@ namespace Netdx.Packets.Base
                 return new Information(new KaitaiStream(fileName));
             }
 
-            public Information(KaitaiStream p__io, LlcFrame.ControlType p__parent = null, LlcFrame p__root = null) : base(p__io)
+            public Information(KaitaiStream io, ControlType parent = null, LlcFrame root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _tsSequenceNumber = m_io.ReadBitsInt(7);
                 _type = m_io.ReadBitsInt(1) != 0;
@@ -202,13 +207,14 @@ namespace Netdx.Packets.Base
                 return new Supervisory(new KaitaiStream(fileName));
             }
 
-            public Supervisory(KaitaiStream p__io, LlcFrame.ControlType p__parent = null, LlcFrame p__root = null) : base(p__io)
+            public Supervisory(KaitaiStream io, ControlType parent = null, LlcFrame root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _reserved = m_io.ReadBitsInt(4);
                 _command = ((LlcFrame.LlcSframeCommand) m_io.ReadBitsInt(2));
@@ -238,13 +244,14 @@ namespace Netdx.Packets.Base
                 return new Unnumbered(new KaitaiStream(fileName));
             }
 
-            public Unnumbered(KaitaiStream p__io, LlcFrame.ControlType p__parent = null, LlcFrame p__root = null) : base(p__io)
+            public Unnumbered(KaitaiStream io, ControlType parent = null, LlcFrame root = null) : base(io)
             {
-                m_parent = p__parent;
-                m_root = p__root;
-                _read();
+                m_parent = parent;
+                m_root = root;
+                _parse();
             }
-            private void _read()
+
+            private void _parse()
             {
                 _mmm = m_io.ReadBitsInt(3);
                 _pollFinal = m_io.ReadBitsInt(1) != 0;

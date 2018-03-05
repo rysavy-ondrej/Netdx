@@ -1,5 +1,7 @@
 // This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
+using System;
+using System.Collections.Generic;
 using Kaitai;
 
 namespace Netdx.Packets.Base
@@ -11,13 +13,14 @@ namespace Netdx.Packets.Base
             return new TcpSegment(new KaitaiStream(fileName));
         }
 
-        public TcpSegment(KaitaiStream p__io, KaitaiStruct p__parent = null, TcpSegment p__root = null) : base(p__io)
+        public TcpSegment(KaitaiStream io, KaitaiStruct parent = null, TcpSegment root = null) : base(io)
         {
-            m_parent = p__parent;
-            m_root = p__root ?? this;
-            _read();
+            m_parent = parent;
+            m_root = root ?? this;
+            _parse();
         }
-        private void _read()
+
+        private void _parse()
         {
             _srcPort = m_io.ReadU2be();
             _dstPort = m_io.ReadU2be();
