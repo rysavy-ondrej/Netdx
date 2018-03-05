@@ -25,7 +25,7 @@ namespace Netdx.Packets.Core
             Hs = 4,
         }
 
-        public enum TypeType
+        public enum RecordType
         {
             A = 1,
             Ns = 2,
@@ -43,6 +43,7 @@ namespace Netdx.Packets.Core
             Minfo = 14,
             Mx = 15,
             Txt = 16,
+            Aaaa = 28,
         }
 
         public DnsPacket(KaitaiStream io, KaitaiStruct parent = null, DnsPacket root = null) : base(io)
@@ -115,6 +116,81 @@ namespace Netdx.Packets.Core
             public byte Value { get { return _value; } }
             public DnsPacket M_Root { get { return m_root; } }
             public DnsPacket.Label M_Parent { get { return m_parent; } }
+        }
+        public partial class AaaaRecord : KaitaiStruct
+        {
+            public static AaaaRecord FromFile(string fileName)
+            {
+                return new AaaaRecord(new KaitaiStream(fileName));
+            }
+
+            public AaaaRecord(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            {
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
+                _address = m_io.ReadBytes(16);
+            }
+            private byte[] _address;
+            private DnsPacket m_root;
+            private DnsPacket.Answer m_parent;
+            public byte[] Address { get { return _address; } }
+            public DnsPacket M_Root { get { return m_root; } }
+            public DnsPacket.Answer M_Parent { get { return m_parent; } }
+        }
+        public partial class ARecord : KaitaiStruct
+        {
+            public static ARecord FromFile(string fileName)
+            {
+                return new ARecord(new KaitaiStream(fileName));
+            }
+
+            public ARecord(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            {
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
+                _address = m_io.ReadBytes(4);
+            }
+            private byte[] _address;
+            private DnsPacket m_root;
+            private DnsPacket.Answer m_parent;
+            public byte[] Address { get { return _address; } }
+            public DnsPacket M_Root { get { return m_root; } }
+            public DnsPacket.Answer M_Parent { get { return m_parent; } }
+        }
+        public partial class CnameRecord : KaitaiStruct
+        {
+            public static CnameRecord FromFile(string fileName)
+            {
+                return new CnameRecord(new KaitaiStream(fileName));
+            }
+
+            public CnameRecord(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            {
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
+                _hostname = new DomainName(m_io, this, m_root);
+            }
+            private DomainName _hostname;
+            private DnsPacket m_root;
+            private DnsPacket.Answer m_parent;
+            public DomainName Hostname { get { return _hostname; } }
+            public DnsPacket M_Root { get { return m_root; } }
+            public DnsPacket.Answer M_Parent { get { return m_parent; } }
         }
         public partial class Label : KaitaiStruct
         {
@@ -190,16 +266,16 @@ namespace Netdx.Packets.Core
             private void _parse()
             {
                 _name = new DomainName(m_io, this, m_root);
-                _type = ((DnsPacket.TypeType) m_io.ReadU2be());
+                _type = ((DnsPacket.RecordType) m_io.ReadU2be());
                 _queryClass = ((DnsPacket.ClassType) m_io.ReadU2be());
             }
             private DomainName _name;
-            private TypeType _type;
+            private RecordType _type;
             private ClassType _queryClass;
             private DnsPacket m_root;
             private DnsPacket m_parent;
             public DomainName Name { get { return _name; } }
-            public TypeType Type { get { return _type; } }
+            public RecordType Type { get { return _type; } }
             public ClassType QueryClass { get { return _queryClass; } }
             public DnsPacket M_Root { get { return m_root; } }
             public DnsPacket M_Parent { get { return m_parent; } }
@@ -240,6 +316,84 @@ namespace Netdx.Packets.Core
             public DnsPacket M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
+        public partial class PtrRecord : KaitaiStruct
+        {
+            public static PtrRecord FromFile(string fileName)
+            {
+                return new PtrRecord(new KaitaiStream(fileName));
+            }
+
+            public PtrRecord(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            {
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
+                _hostname = new DomainName(m_io, this, m_root);
+            }
+            private DomainName _hostname;
+            private DnsPacket m_root;
+            private DnsPacket.Answer m_parent;
+            public DomainName Hostname { get { return _hostname; } }
+            public DnsPacket M_Root { get { return m_root; } }
+            public DnsPacket.Answer M_Parent { get { return m_parent; } }
+        }
+        public partial class MxRecord : KaitaiStruct
+        {
+            public static MxRecord FromFile(string fileName)
+            {
+                return new MxRecord(new KaitaiStream(fileName));
+            }
+
+            public MxRecord(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            {
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
+                _priority = m_io.ReadS2be();
+                _hostname = new DomainName(m_io, this, m_root);
+            }
+            private short _priority;
+            private DomainName _hostname;
+            private DnsPacket m_root;
+            private DnsPacket.Answer m_parent;
+            public short Priority { get { return _priority; } }
+            public DomainName Hostname { get { return _hostname; } }
+            public DnsPacket M_Root { get { return m_root; } }
+            public DnsPacket.Answer M_Parent { get { return m_parent; } }
+        }
+        public partial class NsRecord : KaitaiStruct
+        {
+            public static NsRecord FromFile(string fileName)
+            {
+                return new NsRecord(new KaitaiStream(fileName));
+            }
+
+            public NsRecord(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            {
+                m_parent = parent;
+                m_root = root;
+                _parse();
+            }
+
+            private void _parse()
+            {
+                _hostname = new DomainName(m_io, this, m_root);
+            }
+            private DomainName _hostname;
+            private DnsPacket m_root;
+            private DnsPacket.Answer m_parent;
+            public DomainName Hostname { get { return _hostname; } }
+            public DnsPacket M_Root { get { return m_root; } }
+            public DnsPacket.Answer M_Parent { get { return m_parent; } }
+        }
         public partial class Address : KaitaiStruct
         {
             public static Address FromFile(string fileName)
@@ -247,7 +401,7 @@ namespace Netdx.Packets.Core
                 return new Address(new KaitaiStream(fileName));
             }
 
-            public Address(KaitaiStream io, Answer parent = null, DnsPacket root = null) : base(io)
+            public Address(KaitaiStream io, KaitaiStruct parent = null, DnsPacket root = null) : base(io)
             {
                 m_parent = parent;
                 m_root = root;
@@ -263,10 +417,10 @@ namespace Netdx.Packets.Core
             }
             private List<byte> _ip;
             private DnsPacket m_root;
-            private DnsPacket.Answer m_parent;
+            private KaitaiStruct m_parent;
             public List<byte> Ip { get { return _ip; } }
             public DnsPacket M_Root { get { return m_root; } }
-            public DnsPacket.Answer M_Parent { get { return m_parent; } }
+            public KaitaiStruct M_Parent { get { return m_parent; } }
         }
         public partial class Answer : KaitaiStruct
         {
@@ -285,28 +439,47 @@ namespace Netdx.Packets.Core
             private void _parse()
             {
                 _name = new DomainName(m_io, this, m_root);
-                _type = ((DnsPacket.TypeType) m_io.ReadU2be());
+                _type = ((DnsPacket.RecordType) m_io.ReadU2be());
                 _answerClass = ((DnsPacket.ClassType) m_io.ReadU2be());
                 _ttl = m_io.ReadS4be();
                 _rdlength = m_io.ReadU2be();
-                if (Type == DnsPacket.TypeType.Ptr) {
-                    _ptrdname = new DomainName(m_io, this, m_root);
+                switch (Type) {
+                case DnsPacket.RecordType.Aaaa: {
+                    _rdata = new AaaaRecord(m_io, this, m_root);
+                    break;
                 }
-                if (Type == DnsPacket.TypeType.A) {
-                    _address = new Address(m_io, this, m_root);
+                case DnsPacket.RecordType.A: {
+                    _rdata = new ARecord(m_io, this, m_root);
+                    break;
+                }
+                case DnsPacket.RecordType.Mx: {
+                    _rdata = new MxRecord(m_io, this, m_root);
+                    break;
+                }
+                case DnsPacket.RecordType.Cname: {
+                    _rdata = new CnameRecord(m_io, this, m_root);
+                    break;
+                }
+                case DnsPacket.RecordType.Ns: {
+                    _rdata = new NsRecord(m_io, this, m_root);
+                    break;
+                }
+                case DnsPacket.RecordType.Ptr: {
+                    _rdata = new PtrRecord(m_io, this, m_root);
+                    break;
+                }
                 }
             }
             private DomainName _name;
-            private TypeType _type;
+            private RecordType _type;
             private ClassType _answerClass;
             private int _ttl;
             private ushort _rdlength;
-            private DomainName _ptrdname;
-            private Address _address;
+            private KaitaiStruct _rdata;
             private DnsPacket m_root;
             private DnsPacket m_parent;
             public DomainName Name { get { return _name; } }
-            public TypeType Type { get { return _type; } }
+            public RecordType Type { get { return _type; } }
             public ClassType AnswerClass { get { return _answerClass; } }
 
             /// <summary>
@@ -318,8 +491,7 @@ namespace Netdx.Packets.Core
             /// Length in octets of the following payload
             /// </summary>
             public ushort Rdlength { get { return _rdlength; } }
-            public DomainName Ptrdname { get { return _ptrdname; } }
-            public Address Address { get { return _address; } }
+            public KaitaiStruct Rdata { get { return _rdata; } }
             public DnsPacket M_Root { get { return m_root; } }
             public DnsPacket M_Parent { get { return m_parent; } }
         }

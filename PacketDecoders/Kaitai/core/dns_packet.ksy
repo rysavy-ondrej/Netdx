@@ -38,7 +38,7 @@ types:
         type: domain_name
       - id: type
         type: u2
-        enum: type_type
+        enum: record_type
       - id: query_class
         type: u2
         enum: class_type
@@ -48,7 +48,7 @@ types:
         type: domain_name
       - id: type
         type: u2
-        enum: type_type
+        enum: record_type
       - id: answer_class
         type: u2
         enum: class_type
@@ -58,12 +58,42 @@ types:
       - id: rdlength
         doc: "Length in octets of the following payload"
         type: u2
-      - id: ptrdname
+      - id: rdata
+        type:
+          switch-on: type
+          cases:
+            'record_type::ptr': ptr_record
+            'record_type::a' : a_record
+            'record_type::aaaa' : aaaa_record
+            'record_type::cname' : cname_record
+            'record_type::mx' : mx_record
+            'record_type::ns' : ns_record            
+  ptr_record:
+    seq:                
+      - id: hostname
         type: domain_name
-        if: "type == type_type::ptr"
+  a_record:        
+    seq:
       - id: address
-        type: address
-        if: "type == type_type::a"
+        size: 4
+  aaaa_record:        
+    seq:
+      - id: address
+        size: 16        
+  cname_record:
+    seq:        
+      - id: hostname 
+        type: domain_name
+  ns_record:
+    seq:        
+      - id: hostname 
+        type: domain_name        
+  mx_record:
+    seq:        
+      - id: priority 
+        type: s2
+      - id: hostname
+        type: domain_name        
   domain_name:
     seq:
       - id: name
@@ -136,7 +166,7 @@ enums:
     2: cs
     3: ch
     4: hs
-  type_type:
+  record_type:
     1: a
     2: ns
     3: md
@@ -153,3 +183,4 @@ enums:
     14: minfo
     15: mx
     16: txt
+    28: aaaa
