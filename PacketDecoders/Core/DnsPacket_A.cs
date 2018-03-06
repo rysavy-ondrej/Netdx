@@ -14,7 +14,27 @@ namespace Netdx.Packets.Core
         /// </summary>
         public partial class DomainName
         {
-            public string DomainNameString => String.Join(".", this.Name.Select(x => x.Name));
+            string getLabelString(DnsPacket.Label label)
+            {
+                if (label.IsPointer)
+                {
+                    return label.Pointer.Contents.DomainNameString;
+                }
+                else
+                {
+                    return label.Name;
+                }
+            }
+
+            public string DomainNameString
+            {
+                get
+                {
+                    
+                    var result = String.Join(".", this.Labels.Select(getLabelString));
+                    return result;
+                }
+            }
 
         }
     }

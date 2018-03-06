@@ -8,7 +8,7 @@ namespace Netdx.Packets.Core
 {
 
     /// <summary>
-    /// (No support for Auth-Name + Add-Name for simplicity)
+    /// Implements DNS packet decoder.
     /// </summary>
     public partial class DnsPacket : KaitaiStruct
     {
@@ -87,7 +87,7 @@ namespace Netdx.Packets.Core
             private void _parse()
             {
                 f_contents = false;
-                _value = m_io.ReadU1();
+                _offset = m_io.ReadU1();
             }
             private bool f_contents;
             private DomainName _contents;
@@ -99,21 +99,21 @@ namespace Netdx.Packets.Core
                         return _contents;
                     KaitaiStream io = M_Root.M_Io;
                     long _pos = io.Pos;
-                    io.Seek(Value);
+                    io.Seek(Offset);
                     _contents = new DomainName(io, this, m_root);
                     io.Seek(_pos);
                     f_contents = true;
                     return _contents;
                 }
             }
-            private byte _value;
+            private byte _offset;
             private DnsPacket m_root;
             private DnsPacket.Label m_parent;
 
             /// <summary>
             /// Read one byte, then offset to that position, read one domain-name and return
             /// </summary>
-            public byte Value { get { return _value; } }
+            public byte Offset { get { return _offset; } }
             public DnsPacket M_Root { get { return m_root; } }
             public DnsPacket.Label M_Parent { get { return m_parent; } }
         }
@@ -296,23 +296,23 @@ namespace Netdx.Packets.Core
 
             private void _parse()
             {
-                _name = new List<Label>();
+                _labels = new List<Label>();
                 {
                     Label M_;
                     do {
                         M_ = new Label(m_io, this, m_root);
-                        _name.Add(M_);
+                        _labels.Add(M_);
                     } while (!( ((M_.Length == 0) || (M_.Length == 192)) ));
                 }
             }
-            private List<Label> _name;
+            private List<Label> _labels;
             private DnsPacket m_root;
             private KaitaiStruct m_parent;
 
             /// <summary>
             /// Repeat until the length is 0 or it is a pointer (bit-hack to get around lack of OR operator)
             /// </summary>
-            public List<Label> Name { get { return _name; } }
+            public List<Label> Labels { get { return _labels; } }
             public DnsPacket M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -393,34 +393,6 @@ namespace Netdx.Packets.Core
             public DomainName Hostname { get { return _hostname; } }
             public DnsPacket M_Root { get { return m_root; } }
             public DnsPacket.Answer M_Parent { get { return m_parent; } }
-        }
-        public partial class Address : KaitaiStruct
-        {
-            public static Address FromFile(string fileName)
-            {
-                return new Address(new KaitaiStream(fileName));
-            }
-
-            public Address(KaitaiStream io, KaitaiStruct parent = null, DnsPacket root = null) : base(io)
-            {
-                m_parent = parent;
-                m_root = root;
-                _parse();
-            }
-
-            private void _parse()
-            {
-                _ip = new List<byte>((int) (4));
-                for (var i = 0; i < 4; i++) {
-                    _ip.Add(m_io.ReadU1());
-                }
-            }
-            private List<byte> _ip;
-            private DnsPacket m_root;
-            private KaitaiStruct m_parent;
-            public List<byte> Ip { get { return _ip; } }
-            public DnsPacket M_Root { get { return m_root; } }
-            public KaitaiStruct M_Parent { get { return m_parent; } }
         }
         public partial class Answer : KaitaiStruct
         {

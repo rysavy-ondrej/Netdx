@@ -4,7 +4,7 @@ meta:
   license: CC0-1.0
   endian: be
 doc: |
-  (No support for Auth-Name + Add-Name for simplicity)
+  Implements DNS packet decoder.
 seq:
   - id: transaction_id
     doc: "ID to keep track of request/responces"
@@ -96,7 +96,7 @@ types:
         type: domain_name        
   domain_name:
     seq:
-      - id: name
+      - id: labels
         type: label
         repeat: until
         doc: "Repeat until the length is 0 or it is a pointer (bit-hack to get around lack of OR operator)"
@@ -120,20 +120,14 @@ types:
         value: length == 0b1100_0000
   pointer_struct:
     seq:
-      - id: value
+      - id: offset
         doc: "Read one byte, then offset to that position, read one domain-name and return"
         type: u1
     instances:
       contents:
         io: _root._io
-        pos: value
+        pos: offset
         type: domain_name
-  address:
-    seq:
-      - id: ip
-        type: u1
-        repeat: expr
-        repeat-expr: 4
   packet_flags:
     seq:
       - id: flag
