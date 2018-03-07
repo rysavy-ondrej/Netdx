@@ -1,7 +1,9 @@
-﻿using Netdx.Packets;
+﻿using Netdx.ConversationTracker;
+using Netdx.Packets;
 using Netdx.Packets.Core;
 using SharpPcap;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,7 +17,7 @@ namespace Netdx.Examples.DnsCheck
         /// Writes information about the <see cref="DnsPacket"/> to the output. 
         /// </summary>
         /// <param name="packet"></param>
-        void WriteRecord(PosixTimeval timestamp, IPAddress source, IPAddress destination, DnsPacket packet);        
+        void WriteRecord(PosixTimeval timestamp, FlowKey flowKey, DnsPacket packet);        
     }
 
 
@@ -36,7 +38,7 @@ namespace Netdx.Examples.DnsCheck
         /// Write the text representation of <see cref="DnsPacket"/>. It uses Flix assert format, e.g., Frame(DnsPacket(0.1, 1234, Query)).
         /// </summary>
         /// <param name="packet"></param>
-        public void WriteRecord(PosixTimeval timestamp, IPAddress source, IPAddress destination, DnsPacket packet)
+        public void WriteRecord(PosixTimeval timestamp, FlowKey flowKey, DnsPacket packet)
         {
             string answerString(DnsPacket.Answer answer)
             {
@@ -60,15 +62,23 @@ namespace Netdx.Examples.DnsCheck
 
             var ts = ((double)timestamp.Seconds + ((double)timestamp.MicroSeconds)/1000000).ToString("0.000");
             var id = packet.TransactionId;
-            var src = source.ToString();
-            var trg = destination.ToString();
             var rcode = packet.Flags.Rcode == 0 ? "NoError" : "NameDoesNotExist";
            
             var queries = String.Join("::", packet.Queries.Select(x => $"{x.Type.ToString().ToUpperInvariant()}(\"{x.Name.DomainNameString}\",\"\")").Append("Nil"));
-            var answers = String.Join("::", packet.Answers.Select(answerString).Append("Nil"));
+            var answers = String.Join("::", packet.Answers.Select(answerString).Append("Nil"));            
+            var qr = packet.Flags.Qr == 0 ? $"Query({id},{queries})" : $"Response({id},{rcode},{queries},{answers})";
+            var dns = $"DNS({qr})";
+
             
-            var qr = packet.Flags.Qr == 0 ? $"Query({queries})" : $"Response({rcode},{queries},{answers})";
-            var str = $"Frame(DnsPacket({ts}, \"{src}\", \"{trg}\", {id}, {qr})).";
+            var proto = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(flowKey.Protocol.ToString());
+            var ipSrc = flowKey.SourceEndpoint.Address.ToString();
+            var ipDst = flowKey.DestinationEndpoint.Address.ToString();
+            var portSrc = flowKey.SourceEndpoint.Port;
+            var portDst = flowKey.DestinationEndpoint.Port;
+            var flow = $"{proto}(\"{ipSrc}\",\"{ipDst}\",{portSrc},{portDst})";
+
+            // Frame(1520329507.498, Udp("192.168.111.100", "147.229.9.43", 1234, 53), DnsPacket(Query(15595,A("api.github.com.", "")::Nil))).
+            var str = $"Frame({ts}, {flow}, {dns}).";
             m_writer.WriteLine(str);
             m_writer.Flush();
         }

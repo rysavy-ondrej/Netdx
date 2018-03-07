@@ -1,5 +1,6 @@
 ﻿using Kaitai;
 using Microsoft.Extensions.CommandLineUtils;
+using Netdx.ConversationTracker;
 using Netdx.Packets.Core;
 using Netdx.Packets.IoT;
 using PacketDotNet;
@@ -93,9 +94,17 @@ namespace Netdx.Examples.DnsCheck
                 var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
                 var ip = packet.Extract(typeof(IpPacket)) as IpPacket;
                 var udp = packet.Extract(typeof(UdpPacket)) as UdpPacket;
+
+                var flowKey = new FlowKey()
+                {
+                    Protocol = ProtocolType.UDP,
+                    SourceEndpoint = new System.Net.IPEndPoint(ip.SourceAddress, udp.SourcePort),
+                    DestinationEndpoint = new System.Net.IPEndPoint(ip.DestinationAddress, udp.DestinationPort)
+                };
+
                 var str = new KaitaiStream(udp.PayloadData);
                 var dns = new DnsPacket(str);
-                outputFormatter.WriteRecord(e.Packet.Timeval, ip.SourceAddress, ip.DestinationAddress, dns);
+                outputFormatter.WriteRecord(e.Packet.Timeval, flowKey, dns);
             }
             catch(Exception ex)
             {
