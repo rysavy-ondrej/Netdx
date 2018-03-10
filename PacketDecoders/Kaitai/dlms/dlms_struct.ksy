@@ -144,9 +144,12 @@ types:
       - id: int2
         type: u2be
         if: b1 == 0x82
+      - id: int4
+        type: u4be
+        if: b1 == 0x84
     instances:
       value:
-        value: '(b1 & 0x80 == 0) ? b1 : int2'
+        value: '(b1 == 0x84) ? int4 : (b1 == 0x82) ? int2 : b1'
 enums:
   access_result:
     0: success
