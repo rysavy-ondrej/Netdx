@@ -81,10 +81,14 @@ types:
         if: present != 0          
   get_data_result:
     seq: 
-      - id: data
-        type: dlms_data
-      - id: data_access_result
-        type: data_access_result
+      - id: data_result_type
+        type: u1
+      - id: data_result_value 
+        type:
+          switch-on: data_result_type
+          cases:
+            0: dlms_data
+            1: data_access_result
   selective_access_descriptor_optional:
     seq:
       - id: present

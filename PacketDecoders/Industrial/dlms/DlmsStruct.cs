@@ -175,15 +175,24 @@ namespace Netdx.Packets.Industrial
 
             private void _parse()
             {
-                _data = new DlmsData(m_io);
-                _dataAccessResult = new DataAccessResult(m_io, this, m_root);
+                _dataResultType = m_io.ReadU1();
+                switch (DataResultType) {
+                case 0: {
+                    _dataResultValue = new DlmsData(m_io);
+                    break;
+                }
+                case 1: {
+                    _dataResultValue = new DataAccessResult(m_io, this, m_root);
+                    break;
+                }
+                }
             }
-            private DlmsData _data;
-            private DataAccessResult _dataAccessResult;
+            private byte _dataResultType;
+            private KaitaiStruct _dataResultValue;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
-            public DlmsData Data { get { return _data; } }
-            public DataAccessResult DataAccessResult { get { return _dataAccessResult; } }
+            public byte DataResultType { get { return _dataResultType; } }
+            public KaitaiStruct DataResultValue { get { return _dataResultValue; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
@@ -360,26 +369,31 @@ namespace Netdx.Packets.Industrial
                 if (B1 == 130) {
                     _int2 = m_io.ReadU2be();
                 }
+                if (B1 == 132) {
+                    _int4 = m_io.ReadU4be();
+                }
             }
             private bool f_value;
-            private ushort _value;
-            public ushort Value
+            private uint _value;
+            public uint Value
             {
                 get
                 {
                     if (f_value)
                         return _value;
-                    _value = (ushort) (((B1 & 128) == 0 ? B1 : Int2));
+                    _value = (uint) ((B1 == 132 ? Int4 : (B1 == 130 ? Int2 : B1)));
                     f_value = true;
                     return _value;
                 }
             }
             private byte _b1;
             private ushort _int2;
+            private uint _int4;
             private DlmsStruct m_root;
             private KaitaiStruct m_parent;
             public byte B1 { get { return _b1; } }
             public ushort Int2 { get { return _int2; } }
+            public uint Int4 { get { return _int4; } }
             public DlmsStruct M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }

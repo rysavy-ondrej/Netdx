@@ -121,14 +121,14 @@ namespace Netdx.Packets.Industrial
             private void _parse()
             {
                 _invokeIdAndPriority = new DlmsStruct.InvokeIdAndPriority(m_io);
-                _attributeDescriptorList = new DlmsStruct.CosemAttributeDescriptorWithSelection(m_io);
+                _attributeDescriptorList = new DlmsStruct.SequenceOfCosemAttributeDescriptorWithSelection(m_io);
             }
             private DlmsStruct.InvokeIdAndPriority _invokeIdAndPriority;
-            private DlmsStruct.CosemAttributeDescriptorWithSelection _attributeDescriptorList;
+            private DlmsStruct.SequenceOfCosemAttributeDescriptorWithSelection _attributeDescriptorList;
             private DlmsGetRequest m_root;
             private DlmsGetRequest m_parent;
             public DlmsStruct.InvokeIdAndPriority InvokeIdAndPriority { get { return _invokeIdAndPriority; } }
-            public DlmsStruct.CosemAttributeDescriptorWithSelection AttributeDescriptorList { get { return _attributeDescriptorList; } }
+            public DlmsStruct.SequenceOfCosemAttributeDescriptorWithSelection AttributeDescriptorList { get { return _attributeDescriptorList; } }
             public DlmsGetRequest M_Root { get { return m_root; } }
             public DlmsGetRequest M_Parent { get { return m_parent; } }
         }

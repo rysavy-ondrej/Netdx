@@ -96,7 +96,7 @@ namespace Netdx.Packets.Industrial
                 _llcHeader = new LlcHeaderFields(m_io, this, m_root);
             }
             _information = m_io.ReadBytes((HdlcHeader.Format.FrameLength - ((HdlcHeader.Size + ((HdlcHeader.Control.FrameType & 1) == 0 ? LlcHeader.Size : 0)) + 2)));
-            _fsc = m_io.ReadBytes(2);
+            _fsc = m_io.ReadU2be();
             _stopFlag = m_io.EnsureFixedContents(new byte[] { 126 });
         }
         public partial class UFrameControlByte : KaitaiStruct
@@ -666,7 +666,7 @@ namespace Netdx.Packets.Industrial
         private HdlcHeaderFields _hdlcHeader;
         private LlcHeaderFields _llcHeader;
         private byte[] _information;
-        private byte[] _fsc;
+        private ushort _fsc;
         private byte[] _stopFlag;
         private DlmsHdlc m_root;
         private KaitaiStruct m_parent;
@@ -697,7 +697,7 @@ namespace Netdx.Packets.Industrial
         /// calculated for the entire length of the frame, excluding the opening flag, the FCS and any start and
         /// stop elements (start/stop transmission).
         /// </summary>
-        public byte[] Fsc { get { return _fsc; } }
+        public ushort Fsc { get { return _fsc; } }
 
         /// <summary>
         /// The flag field is one byte and its value is 7E. 

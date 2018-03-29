@@ -57,7 +57,7 @@ seq:
     doc: |
       The information field may be any sequence of bytes. In the case of data frames (I and UI frames), it carries the MSDU. 
   - id: fsc
-    size: 2
+    type: u2
     doc: |
       Unless otherwise noted, the frame checking sequence is
       calculated for the entire length of the frame, excluding the opening flag, the FCS and any start and

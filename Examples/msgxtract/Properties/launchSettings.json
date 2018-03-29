@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "msgxtract": {
+      "commandName": "Project",
+      "commandLineArgs": "export-dlms -r c:\\Users\\rysavy\\Downloads\\DLMSDirector.pcap"
+    }
+  }
+}

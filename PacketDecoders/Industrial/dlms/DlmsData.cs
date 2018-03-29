@@ -192,14 +192,14 @@ namespace Netdx.Packets.Industrial
             private void _parse()
             {
                 _length = new LengthEncoded(m_io, this, m_root);
-                _value = System.Text.Encoding.GetEncoding("ascii").GetString(m_io.ReadBytes(Length.Value));
+                _value = m_io.ReadBytes(Length.Value);
             }
             private LengthEncoded _length;
-            private string _value;
+            private byte[] _value;
             private DlmsData m_root;
             private DlmsData m_parent;
             public LengthEncoded Length { get { return _length; } }
-            public string Value { get { return _value; } }
+            public byte[] Value { get { return _value; } }
             public DlmsData M_Root { get { return m_root; } }
             public DlmsData M_Parent { get { return m_parent; } }
         }
@@ -387,9 +387,15 @@ namespace Netdx.Packets.Industrial
 
             private void _parse()
             {
+                _length = new LengthEncoded(m_io, this, m_root);
+                _value = m_io.ReadBytes(Length.Value);
             }
+            private LengthEncoded _length;
+            private byte[] _value;
             private DlmsData m_root;
             private DlmsData m_parent;
+            public LengthEncoded Length { get { return _length; } }
+            public byte[] Value { get { return _value; } }
             public DlmsData M_Root { get { return m_root; } }
             public DlmsData M_Parent { get { return m_parent; } }
         }
@@ -556,9 +562,15 @@ namespace Netdx.Packets.Industrial
 
             private void _parse()
             {
+                _length = new LengthEncoded(m_io, this, m_root);
+                _value = System.Text.Encoding.GetEncoding("ascii").GetString(m_io.ReadBytes(Length.Value));
             }
+            private LengthEncoded _length;
+            private string _value;
             private DlmsData m_root;
             private DlmsData m_parent;
+            public LengthEncoded Length { get { return _length; } }
+            public string Value { get { return _value; } }
             public DlmsData M_Root { get { return m_root; } }
             public DlmsData M_Parent { get { return m_parent; } }
         }

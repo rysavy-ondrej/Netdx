@@ -35,7 +35,7 @@ types:
       - id: invoke_id_and_priority
         type: dlms_struct::invoke_id_and_priority
       - id: attribute_descriptor_list
-        type: dlms_struct::cosem_attribute_descriptor_with_selection
+        type: dlms_struct::sequence_of_cosem_attribute_descriptor_with_selection
 enums:
   get_request_type:
     1: get_request_normal

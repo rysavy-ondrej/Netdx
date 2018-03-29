@@ -39,9 +39,13 @@ types:
       - id: nothing
         size: 0
   array:
-    {}
+    seq:
+      - id: length
+        type: length_encoded
+      - id: value
+        size: length.value
   structure:
-    {}
+    { }
   boolean_optional:
     seq:
       - id: present
@@ -83,11 +87,15 @@ types:
       - id: length
         type: length_encoded
       - id: value
+        size: length.value
+  visible_string:
+    seq:
+      - id: length
+        type: length_encoded
+      - id: value
         type: str
         encoding: ascii
         size: length.value
-  visible_string:
-    {}
   bcd:
     {}
   integer:
