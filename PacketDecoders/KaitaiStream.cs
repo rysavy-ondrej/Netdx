@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 
 namespace Kaitai
 {
@@ -431,6 +432,38 @@ namespace Kaitai
             return bytes.ToArray();
         }
 
+        public byte[] ReadBytesTerm(byte[] terminator, bool includeTerminator, bool consumeTerminator, bool eosError)
+        {
+            int terminatorIndex = 0;
+            List<byte> bytes = new System.Collections.Generic.List<byte>();
+            while (true)
+            {
+                if (IsEof)
+                {
+                    if (eosError) throw new EndOfStreamException(string.Format("End of stream reached, but no terminator `{0}` found", terminator));
+                    break;
+                }
+
+                byte b = ReadByte();
+                if (b == terminator[terminatorIndex])
+                {
+                    terminatorIndex++;
+                    if (terminatorIndex == terminator.Length)
+                    {
+                        if (includeTerminator) bytes.AddRange(terminator);
+                        if (!consumeTerminator) Seek(Pos - terminator.Length);
+                        break;
+                    }
+                }
+                else
+                {
+                    terminatorIndex = 0;
+                }
+                bytes.Add(b);
+            }
+            return bytes.ToArray();
+        }
+
         /// <summary>
         /// Read a specific set of bytes and assert that they are the same as an expected result
         /// </summary>
@@ -665,6 +698,50 @@ namespace Kaitai
             }
         }
 
+        #endregion
+
+        #region Custom Data Types
+
+        /// <summary>
+        /// This method extracts a specified number of ASCII characters from a sequence of bytes.
+        /// </summary>
+        /// <param name="length">A number of bytes to consume, regardless of null termination.
+        /// If length is larger than the remaining stream length, AsciiString reads all remaining bytes.</param>
+        /// <returns>String represented a specified number of ASCII characters.</returns>
+        public string ReadAsciiString(long length)
+        {
+            var remaining = BaseStream.Length - BaseStream.Position;
+            var bytes = this.ReadBytes(Math.Min(remaining, length));
+            return Encoding.ASCII.GetString(bytes);
+        }
+        /// <summary>
+        /// This method extracts a specified number of ASCII characters from a sequence of bytes until a termination character is found or the frame ends.
+        /// </summary>
+        /// <param name="terminator">Required final character to consume.</param>
+        /// <param name="include">Flag that indicates whether the termination character is included in the string.</param>
+        /// <returns></returns>
+        public string ReadAsciiStringTerm(char terminator, bool include)
+        {
+            var bytes = this.ReadBytesTerm(Convert.ToByte(terminator), include, true, false);
+            return Encoding.ASCII.GetString(bytes);
+        }
+        public string ReadAsciiStringTerm(string terminator, bool include)
+        {
+            var terminatorBytes = Encoding.ASCII.GetBytes(terminator);
+
+            var bytes = this.ReadBytesTerm(terminatorBytes, include, true, false);
+            return Encoding.ASCII.GetString(bytes);
+        }
+
+        public string PeekAsciiStringTerm(char terminator, bool include)
+        {
+            var pos = Pos;
+            var result = ReadAsciiStringTerm(terminator, include);
+            Seek(pos);
+            return result;
+        }
+
+        
         #endregion
     }
 }

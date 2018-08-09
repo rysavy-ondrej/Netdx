@@ -24,7 +24,7 @@ Kaitai/dlms# kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.I
 ```
 
 
-* To recompile common interne protocols
+* To recompile common internet protocols
 ```
 Kaitai/common# kaitai-struct-compiler -t csharp --dotnet-namespace Netdx.Packets.Common -d ../../Common *.ksy
 ```
