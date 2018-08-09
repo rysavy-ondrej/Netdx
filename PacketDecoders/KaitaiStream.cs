@@ -714,6 +714,14 @@ namespace Kaitai
             var bytes = this.ReadBytes(Math.Min(remaining, length));
             return Encoding.ASCII.GetString(bytes);
         }
+
+        public string PeekAsciiString(long length)
+        {
+            var pos = Pos;
+            var result = ReadAsciiString(length);
+            Seek(pos);
+            return result;
+        }
         /// <summary>
         /// This method extracts a specified number of ASCII characters from a sequence of bytes until a termination character is found or the frame ends.
         /// </summary>

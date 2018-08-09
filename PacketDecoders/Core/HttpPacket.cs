@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Netdx.PacketDecoders.Core
 {
+    /// <summary>
+    /// Implements Http packet parser. Limitation: it does not parse body of HTTP packet. 
+    /// </summary>
     public partial class HttpPacket : KaitaiStruct
     {
         private HttpPacket m_root;
@@ -62,13 +65,13 @@ namespace Netdx.PacketDecoders.Core
 			    case "SUBSCRIBE":
                     m_request = new HttpRequest(m_io, this, m_root);
                     m_header = new HttpHeader(m_io, this, m_root);
-                    m_body = new HttpBody(m_io, m_header.ContentLength, this, m_root);
+                    //m_body = new HttpBody(m_io, m_header.ContentLength, this, m_root);
                     break;
                 case "HTTP/1.0":
                 case "HTTP/1.1":
                     m_response = new HttpResponse(m_io, this, m_root);
                     m_header = new HttpHeader(m_io, this, m_root);
-                    m_body = new HttpBody(m_io, m_header.ContentLength, this, m_root);
+                    //m_body = new HttpBody(m_io, m_header.ContentLength, this, m_root);
                     break;
             }
         }
@@ -113,7 +116,16 @@ namespace Netdx.PacketDecoders.Core
 
             private void _parse()
             {
-                throw new NotImplementedException();
+                while(!m_io.PeekAsciiString(2).Equals("\r\n") && !m_io.IsEof)
+                {
+                    var name = m_io.ReadAsciiStringTerm(':', false);
+                    var value = m_io.ReadAsciiStringTerm("\r\n", false);
+                    m_headerFields.Add((name, value));
+                }
+                if (!m_io.IsEof)
+                {
+                    m_io.ReadAsciiString(2);
+                }
             }
         }
         public partial class HttpRequest : KaitaiStruct
@@ -130,18 +142,25 @@ namespace Netdx.PacketDecoders.Core
                 m_root = root;
                 _parse();
             }
+
+            public string Command { get => m_command;  }
+            public string Uri { get => m_uri;  }
+            public string Version { get => m_version;  }
+
             private void _parse()
             {
                 m_command = m_io.ReadAsciiStringTerm(' ', false);
                 m_uri = m_io.ReadAsciiStringTerm(' ', false);
                 m_version = m_io.ReadAsciiStringTerm("\r\n", false);
-                throw new NotImplementedException();
             }
         }
         public partial class HttpResponse : KaitaiStruct
         {
             private readonly KaitaiStruct m_parent;
             private readonly HttpPacket m_root;
+            private string m_version;
+            private string m_statusCode;
+            private string m_reason;
 
             public HttpResponse(KaitaiStream io, KaitaiStruct parent = null, HttpPacket root = null) : base(io)
             {
@@ -149,9 +168,16 @@ namespace Netdx.PacketDecoders.Core
                 m_root = root;
                 _parse();
             }
+
+            public string Version { get => m_version;  }
+            public string StatusCode { get => m_statusCode;  }
+            public string Reason { get => m_reason;  }
+
             private void _parse()
             {
-                throw new NotImplementedException();   
+                m_version = m_io.ReadAsciiStringTerm(' ', false);
+                m_statusCode = m_io.ReadAsciiStringTerm(' ', false);
+                m_reason = m_io.ReadAsciiStringTerm("\r\n", false);
             }
         }
     }
