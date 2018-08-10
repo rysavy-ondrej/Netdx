@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using Netdx.ConversationTracker;
-namespace flowstat
+namespace Flowify
 {
     /// <summary>
-    /// A flow index based on a hierarchy of bloom filters.
+    /// A flow index based on bloom filters. Packets are organized into blocks. For each block 
+    /// we compute a bloom filter using flow keys. Then it is possible to retrieve a list of blocks 
+    /// with packets of the specified flow key. 
     /// </summary>
     public class FlowIndex
     {
+        /// <summary>
+        /// Represents a single block in the structure of bloom filters. 
+        /// </summary>
         class FilterBlock
         {
             object m_syncObject;
             PcapPseudoheader m_header;
             BloomFilter<string> m_filter;
             /// <summary>
-            /// Number of packet added to this block.
+            /// Number of packets added to this block.
             /// </summary>
             int m_itemCount;
             /// <summary>
@@ -64,11 +69,21 @@ namespace flowstat
         int m_linkType;
         int m_packetFlowRatio;
         int m_blockCapacity;
+
         /// <summary>
         /// A list of the lowest-level bloom filters.
         /// </summary>
         List<FilterBlock> m_filterArray;
+        /// <summary>
+        /// The pointer to the last <see cref="FilterBlock"/>.
+        /// </summary>
         FilterBlock m_lastBlock;
+        /// <summary>
+        /// Creates a new instance of <see cref="FlowIndex"/>. 
+        /// </summary>
+        /// <param name="blockCapacity">Desired block capacity. Block capacity influences the size of the Bloom filter in the following way: filterCapacity = blockCapacity / packetFlowRatio</param>
+        /// <param name="packetFlowRatio">Expected ratio between packets and flows. For instance, if an average flow contains 10 packets that this ratio would be 10.</param>
+        /// <param name="linkType">The type of link layer.</param>
         public FlowIndex(int blockCapacity, int packetFlowRatio, int linkType)
         {
             m_blockCapacity = blockCapacity;

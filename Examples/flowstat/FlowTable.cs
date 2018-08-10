@@ -7,18 +7,54 @@ using IPEndPoint = System.Net.IPEndPoint;
 using SharpPcap;
 using System.Threading;
 using System.IO;
+using System.Linq;
 
-namespace flowstat
+namespace Flowify
 {
-    class FlowTable : IFlowTable<FlowKey, FlowRecord>, IKeyProvider<FlowKey, (Packet, PosixTimeval)>, IRecordProvider<(Packet, PosixTimeval), FlowRecord>
+
+    class FlowRecordWithPackets : FlowRecord
     {
-        Dictionary<FlowKey, FlowRecord> m_table = new Dictionary<FlowKey, FlowRecord>();
+        IList<(Packet packet, PosixTimeval time)> m_packetList;
+        int m_flowId;
+        public FlowRecordWithPackets(int flowId, (Packet, PosixTimeval) capture)
+        {
+            FirstSeen = (long)capture.Item2.MicroSeconds;
+            LastSeen = (long)capture.Item2.MicroSeconds;
+            Octets = capture.Item1.BytesHighPerformance.BytesLength;
+            Packets = 1;
+            m_packetList = new List<(Packet, PosixTimeval)>
+            {
+                capture
+            };
+        }
+        public FlowRecordWithPackets(IEnumerable<(Packet packet, PosixTimeval time)> captures)
+        {
+            m_packetList = new List<(Packet, PosixTimeval)>(captures);
+        }
+
+        public static FlowRecordWithPackets Merge(FlowRecordWithPackets f1, FlowRecordWithPackets f2)
+        {
+            return new FlowRecordWithPackets(f1.PacketList.Concat(f2.PacketList))
+            {
+                FirstSeen = Math.Min(f1.FirstSeen, f2.FirstSeen),
+                LastSeen = Math.Max(f1.FirstSeen, f2.FirstSeen),
+                Octets = f1.Octets + f2.Octets,
+                Packets = f1.Packets + f2.Packets,
+            };
+        }
+
+        public IList<(Packet packet, PosixTimeval time)> PacketList => m_packetList;
+    }
+
+    class FlowTable : IFlowTable<FlowKey, FlowRecordWithPackets>, IKeyProvider<FlowKey, (Packet, PosixTimeval)>, IRecordProvider<(Packet, PosixTimeval), FlowRecordWithPackets>
+    {
+        Dictionary<FlowKey, FlowRecordWithPackets> m_table = new Dictionary<FlowKey, FlowRecordWithPackets>();
 
         public object Count => m_table.Count;
 
-        public IEnumerable<KeyValuePair<FlowKey, FlowRecord>> Entries => m_table;
+        public IEnumerable<KeyValuePair<FlowKey, FlowRecordWithPackets>> Entries => m_table;
 
-        public FlowRecord Delete(FlowKey key)
+        public FlowRecordWithPackets Delete(FlowKey key)
         {
             lock (LockObject)
             {
@@ -41,7 +77,7 @@ namespace flowstat
             }
         }
 
-        public FlowRecord Get(FlowKey key)
+        public FlowRecordWithPackets Get(FlowKey key)
         {
             return m_table.GetValueOrDefault(key);
         }
@@ -91,45 +127,40 @@ namespace flowstat
             }
         }
 
+        /// <summary>
+        /// Lock object to control entering to the critical section. 
+        /// </summary>
         private readonly object LockObject = new object();
 
+        /// <summary>
+        /// Leaves the critical section. 
+        /// </summary>
         public void Exit()
         {
             Monitor.Exit(LockObject);    
         }
 
+        /// <summary>
+        /// Enters the critical section. 
+        /// </summary>
         public void Enter()
         {
             Monitor.Enter(LockObject);
         }
 
-        public FlowRecord GetRecord((Packet, PosixTimeval) capture)
+        public FlowRecordWithPackets GetRecord((Packet, PosixTimeval) capture)
         {
-            var packet = capture.Item1;
-            var time = (long)capture.Item2.MicroSeconds;
-            return new FlowRecord()
-            {
-                FirstSeen = time,
-                LastSeen = time,
-                Octets = packet.BytesHighPerformance.BytesLength,
-                Packets = 1,
-            };
+            return new FlowRecordWithPackets(m_table.Count + 1, capture);
         }
 
-        public FlowRecord Merge(FlowKey key, FlowRecord value)
+        public FlowRecordWithPackets Merge(FlowKey key, FlowRecordWithPackets value)
         {
 
             var stored = m_table.GetValueOrDefault(key);
-            FlowRecord newValue;
+            FlowRecordWithPackets newValue;
             if (stored != null)
             {
-                newValue = new FlowRecord()
-                {
-                    FirstSeen = Math.Min(stored.FirstSeen, value.FirstSeen),
-                    LastSeen = Math.Max(stored.FirstSeen, value.FirstSeen),
-                    Octets = stored.Octets + value.Octets,
-                    Packets = stored.Packets + value.Packets
-                };
+                newValue = FlowRecordWithPackets.Merge(stored, value);
             }
             else
             {
@@ -141,7 +172,7 @@ namespace flowstat
             }
         }
 
-        public void Put(FlowKey key, FlowRecord value)
+        public void Put(FlowKey key, FlowRecordWithPackets value)
         {
             lock (LockObject)
             {

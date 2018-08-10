@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace Netdx.ConversationTracker
 {
-    [DebuggerDisplay("[FlowKey: {Protocol} {SourceEndpoint} -> {DestinationEndpoint}]")]
+    [DebuggerDisplay("FlowKey(Protocol: {Protocol}, SourceEndpoint: {SourceEndpoint}, DestinationEndpoint: {DestinationEndpoint})")]
     public partial class FlowKey : IEquatable<FlowKey>
     {
 

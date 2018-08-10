@@ -7,8 +7,10 @@ using SharpPcap.LibPcap;
 using SharpPcap;
 using System.Linq;
 using System.Threading;
+using Cassandra;
+using Microsoft.Extensions.CommandLineUtils;
 
-namespace flowstat
+namespace Flowify
 {
     /// <summary>
     /// Computes the flow statististics for the given input pcap file.
@@ -16,86 +18,38 @@ namespace flowstat
     /// </summary>
     class Program
     {
-        private static Tracker<(Packet, PosixTimeval), FlowKey, FlowRecord> m_tracker;
-        private static int m_parserError;
-        private static int m_packets;
-
         static void Main(string[] args)
         {
-            if (args.Length != 1)
+            var commandLineApplication = new CommandLineApplication(true);
+            commandLineApplication.Command(TrackFlows.Name, TrackFlows.Configuration);
+            commandLineApplication.Command(PrintInterfaces.Name, PrintInterfaces.Configuration);
+
+            commandLineApplication.HelpOption("-? | -h | --help");
+            commandLineApplication.Name = typeof(Program).Assembly.GetName().Name;
+            commandLineApplication.FullName = $"Lwm2mDump Tool ({typeof(Program).Assembly.GetName().Version})";
+
+            commandLineApplication.OnExecute(() =>
             {
-                Console.Error.WriteLine("No input file specified!");
-                return;
-            }
-            var inputFile = args[0];
-            if (!File.Exists(inputFile))
+                commandLineApplication.Error.WriteLine();
+                commandLineApplication.ShowHelp();
+                return -1;
+            });
+            try
             {
-                Console.Error.WriteLine("Specified input file not find!");
-                return;
+                commandLineApplication.Execute(args);
             }
-            var sw = new Stopwatch();
-            sw.Start();
-
-            var device = new CaptureFileReaderDevice(inputFile);
-            device.Open();
-
-            var table = new FlowTable();
-            var index = new FlowIndex(1000, 100, (int)device.LinkType);
-            m_tracker = new Tracker<(Packet,PosixTimeval), FlowKey, FlowRecord>(table, table, table);
-
-            void PrintTable()
+            catch (CommandParsingException e)
             {
-                Console.Clear();
-                Console.WriteLine($"Time:    {sw.Elapsed}");
-                Console.WriteLine($"Packets: {m_packets}   ");
-                Console.WriteLine($"Flows:   {table.Count} ");
-                Console.WriteLine($"Errors:  {m_parserError}");
-                Console.WriteLine();
-                // print top 10 flows
-                try
-                {
-                    table.Enter();
-                    var top = from t in table.Entries
-                              orderby t.Value.Octets descending
-                              select t;
-
-                    Console.WriteLine($"Proto | Source                   | Destination              | Pckts |    Octets |    Start |  Duration |");
-                    foreach (var flow in top.Take(10))
-                    {
-                        Console.WriteLine($"{flow.Key.Protocol,5} | {flow.Key.SourceEndpoint,-24} | {flow.Key.DestinationEndpoint,-24} | {flow.Value.Packets,5} | {flow.Value.Octets,9} | {flow.Value.FirstSeen,9} | {flow.Value.LastSeen - flow.Value.FirstSeen,9} |");
-                    }
-                }
-                finally  { table.Exit(); }
+                commandLineApplication.Error.WriteLine($"ERROR: {e.Message}");
             }
-
-            PeriodicTask.Run(PrintTable, new TimeSpan(0, 0, 1));
-            PrintTable();
-            var rawCapture = device.GetNextPacket();
-            var packetOffset = 6 * sizeof(uint);
-            while (rawCapture != null)
+            catch (ArgumentException e)
             {
-                try
-                {
-                    
-                    m_packets++;
-                    var packet = Packet.ParsePacket(rawCapture.LinkLayerType, rawCapture.Data);
-                    m_tracker.UpdateFlow((packet, rawCapture.Timeval));
-                    var packetFlowKey = table.GetKey((packet, rawCapture.Timeval));
-                    index.Add(m_packets, packetOffset, packetFlowKey);
-                    packetOffset += rawCapture.Data.Length + 4 * sizeof(uint);
-                }
-                catch (Exception)
-                {
-                    m_parserError++;
-                }
-                
-                rawCapture = device.GetNextPacket();
-                
+                commandLineApplication.Error.WriteLine($"ERROR: {e.Message}");
             }
-
-            device.Close();
-            sw.Stop();
-            PrintTable();
-        }
+            catch (PcapException e)
+            {
+                commandLineApplication.Error.WriteLine($"ERROR: {e.Message}");
+            }
+        }            
     }
 }

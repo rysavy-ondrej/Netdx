@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Netdx.ConversationTracker {
     /// <summary>
-    /// This is a generic class that provides basic functionality of tracking flows in a sequence of input packets.
+    /// This is a generic class that provides basic functionality of tracking flows (flowify) in a sequence of input packets.
     /// </summary>
     /// <typeparam name="TPacket"></typeparam>
     /// <typeparam name="TFlowKey"></typeparam>
@@ -24,18 +24,18 @@ namespace Netdx.ConversationTracker {
         /// </summary>
         /// <param name="packet">The packet.</param>
         /// <returns>The flow record or null if such record does not exist.</returns>
-        public TFlowRecord PeekFlow (TPacket packet) {
-            var flowKey = m_keyProvider.GetKey (packet);
+        public TFlowRecord PeekFlow (TPacket packet, out TFlowKey flowKey) {
+            flowKey = m_keyProvider.GetKey (packet);
             return m_flowTable.Get (flowKey);
         }
 
         /// <summary>
-        /// Updates existinf flow or creates a new one for the given packet.
+        /// Updates existing flow or creates a new one for the given packet.
         /// </summary>
         /// <param name="packet">The packet.</param>
         /// <returns>The flow record created for the given packet.</returns>
-        public TFlowRecord UpdateFlow (TPacket packet) {
-            var flowKey = m_keyProvider.GetKey (packet);
+        public TFlowRecord UpdateFlow (TPacket packet, out TFlowKey flowKey) {
+            flowKey = m_keyProvider.GetKey (packet);
             var record = m_flowTable.Get (flowKey);
             var updateRecord = m_recordProvider.GetRecord (packet);
             if (record == null) {

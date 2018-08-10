@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConversationTracker", "Conv
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{502B606B-B579-48A4-9D3D-6718AF9DE0D9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "flowstat", "Examples\flowstat\flowstat.csproj", "{59CC80E0-5A49-4F29-BB57-00B60505307B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "flowify", "Examples\flowstat\flowify.csproj", "{59CC80E0-5A49-4F29-BB57-00B60505307B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lwm2mdump", "Examples\lwm2mdump\lwm2mdump.csproj", "{5394A23C-3D09-4943-ADD4-CD5286A8449C}"
 EndProject

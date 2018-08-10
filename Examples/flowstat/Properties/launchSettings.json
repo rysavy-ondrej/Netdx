@@ -2,8 +2,13 @@
   "profiles": {
     "flowstat": {
       "commandName": "Project",
-      "commandLineArgs": "ISCX_Botnet-Testing.pcap",
-      "workingDirectory": "C:\\Users\\rysavy\\Documents\\Network Monitor 3\\Captures\\botnet"
+      "commandLineArgs": "track-flows -r  testbed-12jun-000.pcap -j \"testbed-12jun-000.json\" -g \"testbed-12jun-000.flows\"",
+      "workingDirectory": "D:\\Captures\\ids\\testbed-12jun-32"
+    },
+    "flowstat-cassandra": {
+      "commandName": "Project",
+      "commandLineArgs": "track-flows -r  testbed-12jun-000.pcap -w \"localhost:9042\"",
+      "workingDirectory": "D:\\Captures\\ids\\testbed-12jun-32"
     }
   }
 }

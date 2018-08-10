@@ -5,6 +5,8 @@
     <PackageId>Netdx.PacketDecoders</PackageId>
     <AssemblyName>Netdx.PacketDecoders</AssemblyName>
     <RootNamespace>Netdx.PacketDecoders</RootNamespace>
+    <Authors>Ondrej Rysavy</Authors>
+    <Company>FIT BUT</Company>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Kaitai\" />
