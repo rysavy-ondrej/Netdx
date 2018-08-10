@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Netdx.PacketDecoders.Core
+namespace Netdx.Packets.Core
 {
     /// <summary>
     /// Implements Http packet parser. Limitation: it does not parse body of HTTP packet. 
@@ -109,17 +109,28 @@ namespace Netdx.PacketDecoders.Core
             public long ContentLength {
                 get
                 {
-                    var (_, Value) = m_headerFields.FirstOrDefault(x => x.Name.Equals("ContentLength", StringComparison.InvariantCultureIgnoreCase) || x.Name.Equals("Content-Length", StringComparison.InvariantCultureIgnoreCase));
-                    return long.TryParse(Value, out var result) ? result : 0;
+                    var value = GetLine("ContentLength", "Content-Length");
+                    return long.TryParse(value, out var result) ? result : 0;
                 }
             }
+
+
+            public string GetLine(params string[] names)
+            {
+                var (_, value) = m_headerFields.FirstOrDefault(x => names.Contains(x.Name, StringComparer.InvariantCultureIgnoreCase));
+                return value;
+            }
+
+            public string Host => GetLine("Host");
+
+            public IList<(string Name, string Value)> Lines => m_headerFields;
 
             private void _parse()
             {
                 while(!m_io.PeekAsciiString(2).Equals("\r\n") && !m_io.IsEof)
                 {
-                    var name = m_io.ReadAsciiStringTerm(':', false);
-                    var value = m_io.ReadAsciiStringTerm("\r\n", false);
+                    var name = m_io.ReadAsciiStringTerm(':', false).Trim();
+                    var value = m_io.ReadAsciiStringTerm("\r\n", false).Trim();
                     m_headerFields.Add((name, value));
                 }
                 if (!m_io.IsEof)

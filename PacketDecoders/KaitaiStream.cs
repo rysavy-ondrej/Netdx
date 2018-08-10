@@ -435,7 +435,7 @@ namespace Kaitai
         public byte[] ReadBytesTerm(byte[] terminator, bool includeTerminator, bool consumeTerminator, bool eosError)
         {
             int terminatorIndex = 0;
-            List<byte> bytes = new System.Collections.Generic.List<byte>();
+            var bytes = new System.Collections.Generic.List<byte>();
             while (true)
             {
                 if (IsEof)
@@ -445,6 +445,7 @@ namespace Kaitai
                 }
 
                 byte b = ReadByte();
+
                 if (b == terminator[terminatorIndex])
                 {
                     terminatorIndex++;
@@ -457,9 +458,16 @@ namespace Kaitai
                 }
                 else
                 {
-                    terminatorIndex = 0;
-                }
-                bytes.Add(b);
+                    if (terminatorIndex > 0)
+                    {
+                        for (int i = 0; i < terminatorIndex; i++)
+                        {
+                            bytes.Add(terminator[i]);
+                        }
+                        terminatorIndex = 0;                        
+                    }
+                    bytes.Add(b);
+                }                
             }
             return bytes.ToArray();
         }

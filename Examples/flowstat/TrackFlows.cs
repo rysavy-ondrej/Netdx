@@ -32,7 +32,6 @@ namespace Flowify
 
                 var inputFile = target.Option("-r", "Read packet data from infile, can be any supported capture file format (including gzipped files).", CommandOptionType.SingleValue);
                 var captureInterface = target.Option("-i", "Set the name of the network interface or pipe to use for live packet capture.", CommandOptionType.SingleValue);
-                var cassandraNode = target.Option("-w", "Specifies address of the Cassandra DB node to store flow records.", CommandOptionType.SingleValue);
                 var jsonOutput = target.Option("-j", "Specifies output JSON file to store flow records.", CommandOptionType.SingleValue);
                 var flowOutput = target.Option("-f", "Specifies folder where to store individual pcaps of flows", CommandOptionType.SingleValue);
                 var combinedFlowOutput = target.Option("-g", "Specifies folder where to store individual pcaps of flows", CommandOptionType.SingleValue);
@@ -103,12 +102,6 @@ namespace Flowify
                    
                     
                     // STORE DATA:
-
-                    if (cassandraNode.HasValue())
-                    {
-                        SaveToCassandra(cassandraNode.Value(), "flowstat", table);
-
-                    }
                     if (jsonOutput.HasValue())
                     {
                         SaveToJson(jsonOutput.Value(), table);
@@ -155,8 +148,6 @@ namespace Flowify
                 }
             }
         }
-
-
 
         private static Process ExecuteTshark(string pcapPath, string jsonPath)
         {
@@ -236,48 +227,6 @@ namespace Flowify
             }
         }
 
-        /// <summary>
-        /// Stores entire flow table to CassandraDB.
-        /// </summary>
-        /// <param name="cassandraNode">Connection string of Cassandra cluster.</param>
-        /// <param name="table">Flow table.</param>
-        private static void SaveToCassandra(string cassandraNode, string keyspace, FlowTable table)
-        {
-            var session = ConnectDb(IPEndPoint_Extensions.Parse(cassandraNode), keyspace, out var flowTable);
-            // write flows:
-            foreach (var (flow, index) in table.Entries.Select(x => (x,Guid.NewGuid())))
-            {
-                var flowPoco = new Flow()
-                {
-                    FlowId = index.ToString(),
-                    Protocol = flow.Key.Protocol.ToString(),
-                    SourceAddress = flow.Key.SourceEndpoint.Address.ToString(),
-                    SourcePort = flow.Key.SourceEndpoint.Port,
-                    DestinationAddress = flow.Key.DestinationEndpoint.Address.ToString(),
-                    DestinationPort = flow.Key.DestinationEndpoint.Port,
-                    FirstSeen = flow.Value.FirstSeen,
-                    LastSeen = flow.Value.LastSeen,
-                    Octets = flow.Value.Octets,
-                    Packets = flow.Value.Packets
-                };
-                var insert = flowTable.Insert(flowPoco);
-                insert.Execute();
-            }
-            // write hosts:
-            var srcHosts = table.Entries.GroupBy(x => x.Key.SourceEndpoint.Address).Select(t => (t.Key, t.Count(), t.Sum(p => p.Value.Packets), t.Sum(p => p.Value.Octets)));
-            var dstHosts = table.Entries.GroupBy(x => x.Key.DestinationEndpoint.Address).Select(t => (t.Key, t.Count(), t.Sum(p => p.Value.Packets), t.Sum(p => p.Value.Octets)));
-            foreach(var (host, flows, packets, octets) in srcHosts)
-            {
-                var insertStmt = $"INSERT INTO hosts (address, upflows, octetsSent, packetsSent) VALUES ('{host}',{flows},{octets},{packets})";
-                session.Execute(insertStmt);
-            }
-            foreach (var (host, flows, packets, octets) in dstHosts)
-            {
-                var updateStmt = $"UPDATE hosts SET downflows = {flows}, octetsRecv = {octets}, packetsRecv={packets} WHERE address = '{host}'";
-                session.Execute(updateStmt);
-            }
-        }
-
         void PrintTable(Stopwatch sw, FlowTable table, int packets, int parserErrors)
         {
             Console.Clear();
@@ -302,31 +251,7 @@ namespace Flowify
             finally { table.Exit(); }
         }
 
-        /// <summary>
-        /// Connects to database and initialize tables.
-        /// </summary>
-        /// <param name="dbEndPoint">Address of the Cassandra Node.</param>
-        /// <param name="keyspace">The name of the keyspace.</param>
-        /// <returns>Session object that can be used to execute operations.</returns>
-        static ISession ConnectDb(IPEndPoint dbEndPoint, string keyspace, out Table<Flow> flowTable)
-        {
-            var cluster = Cluster.Builder().AddContactPoint(dbEndPoint).WithDefaultKeyspace(keyspace).Build();
-            var session = cluster.ConnectAndCreateDefaultKeyspaceIfNotExists();
-            TableMapping.Register(MappingConfiguration.Global);
-
-            // DROP TABLES AND TYPES:
-            session.Execute($"DROP INDEX IF EXISTS flows");
-            session.Execute($"DROP TABLE IF EXISTS flows");
-            session.Execute($"DROP TABLE IF EXISTS hosts");
-            session.Execute("DROP TYPE IF EXISTS ipendpoint");
-
-            // CREATE TYPES AND TABLES                                        
-            flowTable = new Table<Flow>(session);
-            flowTable.CreateIfNotExists();
-            session.Execute("CREATE TABLE hosts(address text PRIMARY KEY,hostname text, upflows int, downflows int, octetsSent bigint,octetsRecv bigint,packetsSent int,packetsRecv int);");
-
-            return session;
-        }
+  
     }
 }
 
