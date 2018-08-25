@@ -207,3 +207,4 @@ project.lock.json
 #####
 Examples/protoident/obj/Debug/netcoreapp2.0/protoident.csproj.FileListAbsolute.txt
 
+.vs/Netdx/v15/.suo
