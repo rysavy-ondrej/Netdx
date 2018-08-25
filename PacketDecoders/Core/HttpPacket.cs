@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Netdx.Packets.Core
 {
+    public enum HttpPacketType { Request, Response, Data }
     /// <summary>
     /// Implements Http packet parser. Limitation: it does not parse body of HTTP packet. 
     /// </summary>
@@ -25,11 +26,20 @@ namespace Netdx.Packets.Core
             _parse();
         }
 
+        public HttpPacketType PacketType
+        {
+            get
+            {
+                if (m_request != null) return HttpPacketType.Request;
+                if (m_response != null) return HttpPacketType.Response;
+                return HttpPacketType.Data;
+            }
+        }
+
         public HttpRequest Request { get => m_request; }
         public HttpResponse Response { get => m_response;  }
         public HttpHeader Header { get => m_header;  }
         public HttpBody Body { get => m_body; }
-
         private void _parse()
         {
             var keyword = m_io.PeekAsciiStringTerm(' ',false);
@@ -65,13 +75,16 @@ namespace Netdx.Packets.Core
 			    case "SUBSCRIBE":
                     m_request = new HttpRequest(m_io, this, m_root);
                     m_header = new HttpHeader(m_io, this, m_root);
-                    //m_body = new HttpBody(m_io, m_header.ContentLength, this, m_root);
+                    m_body = new HttpBody(m_io, this, m_root);
                     break;
                 case "HTTP/1.0":
                 case "HTTP/1.1":
                     m_response = new HttpResponse(m_io, this, m_root);
                     m_header = new HttpHeader(m_io, this, m_root);
-                    //m_body = new HttpBody(m_io, m_header.ContentLength, this, m_root);
+                    m_body = new HttpBody(m_io, this, m_root);
+                    break;
+                default:
+                    m_body = new HttpBody(m_io, this, m_root);
                     break;
             }
         }
@@ -80,18 +93,18 @@ namespace Netdx.Packets.Core
         {
             private readonly KaitaiStruct m_parent;
             private readonly HttpPacket m_root;
-            private readonly long m_length;
-            public HttpBody(KaitaiStream io, long length, KaitaiStruct parent = null, HttpPacket root = null) : base(io)
+            private byte[] m_bytes;
+            public HttpBody(KaitaiStream io, KaitaiStruct parent = null, HttpPacket root = null) : base(io)
             {
                 m_parent = parent;
                 m_root = root;
-                m_length = length;
                 _parse();
             }
             private void _parse()
             {
-                throw new NotImplementedException();
+                m_bytes = m_io.ReadBytesFull();
             }
+            public byte[] Bytes { get => m_bytes; }
         }
         public partial class HttpHeader : KaitaiStruct
         {
