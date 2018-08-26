@@ -3,7 +3,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Netdx.PacketDecoders.Base
+namespace Netdx.Packets.Base
 {
     public partial class UdpDatagram
     {
@@ -42,17 +42,17 @@ namespace Netdx.PacketDecoders.Base
                 HeaderLength = ChecksumPosition + ChecksumLength;
             }
         }
-        public static UInt16 SourcePort(Span<Byte> udpBytes)
+        public static UInt16 GetSourcePort(Span<Byte> udpBytes)
         {
             var port = udpBytes.Slice(UdpFields.SourcePortPosition);
             return BinaryPrimitives.ReadUInt16BigEndian(port);
         }
-        public static UInt16 DestinationPort(Span<Byte> udpBytes)
+        public static UInt16 GetDestinationPort(Span<Byte> udpBytes)
         {
             var port = udpBytes.Slice(UdpFields.DestinationPortPosition);
             return BinaryPrimitives.ReadUInt16BigEndian(port);
         }
-        public static Span<Byte> PayloadBytes(Span<Byte> udpBytes)
+        public static Span<Byte> GetPayloadBytes(Span<Byte> udpBytes)
         {
             return udpBytes.Slice(UdpFields.HeaderLength);
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Buffers.Binary;
 
-namespace Netdx.PacketDecoders.Base
+namespace Netdx.Packets.Base
 {
     public partial class TcpSegment
     {
@@ -83,34 +83,34 @@ namespace Netdx.PacketDecoders.Base
                 HeaderLength = UrgentPointerPosition + UrgentPointerLength;
             }
         }
-        public static UInt16 SourcePort(Span<Byte> tcpBytes)
+        public static UInt16 GetSourcePort(Span<Byte> tcpBytes)
         {
             var port = tcpBytes.Slice(TcpFields.SourcePortPosition);
             return BinaryPrimitives.ReadUInt16BigEndian(port);
         }
-        public static UInt16 DestinationPort(Span<Byte> tcpBytes)
+        public static UInt16 GetDestinationPort(Span<Byte> tcpBytes)
         {
             var port = tcpBytes.Slice(TcpFields.DestinationPortPosition);
             return BinaryPrimitives.ReadUInt16BigEndian(port);
         }
-        public static UInt32 SequenceNumber(Span<Byte> tcpBytes)
+        public static UInt32 GetSequenceNumber(Span<Byte> tcpBytes)
         {
             var sequenceNumber = tcpBytes.Slice(TcpFields.SequenceNumberPosition);
             return BinaryPrimitives.ReadUInt32BigEndian(sequenceNumber);
         }
-        public static UInt32 AcknowledgmentNumber(Span<Byte> tcpBytes)
+        public static UInt32 GetAcknowledgmentNumber(Span<Byte> tcpBytes)
         {
             var sequenceNumber = tcpBytes.Slice(TcpFields.AckNumberPosition);
             return BinaryPrimitives.ReadUInt32BigEndian(sequenceNumber);
         }
-        public static Byte DataOffset(Span<Byte> tcpBytes)
+        public static Byte GetDataOffset(Span<Byte> tcpBytes)
         {
             var dataOffsetAndFlags = BinaryPrimitives.ReadUInt16BigEndian(tcpBytes.Slice(TcpFields.DataOffsetAndFlagsPosition));
             return (Byte)((dataOffsetAndFlags >> 12) & 0xF);
         }
-        public static Span<Byte> PayloadBytes(Span<Byte> tcpBytes)
+        public static Span<Byte> GetPayloadBytes(Span<Byte> tcpBytes)
         {
-            var headerLength = DataOffset(tcpBytes) * 4;
+            var headerLength = GetDataOffset(tcpBytes) * 4;
             return tcpBytes.Slice(headerLength);
         }
     }

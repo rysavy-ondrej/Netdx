@@ -3,7 +3,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Netdx.PacketDecoders.Base
+namespace Netdx.Packets.Base
 {
     public partial class EthernetFrame
     {
@@ -39,19 +39,19 @@ namespace Netdx.PacketDecoders.Base
                 HeaderLength = TypePosition + TypeLength;
             }
         }
-        public static Span<Byte> PayloadBytes(Span<Byte> etherBytes)
+        public static Span<Byte> GetPayloadBytes(Span<Byte> etherBytes)
         {
             return etherBytes.Slice(EthernetFields.HeaderLength);
         }
-        public static Int16 EtherType(Span<Byte> etherBytes)
+        public static UInt16 GetEtherType(Span<Byte> etherBytes)
         {
-            return BinaryPrimitives.ReadInt16BigEndian(etherBytes.Slice(EthernetFields.TypePosition));
+            return BinaryPrimitives.ReadUInt16BigEndian(etherBytes.Slice(EthernetFields.TypePosition));
         }
-        public static Span<Byte> SourceMacAddress(Span<Byte> etherBytes)
+        public static Span<Byte> GetSourceMacAddress(Span<Byte> etherBytes)
         {
             return etherBytes.Slice(EthernetFields.SourceMacPosition);
         }
-        public static Span<Byte> DestinationMacAddress(Span<Byte> etherBytes)
+        public static Span<Byte> GetDestinationMacAddress(Span<Byte> etherBytes)
         {
             return etherBytes.Slice(EthernetFields.DestinationMacPosition);
         }

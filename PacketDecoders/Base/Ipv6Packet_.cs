@@ -3,7 +3,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Netdx.PacketDecoders.Base
+namespace Netdx.Packets.Base
 {
     public partial class Ipv6Packet
     {
@@ -84,29 +84,29 @@ namespace Netdx.PacketDecoders.Base
                 HeaderLength = DestinationAddressPosition + AddressLength;
             }
         }
-        public static Span<byte> SourceAddress(Span<Byte> ipBytes)
+        public static Span<byte> GetSourceAddress(Span<Byte> ipBytes)
         {
             return ipBytes.Slice(IPv6Fields.SourceAddressPosition, IPv6Fields.AddressLength);
         }
 
-        public static Span<byte> DestinationAddress(Span<Byte> ipBytes)
+        public static Span<byte> GetDestinationAddress(Span<Byte> ipBytes)
         {
             return ipBytes.Slice(IPv6Fields.DestinationAddressPosition, IPv6Fields.AddressLength);
         }
 
-        public static UInt16 PayloadLength(Span<Byte> ipBytes)
+        public static UInt16 GetPayloadLength(Span<Byte> ipBytes)
         {
             return BinaryPrimitives.ReadUInt16BigEndian(ipBytes.Slice(IPv6Fields.PayloadLengthPosition));
         }
 
-        public static Byte Protocol(Span<Byte> ipBytes)
+        public static Byte GetProtocol(Span<Byte> ipBytes)
         {
             return ipBytes[IPv6Fields.NextHeaderPosition];
         }                                               
 
-        public static Span<Byte> PayloadBytes(Span<Byte> ipBytes)
+        public static Span<Byte> GetPayloadBytes(Span<Byte> ipBytes)
         {                                               
-            return ipBytes.Slice(IPv6Fields.HeaderLength, PayloadLength(ipBytes));
+            return ipBytes.Slice(IPv6Fields.HeaderLength, GetPayloadLength(ipBytes));
         }
 
     }

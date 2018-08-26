@@ -3,7 +3,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Netdx.PacketDecoders.Base
+namespace Netdx.Packets.Base
 {
     public partial class Ipv4Packet
     {
@@ -88,31 +88,31 @@ namespace Netdx.PacketDecoders.Base
             }
         }
                                    
-        public static Byte Protocol(Span<Byte> ipBytes)
+        public static Byte GetProtocol(Span<Byte> ipBytes)
         {
             return ipBytes[IPv4Fields.ProtocolPosition];
         }
-        public static Span<byte> SourceAddress(Span<Byte> ipBytes)
+        public static Span<byte> GetSourceAddress(Span<Byte> ipBytes)
         {
             return ipBytes.Slice(IPv4Fields.SourcePosition, IPv4Fields.AddressLength);
         }
-        public static Span<byte> DestinationAddress(Span<Byte> ipBytes)
+        public static Span<byte> GetDestinationAddress(Span<Byte> ipBytes)
         {
             return ipBytes.Slice(IPv4Fields.DestinationPosition, IPv4Fields.AddressLength);
         }
-        public static Byte HeaderLength(Span<Byte> ipBytes)
+        public static Byte GetHeaderLength(Span<Byte> ipBytes)
         {
             return (byte)(ipBytes[IPv4Fields.VersionAndHeaderLengthPosition] & 0x0F);
         }
 
-        public static Span<Byte> PayloadBytes(Span<Byte> ipBytes)
+        public static Span<Byte> GetPayloadBytes(Span<Byte> ipBytes)
         {
-            var hdrLen = HeaderLength(ipBytes);
-            var totalLen = TotalLength(ipBytes);
-            return ipBytes.Slice(HeaderLength(ipBytes), hdrLen - totalLen);
+            var hdrLen = GetHeaderLength(ipBytes);
+            var totalLen = GetTotalLength(ipBytes);
+            return ipBytes.Slice(GetHeaderLength(ipBytes), hdrLen - totalLen);
         }
 
-        private static UInt16 TotalLength(Span<byte> ipBytes)
+        private static UInt16 GetTotalLength(Span<byte> ipBytes)
         {
             return BinaryPrimitives.ReadUInt16BigEndian(ipBytes.Slice(IPv4Fields.TotalLengthPosition));
         }
